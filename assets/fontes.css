@@ -4,13 +4,25 @@
   ============================================================
 
   O QUE FAZ:
-  Ponto central para regras de fonte. Por padrao as fontes vem da
-  biblioteca do Shopify, carregadas pelas configuracoes de
-  font_picker do tema (veja snippets/css-variables.liquid), que
-  geram as variaveis --font-heading-family e --font-body-family.
+  Ponto central de carregamento das fontes da marca BRIGZ e das
+  variáveis --font-* que as expõem para o resto do CSS.
 
-  OBSERVACOES:
-  Adicione regras @font-face aqui apenas se for empacotar suas
-  proprias fontes web (arquivos .woff2 em assets/). Caso contrario,
-  este arquivo pode ficar vazio e a fonte e controlada pelo admin.
+  FONTES DO PROJETO:
+  - Coiny        — headline e textos principais (títulos, botões, destaques)
+  - Manrope      — subheadlines e parágrafos (corpo de texto)
+  - Outfit (800/900) — faixa de anúncio, botões, badges e tags
+
+  OBSERVAÇÕES:
+  --font-heading-family e --font-body-family (definidas em
+  snippets/css-variables.liquid) apontam para --font-coiny e
+  --font-manrope respectivamente, então h1-h6/body já usam a
+  fonte certa automaticamente em todo o tema.
 */
+
+@import url('https://fonts.googleapis.com/css2?family=Coiny&family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@800;900&display=swap');
+
+:root {
+  --font-coiny: 'Coiny', cursive;
+  --font-manrope: 'Manrope', sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
+}

@@ -20,18 +20,7 @@
   Mantém aliases retrocompatíveis (--cor-marca, --cor-verde, --bold...)
   usados por seções antigas. Se remover, quebra o CSS dessas seções.
 {%- endcomment -%}
-{%- liquid
-  assign header_font = settings.type_header_font
-  assign body_font = settings.type_body_font
-  assign header_font_bold = header_font | font_modify: 'weight', 'bold'
-  assign body_font_bold = body_font | font_modify: 'weight', 'bold'
--%}
 <style>
-  {{ header_font | font_face: font_display: 'swap' }}
-  {{ header_font_bold | font_face: font_display: 'swap' }}
-  {{ body_font | font_face: font_display: 'swap' }}
-  {{ body_font_bold | font_face: font_display: 'swap' }}
-
   :root {
     /* Colors */
     --cor-branco: #ffffff;
@@ -51,11 +40,11 @@
     --cor-marca: {{ settings.color_accent }};
     --cor-verde: {{ settings.color_sale }};
 
-    /* Typography */
-    --font-heading-family: {{ header_font.family }}, {{ header_font.fallback_families }};
-    --font-heading-weight: {{ header_font.weight }};
-    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
-    --font-body-weight: {{ body_font.weight }};
+    /* Typography — Coiny (headline) / Manrope (parágrafos), ver assets/fontes.css */
+    --font-heading-family: var(--font-coiny);
+    --font-heading-weight: 400;
+    --font-body-family: var(--font-manrope);
+    --font-body-weight: 400;
     --font-heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
     --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
 

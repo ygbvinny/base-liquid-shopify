@@ -1,0 +1,252 @@
+{%- comment -%}
+  ============================================================
+  HERO SECTION — banner principal da home (desktop)
+  ============================================================
+
+  O QUE FAZ:
+  Banner cheio (assets/hero-banner.webp) com badge, headline,
+  subheadline, CTAs e tags de diferenciais por cima, seguindo
+  o mesmo gap lateral de 100px usado no navbar.
+
+  OBSERVAÇÕES:
+  Apenas versão desktop implementada por ora. Versão mobile fica
+  para depois (será um layout diferente, não um reflow deste).
+{%- endcomment -%}
+
+<section class="hero-section" data-section-id="{{ section.id }}">
+  <img
+    src="{{ 'hero-banner.webp' | asset_url }}"
+    alt=""
+    class="hero-section__bg"
+    width="2880"
+    height="1502"
+    loading="eager"
+    fetchpriority="high"
+  >
+
+  <div class="hero-section__inner">
+    <div class="hero-section__content">
+      <div class="hero-badge">
+        {% render 'icon', name: 'rocket' %}
+        <span>Brigadeiro de outro mundo</span>
+      </div>
+
+      <h1 class="hero-section__title">
+        Sua deita<br>
+        não precisa<br>
+        ser <span class="hero-section__title-highlight">sem graça.</span>
+      </h1>
+
+      <div class="hero-section__subtitle">
+        <p>Cremoso de verdade. instenso do jeito certo.</p>
+        <p>O plot twist que faltaa na sua rotina.</p>
+      </div>
+
+      <div class="hero-actions">
+        <a href="{{ section.settings.primary_button_link | default: '#' }}" class="hero-cta-primary">
+          {% render 'icon', name: 'bag' %}
+          <span>Quero provar</span>
+        </a>
+        <a href="{{ section.settings.secondary_button_link | default: '#' }}" class="hero-cta-secondary">
+          <span>Descobrir o plot twist</span>
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
+      </div>
+
+      <div class="hero-features">
+        <div class="hero-feature">
+          {% render 'icon', name: 'check-circle' %}
+          <span>Zero açúcar</span>
+        </div>
+        <div class="hero-feature">
+          {% render 'icon', name: 'check-circle' %}
+          <span>31 kcal</span>
+        </div>
+        <div class="hero-feature">
+          {% render 'icon', name: 'check-circle' %}
+          <span>Cacau puro</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    overflow: hidden;
+    background-color: #E8720C; /* cor de fallback enquanto o banner carrega */
+  }
+
+  .hero-section__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .hero-section__inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 100px; /* mesmo gap lateral do navbar */
+    box-sizing: border-box;
+  }
+
+  .hero-section__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 660px; /* 600px +10%, acompanha o aumento da headline pra manter as 3 linhas */
+  }
+
+  /* Badge "Brigadeiro de outro mundo" */
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #FFF6E8;
+    border: 2px solid #4B291D;
+    border-radius: 999px;
+    padding: 12px 17px;
+    box-shadow: 0 4px 0 #4B291D;
+    color: #4B291D;
+  }
+
+  .hero-badge svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .hero-badge span {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 0.84px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Headline */
+  .hero-section__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 77px; /* 70px +10% */
+    line-height: 88px; /* 80px +10%, mantém a proporção original */
+    letter-spacing: -3.3px; /* -3px +10% */
+    width: 100%;
+    white-space: nowrap;
+    text-transform: uppercase;
+    color: #FFF6E8;
+    text-shadow: 0 6px 0 #4B291D;
+    -webkit-text-stroke: 3px #000000;
+    paint-order: fill stroke;
+    margin: 0;
+  }
+
+  .hero-section__title-highlight { color: #4687EB; }
+
+  /* Subheadline / parágrafo */
+  .hero-section__subtitle {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 20.8px;
+    line-height: 30.45px;
+    color: #4B291D;
+  }
+
+  .hero-section__subtitle p { margin: 0; }
+
+  /* CTAs */
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding-top: 10px;
+  }
+
+  .hero-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background-color: #2473CE;
+    border: 3px solid #4B291D;
+    border-radius: 999px;
+    padding: 19px 28px;
+    box-shadow: 0 7px 0 #4B291D;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.455px;
+    text-transform: uppercase;
+  }
+
+  .hero-cta-primary svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .hero-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid #4B291D;
+    padding: 10px 0 12px;
+    color: #4B291D;
+    text-decoration: none;
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+
+  .hero-cta-secondary svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* Tags de diferenciais */
+  .hero-features {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    row-gap: 8px;
+    padding-top: 18px;
+  }
+
+  .hero-feature {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .hero-feature svg { width: 20px; height: 20px; flex-shrink: 0; color: #F7D68A; }
+
+  .hero-feature span {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 12px;
+    color: #4B291D;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Link do botão \"Quero provar\""
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Link do botão \"Descobrir o plot twist\""
+    }
+  ]
+}
+{% endschema %}

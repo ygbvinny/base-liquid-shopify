@@ -1,0 +1,120 @@
+{%- comment -%}
+  ============================================================
+  RELATÓRIO DA MISSÃO — segunda seção da home (desktop)
+  ============================================================
+
+  O QUE FAZ:
+  Bloco de texto (label + headline + parágrafo) à esquerda e foto
+  do produto num card com moldura à direita, seguindo o mesmo gap
+  lateral de 100px usado no navbar e na hero section.
+
+  OBSERVAÇÕES:
+  Apenas versão desktop implementada por ora.
+{%- endcomment -%}
+
+<section class="relatorio-missao" data-section-id="{{ section.id }}">
+  <div class="relatorio-missao__inner">
+    <div class="relatorio-missao__text">
+      <span class="relatorio-missao__label">Relatório da missão BRIGZ</span>
+      <h2 class="relatorio-missao__title">O brigadeiro que parecia impossível.</h2>
+      <p class="relatorio-missao__paragraph">
+        Depois de anos explorando a galáxia dos doces fit, encontramos a fórmula perfeita: um brigadeiro incrivelmente cremoso, com zero açúcar e um sabor que desafia qualquer expectativa.
+      </p>
+    </div>
+
+    <div class="relatorio-missao__card">
+      <img
+        src="{{ 'relatorio-brigz.webp' | asset_url }}"
+        alt="Pote de Brigz sobre base futurista, com painel de dados da missão ao fundo"
+        class="relatorio-missao__image"
+        width="1517"
+        height="1037"
+        loading="lazy"
+      >
+    </div>
+  </div>
+</section>
+
+<style>
+  .relatorio-missao {
+    background-color: #FFF6E8;
+    width: 100%;
+  }
+
+  .relatorio-missao__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* garante 100px exatos nas duas laterais */
+    max-width: 1440px;
+    min-height: 565px;
+    margin: 0 auto;
+    padding: 56px 100px 60px;
+    box-sizing: border-box;
+  }
+
+  .relatorio-missao__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 451.2px;
+    flex-shrink: 0;
+  }
+
+  .relatorio-missao__label {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 1.56px;
+    text-transform: uppercase;
+    color: #FF8A00;
+  }
+
+  .relatorio-missao__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 78px;
+    line-height: 63px;
+    letter-spacing: -1.4625px;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .relatorio-missao__paragraph {
+    font-family: var(--font-manrope);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 29.7px;
+    color: #24120E;
+    margin: 0;
+  }
+
+  .relatorio-missao__card {
+    position: relative;
+    width: 592.68px; /* 538.8px +10% */
+    max-height: 560px;
+    aspect-ratio: 676.8 / 452.523;
+    flex-shrink: 0;
+    border: 2px solid #4B291D;
+    border-radius: 38px;
+    box-shadow: 0 10px 0 #4B291D;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .relatorio-missao__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 38px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Relatório da missão",
+  "class": "section-relatorio-missao",
+  "settings": []
+}
+{% endschema %}
