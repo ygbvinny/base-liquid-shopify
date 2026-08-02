@@ -1,0 +1,214 @@
+{%- comment -%}
+  ============================================================
+  INFLUENCER ABERTURA — terceira seção da página "Seja Influenciador"
+  ============================================================
+
+  O QUE FAZ:
+  Bento grid assimétrico com 5 cards de benefícios (ícone, número,
+  título, descrição) + CTA final.
+
+  ONDE É USADA:
+  templates/page.seja-influencer.json
+
+  OBSERVAÇÕES:
+  Segue a mesma paleta/fontes do resto do site (Coiny, Outfit,
+  Manrope). Apenas versão desktop implementada por ora.
+{%- endcomment -%}
+
+<section class="influencer-abertura" data-section-id="{{ section.id }}">
+  <div class="influencer-abertura__inner">
+    <span class="influencer-abertura__eyebrow">Abertura</span>
+    <h2 class="influencer-abertura__title">
+      Parceria boa é via<br>de mão dupla.
+    </h2>
+    <p class="influencer-abertura__subtitle">O que você recebe ao criar com a BRIGZ.</p>
+
+    <div class="influencer-abertura__grid">
+      <div class="ia-card ia-card--cyan ia-card--01">
+        {% render 'icon', name: 'coin' %}
+        <span class="ia-card__badge">01</span>
+        <h3 class="ia-card__title">Comissão por venda</h3>
+        <p class="ia-card__desc">Ganhe uma % sobre cada venda feita com o seu código exclusivo <strong>BRIGZ</strong>.</p>
+      </div>
+
+      <div class="ia-card ia-card--cream ia-card--02">
+        {% render 'icon', name: 'ticket' %}
+        <span class="ia-card__badge">02</span>
+        <h3 class="ia-card__title">Cupom exclusivo</h3>
+        <p class="ia-card__desc">Um código só seu para dar desconto e facilitar a conversão.</p>
+      </div>
+
+      <div class="ia-card ia-card--orange ia-card--03">
+        {% render 'icon', name: 'box' %}
+        <span class="ia-card__badge">03</span>
+        <h3 class="ia-card__title">Kits para testar</h3>
+        <p class="ia-card__desc">Receba produtos <strong>BRIGZ</strong> antes de todo mundo para criar conteúdo.</p>
+      </div>
+
+      <div class="ia-card ia-card--cream ia-card--04">
+        {% render 'icon', name: 'people' %}
+        <span class="ia-card__badge">04</span>
+        <h3 class="ia-card__title">Comunidade de creators</h3>
+        <p class="ia-card__desc">Faça parte de um grupo com outros parceiros da marca.</p>
+      </div>
+
+      <div class="ia-card ia-card--blue ia-card--05">
+        {% render 'icon', name: 'chart-up' %}
+        <span class="ia-card__badge">05</span>
+        <h3 class="ia-card__title">Crescimento contínuo</h3>
+        <p class="ia-card__desc">Quanto mais você vende, mais oportunidades e benefícios exclusivos.</p>
+      </div>
+    </div>
+
+    <a href="#form" class="influencer-abertura__cta">Quero fazer parte</a>
+  </div>
+</section>
+
+<style>
+  .influencer-abertura {
+    background-color: #FFF8ED;
+    width: 100%;
+  }
+
+  .influencer-abertura__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 100px 100px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .influencer-abertura__eyebrow {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1.17px;
+    text-transform: uppercase;
+    color: #F46700;
+    text-align: center;
+  }
+
+  .influencer-abertura__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 94px;
+    line-height: 84px;
+    letter-spacing: -1.88px;
+    color: #4B291D;
+    text-align: center;
+    margin: 14px 0 0;
+  }
+
+  .influencer-abertura__subtitle {
+    font-family: var(--font-manrope);
+    font-weight: 400;
+    font-size: 20px;
+    color: #4B291D;
+    text-align: center;
+    margin: 18px 0 0;
+  }
+
+  .influencer-abertura__grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    margin-top: 56px;
+  }
+
+  .ia-card--01 { grid-column: 1 / 6; }
+  .ia-card--02 { grid-column: 6 / 9; }
+  .ia-card--03 { grid-column: 9 / 13; }
+  .ia-card--04 { grid-column: 2 / 7; margin-top: 20px; }
+  .ia-card--05 { grid-column: 7 / 12; margin-top: 20px; }
+
+  .ia-card {
+    position: relative;
+    border: 2px solid #4B291D;
+    border-radius: 18px;
+    box-shadow: 0 8px 0 #4B291D;
+    padding: 28px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 210px;
+  }
+
+  .ia-card svg { width: 46px; height: 46px; color: #4B291D; }
+
+  .ia-card--cyan { background-color: #00E6F6; }
+  .ia-card--cream { background-color: #FFF8ED; }
+  .ia-card--orange { background-color: #F46700; }
+  .ia-card--blue { background-color: #4C8CEB; }
+  .ia-card--blue svg,
+  .ia-card--blue .ia-card__title,
+  .ia-card--blue .ia-card__desc { color: #FFFFFF; }
+
+  .ia-card__badge {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-family: var(--font-coiny);
+    font-size: 15px;
+    color: #4B291D;
+    opacity: 0.5;
+  }
+
+  .ia-card--blue .ia-card__badge { color: #FFFFFF; opacity: 0.6; }
+
+  .ia-card__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 1.05;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .ia-card__desc {
+    font-family: var(--font-manrope);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .ia-card__desc strong { font-weight: 800; }
+
+  .influencer-abertura__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 56px;
+    padding: 18px 40px;
+    background-color: #4C8CEB;
+    border: 3px solid #4B291D;
+    border-radius: 999px;
+    box-shadow: 0 6px 0 #4B291D;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 14px;
+    text-transform: uppercase;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .influencer-abertura__cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 #4B291D;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Influencer Abertura",
+  "class": "section-influencer-abertura",
+  "settings": []
+}
+{% endschema %}

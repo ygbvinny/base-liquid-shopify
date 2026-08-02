@@ -1,0 +1,140 @@
+{%- comment -%}
+  ============================================================
+  INFLUENCER MENSAGEM PRINCIPAL — segunda seção da página "Seja Influenciador"
+  ============================================================
+
+  O QUE FAZ:
+  Bloco central de mensagem: eyebrow, headline de 2 linhas com
+  destaques em laranja, subheadline e 3 tags/pill em fileira.
+
+  ONDE É USADA:
+  templates/page.seja-influencer.json
+
+  OBSERVAÇÕES:
+  Segue a mesma paleta/fontes do resto do site (Coiny, Outfit).
+  Apenas versão desktop implementada por ora.
+{%- endcomment -%}
+
+<section class="influencer-message" data-section-id="{{ section.id }}">
+  <div class="influencer-message__inner">
+    <span class="influencer-message__eyebrow">Mensagem principal</span>
+
+    <h2 class="influencer-message__title">
+      Mais do que <span class="influencer-message__highlight">alcance,</span><br>
+      procuramos <span class="influencer-message__highlight">conexão.</span>
+    </h2>
+
+    <p class="influencer-message__subtitle">
+      Creators que sabem contar histórias, <span class="influencer-message__highlight">despertar vontade</span> e apresentar produtos sem perder a própria voz.
+    </p>
+
+    <div class="influencer-message__tags">
+      <span class="influencer-message__tag influencer-message__tag--cream">Conteúdo com personalidade</span>
+      <span class="influencer-message__tag influencer-message__tag--orange">Parceria de longo prazo</span>
+      <span class="influencer-message__tag influencer-message__tag--cyan">Produto que rende assunto</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .influencer-message {
+    background-color: #F4E7D4;
+    border-top: 3px solid #4B291D;
+    border-bottom: 3px solid #4B291D;
+    width: 100%;
+  }
+
+  .influencer-message__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 98px 170px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .influencer-message__eyebrow {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1.17px;
+    text-transform: uppercase;
+    color: #24120E;
+    text-align: center;
+  }
+
+  .influencer-message__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 72px;
+    line-height: 58px;
+    letter-spacing: -1.44px;
+    color: #4B291D;
+    text-align: center;
+    max-width: 1050px;
+    margin: 0;
+  }
+
+  .influencer-message__subtitle {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 42px;
+    letter-spacing: -0.72px;
+    color: #4B291D;
+    text-align: center;
+    max-width: 1041px;
+    margin: 0;
+  }
+
+  .influencer-message__highlight { color: #F46700; }
+
+  .influencer-message__tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 24px;
+  }
+
+  .influencer-message__tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 13px 19px;
+    border: 2px solid #4B291D;
+    border-radius: 999px;
+    box-shadow: 0 4px 0 #4B291D;
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .influencer-message__tag--cream {
+    background-color: #FFF8ED;
+    color: #24120E;
+  }
+
+  .influencer-message__tag--orange {
+    background-color: #F46700;
+    color: #24120E;
+  }
+
+  .influencer-message__tag--cyan {
+    background-color: #00E6F6;
+    color: #4B291D;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Influencer Mensagem",
+  "class": "section-influencer-mensagem",
+  "settings": []
+}
+{% endschema %}

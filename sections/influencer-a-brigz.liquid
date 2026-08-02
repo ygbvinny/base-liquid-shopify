@@ -1,0 +1,128 @@
+{%- comment -%}
+  ============================================================
+  INFLUENCER A BRIGZ — quarta seção da página "Seja Influenciador"
+  ============================================================
+
+  O QUE FAZ:
+  Bloco escuro com foto da capivara astronauta à esquerda e texto
+  institucional (eyebrow + headline 2 cores + 2 parágrafos) à direita.
+
+  ONDE É USADA:
+  templates/page.seja-influencer.json
+
+  OBSERVAÇÕES:
+  Segue a mesma paleta/fontes do resto do site (Coiny, Outfit,
+  Manrope). Apenas versão desktop implementada por ora.
+{%- endcomment -%}
+
+<section class="influencer-a-brigz" data-section-id="{{ section.id }}">
+  <div class="influencer-a-brigz__inner">
+    <div class="influencer-a-brigz__media">
+      <img
+        src="{{ 'influencer-abrigz.webp' | asset_url }}"
+        alt="Capivara astronauta BRIGZ flutuando no espaço"
+        width="1080"
+        height="960"
+        loading="lazy"
+      >
+    </div>
+
+    <div class="influencer-a-brigz__content">
+      <span class="influencer-a-brigz__eyebrow">A BRIGZ</span>
+      <h2 class="influencer-a-brigz__title">
+        Brigadeiro de<br>
+        outro mundo.<br>
+        <span class="influencer-a-brigz__title-highlight">Feito para a vida<br>real.</span>
+      </h2>
+      <div class="influencer-a-brigz__desc">
+        <p>A BRIGZ nasceu para juntar duas coisas que pareciam viver em planetas diferentes: brigadeiro de verdade e uma rotina equilibrada.</p>
+        <p>Somos uma marca brasileira, zero açúcar, cremosa e cheia de personalidade. E queremos creators que levem essa história adiante do próprio jeito.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .influencer-a-brigz {
+    background-color: #24120E;
+    width: 100%;
+  }
+
+  .influencer-a-brigz__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 60px 100px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+  }
+
+  .influencer-a-brigz__media {
+    flex-shrink: 0;
+    width: 540px;
+    height: 480px;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .influencer-a-brigz__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .influencer-a-brigz__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    width: 600px;
+    max-width: 100%;
+  }
+
+  .influencer-a-brigz__eyebrow {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1.17px;
+    text-transform: uppercase;
+    color: #00E6F6;
+  }
+
+  .influencer-a-brigz__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 60.16px;
+    color: #FFF8ED;
+    margin: 0;
+  }
+
+  .influencer-a-brigz__title-highlight { color: #F46700; }
+
+  .influencer-a-brigz__desc {
+    max-width: 720px;
+  }
+
+  .influencer-a-brigz__desc p {
+    font-family: var(--font-manrope);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26.4px;
+    color: #F7E8D7;
+    margin: 0 0 14px;
+  }
+
+  .influencer-a-brigz__desc p:last-child { margin-bottom: 0; }
+</style>
+
+{% schema %}
+{
+  "name": "Influencer A BRIGZ",
+  "class": "section-influencer-a-brigz",
+  "settings": []
+}
+{% endschema %}

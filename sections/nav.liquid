@@ -124,7 +124,16 @@
         </a>
       {%- endif -%}
 
-      <a href="{{ routes.cart_url }}" class="header__action-button header__cart tap-target" aria-label="{{ 'templates.cart.cart' | t }}">
+      <!-- data-cart-drawer-open: o JS intercepta o clique e abre o drawer.
+           O href permanece como fallback quando o JS não carrega. -->
+      <a
+        href="{{ routes.cart_url }}"
+        class="header__action-button header__cart tap-target"
+        aria-label="{{ 'templates.cart.cart' | t }}"
+        data-cart-drawer-open
+        aria-controls="cart-drawer"
+        aria-expanded="false"
+      >
         {% render 'icon', name: 'cart' %}
         <span class="header__cart-count" data-cart-count>{{ cart.item_count }}</span>
       </a>
@@ -339,6 +348,7 @@
     position: absolute;
     top: -6px;
     right: -6px;
+    z-index: 2;
     min-width: 24px;
     height: 24px;
     display: flex;
@@ -355,8 +365,58 @@
     box-sizing: border-box;
   }
 
-  .header__menu-toggle { 
-    display: none; 
+  /* --- INÍCIO: FEEDBACK "ITEM ADICIONADO" NO CARRINHO ---
+     O JS do carrinho adiciona a classe .is-bumping no badge
+     ([data-cart-count]) por ~600ms sempre que um item entra no carrinho.
+     Pode ser aplicada também no .header__cart (botão) para o mesmo efeito. */
+  .header__cart-count.is-bumping,
+  .header__cart.is-bumping .header__cart-count {
+    animation: header-cart-bump 0.45s ease;
+  }
+
+  /* Onda que sai do badge ao adicionar item */
+  .header__cart-count::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border: 2.5px solid var(--header-color-orange);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .header__cart-count.is-bumping::after,
+  .header__cart.is-bumping .header__cart-count::after {
+    animation: header-cart-ring 0.6s ease-out;
+  }
+
+  /* Balanço leve do botão do carrinho junto com o badge */
+  .header__cart.is-bumping {
+    animation: header-cart-shake 0.45s ease;
+  }
+
+  @keyframes header-cart-bump {
+    0% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.4) rotate(-8deg); }
+    50% { transform: scale(0.9) rotate(6deg); }
+    75% { transform: scale(1.15) rotate(-3deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  @keyframes header-cart-ring {
+    0% { opacity: 0.9; transform: scale(1); }
+    100% { opacity: 0; transform: scale(2.1); }
+  }
+
+  @keyframes header-cart-shake {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    30% { transform: translateY(-3px) rotate(-6deg); }
+    60% { transform: translateY(-1px) rotate(4deg); }
+  }
+  /* --- FIM: FEEDBACK "ITEM ADICIONADO" NO CARRINHO --- */
+
+  .header__menu-toggle {
+    display: none;
     background: none; 
     border: none; 
     cursor: pointer;

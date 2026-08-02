@@ -1,0 +1,462 @@
+{%- comment -%}
+  ============================================================
+  INFLUENCER FORMULARIO — quinta seção da página "Seja Influenciador"
+  ============================================================
+
+  O QUE FAZ:
+  Formulário de candidatura completo (presença digital, dados
+  pessoais, endereço, ideia com a BRIGZ) sobre fundo laranja.
+
+  ONDE É USADA:
+  templates/page.seja-influencer.json
+
+  OBSERVAÇÕES:
+  Formulário nativo do Shopify (form_type "contact"). Submissão é
+  um POST real para /contact — o Shopify envia e-mail de
+  notificação pro endereço configurado em Configurações >
+  Notificações > "Formulário de contato". Campos extras (fora de
+  contact[email]/contact[phone]/contact[body]) entram
+  automaticamente no corpo do e-mail, sem precisar de app externo.
+  Apenas versão desktop implementada por ora.
+{%- endcomment -%}
+
+<section class="influencer-formulario" id="form" data-section-id="{{ section.id }}">
+  <div class="influencer-formulario__ring" aria-hidden="true"></div>
+
+  <div class="influencer-formulario__inner">
+    {% form 'contact', id: 'form-influenciador', class: 'if-form' %}
+      <div class="if-form__intro">
+        <span class="if-form__eyebrow">Formulário de candidatura</span>
+        <h2 class="if-form__title">Queremos conhecer você.</h2>
+        <p class="if-form__subtitle">Conte um pouco sobre seu conteúdo, sua comunidade<br>e como imagina criar com a BRIGZ.</p>
+        <span class="if-form__hint">Campos marcados com * são obrigatórios.</span>
+      </div>
+
+      {%- if form.posted_successfully? -%}
+        <p class="if-form__success" role="status">Candidatura recebida! Em breve entramos em contato. 🚀</p>
+      {%- endif -%}
+
+      {%- if form.errors -%}
+        <div class="if-form__errors" role="alert">
+          <p>Corrija os campos abaixo antes de enviar:</p>
+          <ul>
+            {%- for field in form.errors -%}
+              <li>{{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <fieldset class="if-form__fieldset">
+        <legend>Presença digital</legend>
+        <div class="if-form__grid">
+          <label class="if-form__field if-form__field--full">
+            <span>E-mail<em>*</em></span>
+            <input type="email" name="contact[email]" value="{{ form.email }}" placeholder="voce@email.com" required>
+          </label>
+          <label class="if-form__field">
+            <span>Instagram<em>*</em></span>
+            <input type="text" name="contact[Instagram]" placeholder="@seuusuario" required>
+          </label>
+          <label class="if-form__field">
+            <span>TikTok</span>
+            <input type="text" name="contact[TikTok]" placeholder="@seuusuario">
+          </label>
+          <label class="if-form__field if-form__field--full">
+            <span>Qual conteúdo você cria?<em>*</em></span>
+            <input type="text" name="contact[Qual conteúdo você cria]" placeholder="Ex.: rotina, treino, receitas" required>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="if-form__fieldset">
+        <legend>Sobre você</legend>
+        <div class="if-form__grid">
+          <label class="if-form__field">
+            <span>Nome<em>*</em></span>
+            <input type="text" name="contact[Nome]" placeholder="Seu nome" required>
+          </label>
+          <label class="if-form__field">
+            <span>Sobrenome<em>*</em></span>
+            <input type="text" name="contact[Sobrenome]" placeholder="Seu sobrenome" required>
+          </label>
+          <label class="if-form__field">
+            <span>CPF<em>*</em></span>
+            <input type="text" name="contact[CPF]" placeholder="000.000.000-00" inputmode="numeric" required>
+          </label>
+          <label class="if-form__field">
+            <span>Data de nascimento<em>*</em></span>
+            <input type="date" name="contact[Data de nascimento]" required>
+          </label>
+          <label class="if-form__field">
+            <span>Telefone<em>*</em></span>
+            <input type="tel" name="contact[phone]" value="{{ form.phone }}" placeholder="(00) 00000-0000" required>
+          </label>
+          <label class="if-form__field">
+            <span>Como prefere ser chamado?</span>
+            <select name="contact[Como prefere ser chamado]">
+              <option value="" selected disabled>Selecione</option>
+              <option value="Nome">Nome</option>
+              <option value="Apelido">Apelido</option>
+              <option value="Usuário das redes">Usuário das redes</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="if-form__fieldset">
+        <legend>Onde você está</legend>
+        <div class="if-form__grid">
+          <label class="if-form__field">
+            <span>CEP<em>*</em></span>
+            <input type="text" name="contact[CEP]" placeholder="00000-000" inputmode="numeric" required>
+          </label>
+          <label class="if-form__field">
+            <span>Estado<em>*</em></span>
+            <select name="contact[Estado]" required>
+              <option value="" selected disabled>Selecione</option>
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN">Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP">São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+            </select>
+          </label>
+          <label class="if-form__field">
+            <span>Cidade<em>*</em></span>
+            <input type="text" name="contact[Cidade]" placeholder="Cidade" required>
+          </label>
+          <label class="if-form__field">
+            <span>Bairro<em>*</em></span>
+            <input type="text" name="contact[Bairro]" placeholder="Bairro" required>
+          </label>
+          <label class="if-form__field if-form__field--full">
+            <span>Logradouro<em>*</em></span>
+            <input type="text" name="contact[Logradouro]" placeholder="Rua, avenida ou alameda" required>
+          </label>
+          <label class="if-form__field">
+            <span>Número<em>*</em></span>
+            <input type="text" name="contact[Número]" placeholder="000" required>
+          </label>
+          <label class="if-form__field">
+            <span>Complemento</span>
+            <input type="text" name="contact[Complemento]" placeholder="Apto, casa, bloco">
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="if-form__fieldset">
+        <legend>Sua ideia com a BRIGZ</legend>
+        <div class="if-form__grid">
+          <label class="if-form__field if-form__field--full">
+            <span>Sugestão de código<em>*</em></span>
+            <input type="text" name="contact[Sugestão de código]" placeholder="Ex.: LUNABRIGZ" required>
+          </label>
+          <label class="if-form__field if-form__field--full">
+            <span>Por que você combina com a BRIGZ?<em>*</em></span>
+            <textarea name="contact[body]" rows="4" placeholder="Conte sobre seu conteúdo, sua comunidade e como você imagina apresentar a marca." required>{{ form.body }}</textarea>
+          </label>
+        </div>
+      </fieldset>
+
+      <label class="if-form__consent">
+        <input type="checkbox" name="contact[Consentimento]" value="Autorizado" required>
+        <span>Autorizo o uso dos dados para análise desta candidatura e declaro ter lido o aviso de privacidade.</span>
+      </label>
+
+      <button type="submit" class="if-form__submit">
+        Enviar candidatura
+        {% render 'icon', name: 'arrow-right' %}
+      </button>
+    {% endform %}
+  </div>
+</section>
+
+<style>
+  .influencer-formulario {
+    position: relative;
+    background-color: #F46700;
+    overflow: hidden;
+    padding: 100px 220px;
+    box-sizing: border-box;
+  }
+
+  .influencer-formulario__ring {
+    position: absolute;
+    top: 100px;
+    right: -160px;
+    width: 480px;
+    height: 480px;
+    border: 3px solid rgba(75, 41, 29, 0.25);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .influencer-formulario__inner {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .if-form {
+    background-color: #FFF8ED;
+    border: 3px solid #4B291D;
+    border-radius: 24px;
+    box-shadow: 0 12px 0 #4B291D;
+    padding: 61px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 34px;
+  }
+
+  .if-form__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .if-form__eyebrow {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1.17px;
+    text-transform: uppercase;
+    color: #24120E;
+  }
+
+  .if-form__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 68.4px;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .if-form__subtitle {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 28px;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .if-form__hint {
+    font-family: var(--font-manrope);
+    font-weight: 400;
+    font-size: 13px;
+    color: #79675F;
+  }
+
+  .if-form__fieldset {
+    width: 100%;
+    border: none;
+    margin: 0;
+    padding: 14px 0 0;
+    border-top: 2px solid rgba(75, 41, 29, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .if-form__fieldset legend {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 27px;
+    color: #4B291D;
+    padding: 8px 18px 8px 2px;
+  }
+
+  .if-form__grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 18px;
+  }
+
+  .if-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .if-form__field--full { grid-column: 1 / span 2; }
+
+  .if-form__field span {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 12px;
+    color: #4B291D;
+  }
+
+  .if-form__field em {
+    font-style: normal;
+    font-weight: 900;
+    color: #F46700;
+    margin-left: 2px;
+  }
+
+  .if-form__field input,
+  .if-form__field select,
+  .if-form__field textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 15px 17px;
+    background-color: #FFFFFF;
+    border: 2px solid #BBA58D;
+    border-radius: 10px;
+    font-family: var(--font-manrope);
+    font-weight: 500;
+    font-size: 15px;
+    color: #24120E;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease;
+  }
+
+  .if-form__field textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .if-form__field input::placeholder,
+  .if-form__field textarea::placeholder {
+    color: #83756D;
+  }
+
+  .if-form__field input:focus,
+  .if-form__field select:focus,
+  .if-form__field textarea:focus {
+    outline: none;
+    border-color: #4B291D;
+  }
+
+  .if-form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .if-form__consent input {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 3px;
+    accent-color: #2473CE;
+  }
+
+  .if-form__consent span {
+    font-family: var(--font-manrope);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    color: #4E413B;
+  }
+
+  .if-form__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 58px;
+    min-width: 280px;
+    padding: 19px 42px;
+    background-color: #2473CE;
+    border: 3px solid #4B291D;
+    border-radius: 999px;
+    box-shadow: 0 6px 0 #4B291D;
+    color: #FFFFFF;
+    font-family: var(--font-manrope);
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .if-form__submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 #4B291D;
+  }
+
+  .if-form__submit svg { width: 24px; height: 24px; }
+
+  .if-form__success {
+    width: 100%;
+    text-align: center;
+    padding: 14px 18px;
+    background-color: #E4F5E4;
+    border: 2px solid #2E7D32;
+    border-radius: 10px;
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 14px;
+    color: #2E7D32;
+    margin: 0;
+  }
+
+  .if-form__errors {
+    width: 100%;
+    padding: 16px 20px;
+    background-color: #FDECEC;
+    border: 2px solid #C0392B;
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+
+  .if-form__errors p {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 13px;
+    color: #C0392B;
+    margin: 0 0 6px;
+  }
+
+  .if-form__errors ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .if-form__errors li {
+    font-family: var(--font-manrope);
+    font-weight: 500;
+    font-size: 13px;
+    color: #C0392B;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Influencer Formulario",
+  "class": "section-influencer-formulario",
+  "settings": []
+}
+{% endschema %}

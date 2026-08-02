@@ -2,7 +2,19 @@
   "sections": {
     "hero": {
       "type": "influencer-hero"
+    },
+    "mensagem": {
+      "type": "influencer-mensagem"
+    },
+    "abertura": {
+      "type": "influencer-abertura"
+    },
+    "a-brigz": {
+      "type": "influencer-a-brigz"
+    },
+    "formulario": {
+      "type": "influencer-formulario"
     }
   },
-  "order": ["hero"]
+  "order": ["hero", "mensagem", "abertura", "a-brigz", "formulario"]
 }
