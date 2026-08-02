@@ -19,9 +19,13 @@
   Cada seletor só aparece se houver mais de uma opção disponível
   (available_countries / available_languages > 1). Traz seu próprio <style>.
 {%- endcomment -%}
+{%- liquid
+  assign country_form_id = 'CountryForm-' | append: section_id
+  assign language_form_id = 'LanguageForm-' | append: section_id
+-%}
 <div class="localization">
   {%- if show_country and localization.available_countries.size > 1 -%}
-    {%- form 'localization', id: 'CountryForm-' | append: section_id, class: 'localization__form' -%}
+    {%- form 'localization', id: country_form_id, class: 'localization__form' -%}
       <label class="visually-hidden" for="Country-{{ section_id }}">{{ 'localization.country_label' | t }}</label>
       <select
         class="localization__select"
@@ -43,7 +47,7 @@
   {%- endif -%}
 
   {%- if show_language and localization.available_languages.size > 1 -%}
-    {%- form 'localization', id: 'LanguageForm-' | append: section_id, class: 'localization__form' -%}
+    {%- form 'localization', id: language_form_id, class: 'localization__form' -%}
       <label class="visually-hidden" for="Language-{{ section_id }}">{{ 'localization.language_label' | t }}</label>
       <select
         class="localization__select"
