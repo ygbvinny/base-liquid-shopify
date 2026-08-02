@@ -1,0 +1,201 @@
+{%- comment -%}
+  ============================================================
+  BENEFÍCIOS — terceira seção da home (desktop)
+  ============================================================
+
+  O QUE FAZ:
+  3 cards ("Missão 01/02/03") com os diferenciais do produto,
+  fundo escuro cheio, gap lateral de 100px igual ao resto da home.
+
+  OBSERVAÇÕES:
+  Versão mobile (≤1000px) segue node 48:1598 do Figma: cards
+  empilhados em coluna (gap 20px), borda mais fina, radius 16px,
+  espaçamento interno por gap em vez de justify-content:space-between.
+{%- endcomment -%}
+
+<section id="beneficios" class="beneficios-section" data-section-id="{{ section.id }}">
+  <div class="beneficios-section__inner">
+    <div class="beneficios-cards">
+
+      <article class="beneficios-card beneficios-card--dark">
+        <div class="beneficios-card__top">
+          <span class="beneficios-card__label">Missão 01</span>
+          {% render 'icon', name: 'check-circle' %}
+        </div>
+        <div class="beneficios-card__body">
+          <h3 class="beneficios-card__title">Zero açúcar</h3>
+          <p class="beneficios-card__desc">Pra adoçar sua rotina sem mandar sua dieta pra outra dimensão.</p>
+        </div>
+      </article>
+
+      <article class="beneficios-card beneficios-card--orange">
+        <div class="beneficios-card__top">
+          <span class="beneficios-card__label">Missão 02</span>
+          {% render 'icon', name: 'check-circle' %}
+        </div>
+        <div class="beneficios-card__body">
+          <h3 class="beneficios-card__title">Baixa caloria</h3>
+          <p class="beneficios-card__desc">Só 31 kcal por colher para você provar sem medo de decolar.</p>
+        </div>
+      </article>
+
+      <article class="beneficios-card beneficios-card--cyan">
+        <div class="beneficios-card__top">
+          <span class="beneficios-card__label">Missão 03</span>
+          {% render 'icon', name: 'check-circle' %}
+        </div>
+        <div class="beneficios-card__body">
+          <h3 class="beneficios-card__title beneficios-card__title--tight">
+            <span class="beneficios-card__title-small">Brigadeiro</span> real
+          </h3>
+          <p class="beneficios-card__desc">Cacau, cremosidade e sabor brasileiro em uma combinação pronta para conquistar sua rotina.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="beneficios-section__footnote">*sujeitos à validação regulatória;</p>
+  </div>
+</section>
+
+<style>
+  .beneficios-section {
+    background-color: #24120E;
+    width: 100%;
+  }
+
+  .beneficios-section__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 100px; /* mesmo gap lateral do resto da home, + topo/base uniforme */
+    box-sizing: border-box;
+  }
+
+  .beneficios-cards {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  .beneficios-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 404px;
+    min-height: 368px;
+    flex-shrink: 0;
+    border: 2px solid #FFF6E8;
+    border-radius: 24px;
+    padding: 24px 29px;
+    box-sizing: border-box;
+  }
+
+  .beneficios-card--dark { background-color: #24120E; color: #FFF6E8; }
+  .beneficios-card--orange { background-color: #FF8A00; color: #4B291D; }
+  .beneficios-card--cyan { background-color: #00E6F6; color: #4B291D; }
+
+  .beneficios-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .beneficios-card__label {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 1.44px;
+  }
+
+  .beneficios-card__top svg { width: 32px; height: 32px; flex-shrink: 0; }
+
+  .beneficios-card__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .beneficios-card__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 78px;
+    line-height: 60px;
+    margin: 0;
+  }
+
+  .beneficios-card__title--tight { width: 340px; }
+
+  .beneficios-card__title-small { font-size: 63px; }
+
+  .beneficios-card__desc {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    font-size: 17px;
+    text-transform: uppercase;
+    margin: 22px 0 0;
+  }
+
+  .beneficios-section__footnote {
+    font-family: var(--font-manrope);
+    font-weight: 400;
+    font-size: 11px;
+    color: rgba(255, 246, 232, 0.7);
+    margin: 8px 0 0;
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================ */
+  @media screen and (max-width: 1000px) {
+    .beneficios-section__inner { padding: 60px 30px 40px; }
+
+    .beneficios-cards {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .beneficios-card {
+      width: 100%;
+      min-height: 0;
+      justify-content: flex-start;
+      gap: 16px;
+      border-width: 1px;
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .beneficios-card__label {
+      font-size: 16px;
+      letter-spacing: 0.784px;
+    }
+
+    .beneficios-card__top svg { width: 30px; height: 30px; }
+
+    .beneficios-card__title {
+      font-size: 52px;
+      line-height: 46px;
+    }
+
+    .beneficios-card__title--tight { width: 100%; }
+
+    .beneficios-card__title-small { font-size: 40px; }
+
+    .beneficios-card__desc {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .beneficios-section__footnote {
+      font-size: 12px;
+      color: rgba(255, 246, 232, 0.5);
+      margin-top: 16px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Benefícios",
+  "class": "section-beneficios",
+  "settings": []
+}
+{% endschema %}

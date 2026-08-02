@@ -1,0 +1,400 @@
+{%- comment -%}
+  ============================================================
+  RECEITAS — quarta seção da home (desktop)
+  ============================================================
+
+  O QUE FAZ:
+  Carrossel horizontal de receitas em formato vertical 9:16
+  (reels dos criadores no Instagram), com setas de navegação.
+  Gap lateral de 100px igual ao resto da home.
+
+  OBSERVAÇÕES:
+  Cada card usa <img> como placeholder do vídeo por enquanto —
+  ainda não foi decidido se os vídeos serão upload manual (MP4)
+  ou embed do Instagram (iframe). Trocar o conteúdo de
+  .receitas-card__media quando essa decisão for tomada.
+  Versão mobile (≤1000px) segue node 48:1664 do Figma: sem a
+  imagem de fundo (fica só a cor sólida laranja), header 100%
+  empilhado (setas de navegação abaixo do texto), cards com
+  moldura fina (não mais o estilo "comic shadow" grosso do desktop).
+{%- endcomment -%}
+
+<section id="receitas" class="receitas-section" data-section-id="{{ section.id }}">
+  <img
+    src="{{ 'receitas-bg.webp' | asset_url }}"
+    alt=""
+    class="receitas-section__bg"
+    width="2400"
+    height="1325"
+    loading="lazy"
+  >
+
+  <div class="receitas-section__inner">
+    <div class="receitas-header">
+      <div class="receitas-header__text">
+        <span class="receitas-header__label">Diário de bordo</span>
+        <h2 class="receitas-header__title">Receitas de outro mundo feitas com BRIGZ</h2>
+        <p class="receitas-header__desc">Nossos tripulantes testaram combinações cósmicas com o brigadeiro mais leve do universo. Agora é sua vez de provar.</p>
+      </div>
+
+      <div class="receitas-nav">
+        <button type="button" class="receitas-nav__button" data-receitas-prev aria-label="Receita anterior">
+          {% render 'icon', name: 'chevron-left' %}
+        </button>
+        <button type="button" class="receitas-nav__button" data-receitas-next aria-label="Próxima receita">
+          {% render 'icon', name: 'chevron-right' %}
+        </button>
+      </div>
+    </div>
+
+    <div class="receitas-carousel" data-receitas-track>
+      <article class="receitas-card">
+        <div class="receitas-card__media">
+          <img
+            src="{{ 'receita-pudim-em-orbita.webp' | asset_url }}"
+            alt="Pudim em órbita"
+            width="700"
+            height="875"
+            loading="lazy"
+          >
+        </div>
+        <div class="receitas-card__footer">
+          <div class="receitas-card__footer-text">
+            <span class="receitas-card__label">Missão 01</span>
+            <span class="receitas-card__title">Pudim em órbita</span>
+          </div>
+          {% render 'icon', name: 'arrow-right' %}
+        </div>
+      </article>
+
+      <article class="receitas-card">
+        <div class="receitas-card__media">
+          <img
+            src="{{ 'receita-mini-banoffee-cosmica.webp' | asset_url }}"
+            alt="Mini banoffee cósmica"
+            width="700"
+            height="560"
+            loading="lazy"
+          >
+        </div>
+        <div class="receitas-card__footer">
+          <div class="receitas-card__footer-text">
+            <span class="receitas-card__label">Missão 02</span>
+            <span class="receitas-card__title">Mini banoffee cósmica</span>
+          </div>
+          {% render 'icon', name: 'arrow-right' %}
+        </div>
+      </article>
+
+      <article class="receitas-card">
+        <div class="receitas-card__media">
+          <img
+            src="{{ 'receita-pastel-de-outro-mundo.webp' | asset_url }}"
+            alt="Pastel de outro mundo"
+            width="700"
+            height="560"
+            loading="lazy"
+          >
+        </div>
+        <div class="receitas-card__footer">
+          <div class="receitas-card__footer-text">
+            <span class="receitas-card__label">Missão 03</span>
+            <span class="receitas-card__title">Pastel de outro mundo</span>
+          </div>
+          {% render 'icon', name: 'arrow-right' %}
+        </div>
+      </article>
+
+      <article class="receitas-card">
+        <div class="receitas-card__media">
+          <img
+            src="{{ 'receita-morangos-gravidade-zero.webp' | asset_url }}"
+            alt="Morangos em gravidade zero"
+            width="700"
+            height="564"
+            loading="lazy"
+          >
+        </div>
+        <div class="receitas-card__footer">
+          <div class="receitas-card__footer-text">
+            <span class="receitas-card__label">Missão 04</span>
+            <span class="receitas-card__title">Morangos em gravidade zero</span>
+          </div>
+          {% render 'icon', name: 'arrow-right' %}
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .receitas-section {
+    position: relative;
+    width: 100%;
+    background-color: #FF8A00; /* cor de fallback enquanto o bg carrega */
+    overflow: hidden;
+  }
+
+  .receitas-section__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .receitas-section__inner {
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 50px 100px 60px; /* mesmo gap lateral do resto da home */
+    box-sizing: border-box;
+  }
+
+  /* Cabeçalho */
+  .receitas-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 47px;
+    margin-bottom: 40px;
+  }
+
+  .receitas-header__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .receitas-header__label {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 1.56px;
+    text-transform: uppercase;
+    color: #4B291D;
+  }
+
+  .receitas-header__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 62px;
+    line-height: 1.03;
+    letter-spacing: -1.5px;
+    color: #4B291D;
+    max-width: 900px;
+    margin: 0;
+  }
+
+  .receitas-header__desc {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #4B291D;
+    max-width: 686px;
+    margin: 0;
+  }
+
+  .receitas-nav {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .receitas-nav__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    background-color: #FFF6E8;
+    border: 2px solid #4B291D;
+    border-radius: 50%;
+    color: #4B291D;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .receitas-nav__button:hover {
+    background-color: #4B291D;
+    color: #FFF6E8;
+    transform: translateY(-2px);
+  }
+
+  .receitas-nav__button svg { width: 24px; height: 24px; }
+
+  /* Carrossel */
+  .receitas-carousel {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    /* cancela o padding do container pai e reaplica como padding do próprio
+       scroll, assim o último card também ganha os 100px de respiro à direita
+       (e o primeiro à esquerda) em vez de ficar cortado na borda */
+    margin: 0 -100px;
+    padding: 0 100px 8px; /* 8px embaixo = mesmo offset do box-shadow do card, senão overflow-x:auto corta a sombra */
+    box-sizing: border-box;
+  }
+
+  .receitas-carousel::-webkit-scrollbar { display: none; }
+
+  .receitas-card {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 298.5px;
+    background-color: #FFF6E8;
+    border: 2px solid #4B291D;
+    border-radius: 24px;
+    box-shadow: 0 8px 0 #4B291D;
+    overflow: hidden;
+    scroll-snap-align: start;
+  }
+
+  .receitas-card__media {
+    width: 100%;
+    aspect-ratio: 9 / 16; /* vídeos verticais dos reels */
+    overflow: hidden;
+  }
+
+  .receitas-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .receitas-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px;
+  }
+
+  .receitas-card__footer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .receitas-card__label {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7C665C;
+  }
+
+  .receitas-card__title {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 18px;
+    color: #24120E;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .receitas-card__footer svg { width: 20px; height: 20px; flex-shrink: 0; color: #24120E; }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================ */
+  @media screen and (max-width: 1000px) {
+    .receitas-section__bg { display: none; } /* mobile usa só a cor sólida de fundo */
+
+    .receitas-section__inner { padding: 40px 30px 48px; }
+
+    .receitas-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .receitas-header__title {
+      font-size: 40px;
+      line-height: 42.6px;
+      letter-spacing: -1.5px;
+      max-width: 400px;
+    }
+
+    .receitas-header__desc {
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .receitas-nav {
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+
+    .receitas-carousel {
+      /* sem margin negativo: herda os 30px de padding do .receitas-section__inner
+         de graça (nos dois lados), garante o primeiro card afastado da borda
+         sem risco de cálculo */
+      margin: 0;
+      padding: 0 0 8px;
+      gap: 20px;
+    }
+
+    .receitas-card {
+      width: 304px;
+      border-width: 1px;
+      border-radius: 4px;
+      box-shadow: 0 2px 0 #4B291D;
+    }
+
+    .receitas-card__footer { padding: 12px 15px; }
+
+    .receitas-card__label {
+      font-size: 9px;
+      letter-spacing: 1.13px;
+    }
+
+    .receitas-card__title { font-size: 15px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var section = document.querySelector('.receitas-section[data-section-id="{{ section.id }}"]');
+    if (!section) return;
+    var track = section.querySelector('[data-receitas-track]');
+    var prev = section.querySelector('[data-receitas-prev]');
+    var next = section.querySelector('[data-receitas-next]');
+    if (!track || !prev || !next) return;
+
+    var scrollStep = function () {
+      var card = track.querySelector('.receitas-card');
+      var gap = parseFloat(getComputedStyle(track).gap) || 0;
+      return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+    };
+
+    prev.addEventListener('click', function () {
+      track.scrollBy({ left: -scrollStep(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', function () {
+      track.scrollBy({ left: scrollStep(), behavior: 'smooth' });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Receitas",
+  "class": "section-receitas",
+  "settings": []
+}
+{% endschema %}

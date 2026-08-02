@@ -4,234 +4,211 @@
   ============================================================
 
   O QUE FAZ:
-  Renderiza o rodapé da loja em duas faixas: a superior com blocks
-  configuráveis (marca, menu, texto e newsletter) e a inferior com
-  seletor de localização, ícones de pagamento, redes sociais e o
-  copyright/crédito.
-
-  ONDE É USADA:
-  No layout (layout/theme.liquid), como footer presente em todas
-  as páginas. É uma section de grupo/footer do tema.
-
-  PRINCIPAIS PARTES:
-  - footer__top: loop de section.blocks (case block.type) montando
-    cada bloco — 'brand' (logo ou nome + texto), 'menu' (heading +
-    link_list), 'text' (heading + richtext) e 'newsletter' (heading
-    + snippet 'newsletter-form').
-  - footer__bottom: seletor de localização (snippet
-    'localization-form'), ícones de pagamento gerados de
-    shop.enabled_payment_types, redes sociais (Instagram/Facebook/
-    LinkedIn a partir dos settings globais social_*_link) e o
-    copyright com o crédito da base (link lecdt.com).
+  Logo + tagline, links rápidos e ícones de redes sociais numa
+  única faixa, com linha divisória e copyright embaixo. Segue o
+  mesmo gap lateral de 100px do resto da home.
 
   OBSERVAÇÕES:
-  - Ícones de pagamento saem automaticamente das formas de
-    pagamento habilitadas na loja (payment_type_svg_tag).
-  - Toggles no schema: show_social, show_payment_icons e
-    enable_localization.
-  - Links de redes sociais vêm dos settings globais do tema
-    (settings.social_*_link), não do schema desta section.
-  - Ícones de redes vêm do snippet 'icon'.
+  "Seja Influenciador" aponta para /pages/seja-influencer (página
+  com formulário e design próprio — criar depois). Redes sociais
+  usam os links globais do tema (settings.social_instagram_link e
+  settings.social_tiktok_link); ícone só aparece se o link estiver
+  preenchido. Versão mobile (≤1000px) segue node 49:1925 do Figma:
+  tudo centralizado (logo, tagline, links, ícones sociais).
 {%- endcomment -%}
+
 <footer class="footer" data-section-id="{{ section.id }}">
-  <div class="footer__top page-width">
-    {%- for block in section.blocks -%}
-      {%- case block.type -%}
-        {%- when 'brand' -%}
-          <div class="footer__block footer__block--brand" {{ block.shopify_attributes }}>
-            {%- if block.settings.logo != blank -%}
-              {{
-                block.settings.logo
-                | image_url: width: 400
-                | image_tag:
-                  class: 'footer__logo',
-                  widths: '150, 300, 400',
-                  width: 150,
-                  height: 150 | divided_by: block.settings.logo.aspect_ratio,
-                  alt: shop.name | escape
-              }}
-            {%- else -%}
-              <p class="footer__brand-name">{{ shop.name }}</p>
-            {%- endif -%}
-            {%- if block.settings.text != blank -%}
-              <div class="footer__text rte">{{ block.settings.text }}</div>
-            {%- endif -%}
-          </div>
+  <div class="footer__inner">
 
-        {%- when 'menu' -%}
-          <div class="footer__block footer__block--menu" {{ block.shopify_attributes }}>
-            {%- if block.settings.heading != blank -%}
-              <h2 class="footer__heading">{{ block.settings.heading | escape }}</h2>
-            {%- endif -%}
-            {%- if block.settings.menu != blank -%}
-              <ul class="footer__menu" role="list">
-                {%- for link in block.settings.menu.links -%}
-                  <li><a href="{{ link.url }}" class="footer__link">{{ link.title | escape }}</a></li>
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
-          </div>
-
-        {%- when 'text' -%}
-          <div class="footer__block footer__block--text" {{ block.shopify_attributes }}>
-            {%- if block.settings.heading != blank -%}
-              <h2 class="footer__heading">{{ block.settings.heading | escape }}</h2>
-            {%- endif -%}
-            {%- if block.settings.text != blank -%}
-              <div class="footer__text rte">{{ block.settings.text }}</div>
-            {%- endif -%}
-          </div>
-
-        {%- when 'newsletter' -%}
-          <div class="footer__block footer__block--newsletter" {{ block.shopify_attributes }}>
-            {%- if block.settings.heading != blank -%}
-              <h2 class="footer__heading">{{ block.settings.heading | escape }}</h2>
-            {%- endif -%}
-            {% render 'newsletter-form', block: block %}
-          </div>
-      {%- endcase -%}
-    {%- endfor -%}
-  </div>
-
-  <div class="footer__bottom page-width">
-    <div class="footer__bottom-left">
-      {%- if section.settings.enable_localization -%}
-        {% render 'localization-form',
-          section_id: section.id,
-          show_country: true,
-          show_language: true
-        %}
-      {%- endif -%}
-      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
-        <ul class="footer__payment" role="list" aria-label="{{ 'sections.footer.payment' | t }}">
-          {%- for type in shop.enabled_payment_types -%}
-            <li>{{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}</li>
-          {%- endfor -%}
-        </ul>
-      {%- endif -%}
-    </div>
-
-    <div class="footer__bottom-right">
-      {%- if section.settings.show_social -%}
-        <ul class="footer__social" role="list">
-          {%- if settings.social_instagram_link != blank -%}
-            <li><a href="{{ settings.social_instagram_link }}" aria-label="Instagram" rel="noopener" target="_blank">{% render 'icon', name: 'instagram' %}</a></li>
-          {%- endif -%}
-          {%- if settings.social_facebook_link != blank -%}
-            <li><a href="{{ settings.social_facebook_link }}" aria-label="Facebook" rel="noopener" target="_blank">{% render 'icon', name: 'facebook' %}</a></li>
-          {%- endif -%}
-          {%- if settings.social_linkedin_link != blank -%}
-            <li><a href="{{ settings.social_linkedin_link }}" aria-label="LinkedIn" rel="noopener" target="_blank">{% render 'icon', name: 'linkedin' %}</a></li>
-          {%- endif -%}
-        </ul>
-      {%- endif -%}
-      <p class="footer__copyright">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'sections.footer.rights' | t }}
-        <span class="footer__credit">
-          {{ 'sections.footer.base_by_html' | t: link: 'https://lecdt.com' }}
-        </span>
+    <div class="footer__brand">
+      <img
+        src="{{ 'logo-brigz.png' | asset_url }}"
+        alt="{{ shop.name | escape }}"
+        class="footer__logo"
+        width="140"
+        height="56"
+        loading="lazy"
+      >
+      <p class="footer__tagline">
+        Brigadeiro de outro mundo.<br>
+        <span class="footer__tagline-highlight">Feito para a vida real.</span>
       </p>
     </div>
+
+    <nav class="footer__nav" aria-label="Links do rodapé">
+      <ul class="footer__nav-list" role="list">
+        <li><a href="/pages/seja-influencer" class="footer__nav-link"><span class="footer__nav-star" aria-hidden="true">✦</span> Seja Influenciador</a></li>
+        <li><a href="{{ routes.all_products_collection_url }}" class="footer__nav-link"><span class="footer__nav-star" aria-hidden="true">✦</span> Comprar</a></li>
+        <li><a href="{{ pages.privacy-policy.url | default: '#' }}" class="footer__nav-link"><span class="footer__nav-star" aria-hidden="true">✦</span> Privacidade</a></li>
+      </ul>
+    </nav>
+
+    <ul class="footer__social" role="list">
+      {%- if settings.social_instagram_link != blank -%}
+        <li><a href="{{ settings.social_instagram_link }}" class="footer__social-link" aria-label="Instagram" rel="noopener" target="_blank">{% render 'icon', name: 'instagram' %}</a></li>
+      {%- endif -%}
+      {%- if settings.social_tiktok_link != blank -%}
+        <li><a href="{{ settings.social_tiktok_link }}" class="footer__social-link" aria-label="TikTok" rel="noopener" target="_blank">{% render 'icon', name: 'tiktok' %}</a></li>
+      {%- endif -%}
+    </ul>
+
+    <div class="footer__divider"></div>
+
+    <p class="footer__copyright">BRIGZ {{ 'now' | date: '%Y' }} • Informações comerciais em validação.</p>
+
   </div>
 </footer>
 
 <style>
   .footer {
-    background-color: var(--color-background-contrast);
-    color: var(--color-text-contrast);
-    margin-top: var(--spacing-sections);
+    background-color: #FFF8ED;
+    width: 100%;
   }
-  .footer__top {
+
+  .footer__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 48px 100px 32px; /* mesmo gap lateral do resto da home */
+    box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 40px;
-    padding-top: 48px;
-    padding-bottom: 48px;
+    grid-template-columns: 1.1fr 1fr 102px;
+    column-gap: 50px;
+    row-gap: 40px;
+    align-items: start;
   }
-  .footer__logo { display: block; height: auto; margin-bottom: 16px; }
-  .footer__brand-name { font-family: var(--font-heading-family); font-size: var(--f4); margin-bottom: 12px; }
-  .footer__heading { font-size: var(--f2); margin-bottom: 16px; }
-  .footer__menu { list-style: none; margin: 0; padding: 0; }
-  .footer__link { display: inline-block; padding: 6px 0; color: inherit; text-decoration: none; font-size: var(--f1); }
-  .footer__link:hover { text-decoration: underline; }
-  .footer__text { font-size: var(--f1); line-height: 1.6; }
-  .footer__bottom {
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 29px;
+  }
+
+  .footer__logo { display: block; width: 140px; height: auto; }
+
+  .footer__tagline {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 15.9px;
+    line-height: 24px;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .footer__tagline-highlight { color: #F06904; }
+
+  .footer__nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer__nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 19px;
+    color: #4B291D;
+    text-decoration: none;
+    transition: gap 0.15s ease, color 0.15s ease;
+  }
+
+  .footer__nav-link:hover {
+    gap: 12px;
+    color: #F46700;
+  }
+
+  .footer__nav-star { color: #F46700; }
+
+  .footer__social {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer__social-link {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding-top: 24px;
-    padding-bottom: 24px;
-    border-top: 1px solid var(--color-border);
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    background-color: #FFF6E8;
+    border: 2px solid #4B291D;
+    border-radius: 23px;
+    color: #4B291D;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
   }
-  .footer__bottom-left,
-  .footer__bottom-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-  .footer__payment { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-  .footer__payment-icon { width: 38px; height: 24px; }
-  .footer__social { display: flex; gap: 12px; list-style: none; margin: 0; padding: 0; }
-  .footer__social a { color: inherit; display: inline-flex; }
-  .footer__copyright { font-size: var(--f0); }
-  .footer__credit a { color: inherit; text-decoration: underline; }
-  .footer__credit a:hover { color: var(--color-accent); }
 
+  .footer__social-link:hover {
+    background-color: #4B291D;
+    color: #FFF6E8;
+    transform: translateY(-2px);
+  }
+
+  .footer__social-link svg { width: 24px; height: 24px; }
+
+  .footer__divider {
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(75, 41, 29, 0.3);
+  }
+
+  .footer__copyright {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-family: var(--font-manrope);
+    font-weight: 400;
+    font-size: 11px;
+    color: #4B291D;
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================ */
   @media screen and (max-width: 1000px) {
-    .footer__bottom { flex-direction: column; align-items: flex-start; }
+    .footer__inner {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      padding: 40px 30px 33px;
+      row-gap: 32px;
+    }
+
+    .footer__brand {
+      align-items: center;
+      text-align: center;
+    }
+
+    .footer__nav-list {
+      align-items: center;
+      gap: 5px;
+    }
+
+    .footer__social { justify-content: center; }
+
+    /* traçado sutil só entre os ícones sociais e o copyright, não a tela toda */
+    .footer__divider {
+      width: 75%;
+      max-width: 300px;
+      margin: 0 auto;
+      border-top: 1.5px solid rgba(75, 41, 29, 0.25);
+    }
+
+    .footer__copyright { text-align: center; }
   }
 </style>
 
 {% schema %}
 {
   "name": "t:sections.footer.name",
-  "blocks": [
-    {
-      "type": "brand",
-      "name": "t:sections.footer.blocks.brand.name",
-      "limit": 1,
-      "settings": [
-        { "type": "image_picker", "id": "logo", "label": "t:sections.footer.blocks.brand.settings.logo.label" },
-        { "type": "richtext", "id": "text", "label": "t:sections.footer.blocks.brand.settings.text.label" }
-      ]
-    },
-    {
-      "type": "menu",
-      "name": "t:sections.footer.blocks.menu.name",
-      "settings": [
-        { "type": "text", "id": "heading", "default": "Quick links", "label": "t:sections.footer.blocks.menu.settings.heading.label" },
-        { "type": "link_list", "id": "menu", "default": "footer", "label": "t:sections.footer.blocks.menu.settings.menu.label" }
-      ]
-    },
-    {
-      "type": "text",
-      "name": "t:sections.footer.blocks.text.name",
-      "settings": [
-        { "type": "text", "id": "heading", "label": "t:sections.footer.blocks.text.settings.heading.label" },
-        { "type": "richtext", "id": "text", "label": "t:sections.footer.blocks.text.settings.text.label" }
-      ]
-    },
-    {
-      "type": "newsletter",
-      "name": "t:sections.footer.blocks.newsletter.name",
-      "limit": 1,
-      "settings": [
-        { "type": "text", "id": "heading", "default": "Subscribe to our newsletter", "label": "t:sections.footer.blocks.newsletter.settings.heading.label" }
-      ]
-    }
-  ],
-  "settings": [
-    { "type": "checkbox", "id": "show_social", "default": true, "label": "t:sections.footer.settings.show_social.label" },
-    { "type": "checkbox", "id": "show_payment_icons", "default": true, "label": "t:sections.footer.settings.show_payment_icons.label" },
-    { "type": "checkbox", "id": "enable_localization", "default": true, "label": "t:sections.footer.settings.enable_localization.label" }
-  ],
-  "presets": [
-    {
-      "name": "t:sections.footer.name",
-      "blocks": [
-        { "type": "brand" },
-        { "type": "menu" },
-        { "type": "newsletter" }
-      ]
-    }
-  ]
+  "settings": []
 }
 {% endschema %}

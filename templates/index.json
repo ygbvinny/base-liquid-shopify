@@ -9,10 +9,15 @@
     "beneficios": {
       "type": "beneficios"
     },
-    "featured": {
-      "type": "featured-collection",
-      "settings": { "heading": "Featured collection", "products_to_show": 4, "columns_desktop": 4 }
+    "receitas": {
+      "type": "receitas"
+    },
+    "kits": {
+      "type": "kits"
+    },
+    "faq": {
+      "type": "faq"
     }
   },
-  "order": ["hero", "relatorio-missao", "beneficios", "featured"]
+  "order": ["hero", "relatorio-missao", "beneficios", "receitas", "kits", "faq"]
 }

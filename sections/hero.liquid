@@ -9,20 +9,25 @@
   o mesmo gap lateral de 100px usado no navbar.
 
   OBSERVAÇÕES:
-  Apenas versão desktop implementada por ora. Versão mobile fica
-  para depois (será um layout diferente, não um reflow deste).
+  Versão mobile (≤1000px) segue node 44:1150 do Figma: banner
+  próprio (hero-banner-mobile.webp via <picture>), conteúdo
+  centralizado, CTAs empilhados, e as tags de diferenciais viram
+  2 badges decorativos (imagens) sobrepostos no pote.
 {%- endcomment -%}
 
 <section class="hero-section" data-section-id="{{ section.id }}">
-  <img
-    src="{{ 'hero-banner.webp' | asset_url }}"
-    alt=""
-    class="hero-section__bg"
-    width="2880"
-    height="1502"
-    loading="eager"
-    fetchpriority="high"
-  >
+  <picture>
+    <source media="(max-width: 1000px)" srcset="{{ 'hero-banner-mobile.webp' | asset_url }}">
+    <img
+      src="{{ 'hero-banner.webp' | asset_url }}"
+      alt=""
+      class="hero-section__bg"
+      width="2880"
+      height="1502"
+      loading="eager"
+      fetchpriority="high"
+    >
+  </picture>
 
   <div class="hero-section__inner">
     <div class="hero-section__content">
@@ -38,16 +43,16 @@
       </h1>
 
       <div class="hero-section__subtitle">
-        <p>Cremoso de verdade. instenso do jeito certo.</p>
-        <p>O plot twist que faltaa na sua rotina.</p>
+        <p>Cremoso de verdade. Intenso do jeito certo.</p>
+        <p>O plot twist que faltava na sua rotina.</p>
       </div>
 
       <div class="hero-actions">
-        <a href="{{ section.settings.primary_button_link | default: '#' }}" class="hero-cta-primary">
+        <a href="{{ section.settings.primary_button_link | default: '#kits' }}" class="hero-cta-primary">
           {% render 'icon', name: 'bag' %}
           <span>Quero provar</span>
         </a>
-        <a href="{{ section.settings.secondary_button_link | default: '#' }}" class="hero-cta-secondary">
+        <a href="{{ section.settings.secondary_button_link | default: '#beneficios' }}" class="hero-cta-secondary">
           <span>Descobrir o plot twist</span>
           {% render 'icon', name: 'arrow-right' %}
         </a>
@@ -69,21 +74,49 @@
       </div>
     </div>
   </div>
+
+  <!-- Badges decorativos — só aparecem na versão mobile, substituem .hero-features -->
+  <img
+    src="{{ 'hero-badge-pode-confiar.webp' | asset_url }}"
+    alt="É brigadeiro. Pode confiar."
+    class="hero-decorative-badge hero-decorative-badge--left"
+    width="220"
+    height="121"
+    loading="lazy"
+  >
+  <img
+    src="{{ 'hero-badge-31kcal.webp' | asset_url }}"
+    alt="31 kcal por colher"
+    class="hero-decorative-badge hero-decorative-badge--right"
+    width="360"
+    height="202"
+    loading="lazy"
+  >
 </section>
 
 <style>
   .hero-section {
     position: relative;
     width: 100%;
+    max-width: 100%;
     height: 800px;
     overflow: hidden;
     background-color: #E8720C; /* cor de fallback enquanto o banner carrega */
+  }
+
+  .hero-section picture {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .hero-section__bg {
     position: absolute;
     inset: 0;
     width: 100%;
+    max-width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
@@ -185,6 +218,12 @@
     font-size: 13px;
     letter-spacing: 0.455px;
     text-transform: uppercase;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .hero-cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 0 #4B291D;
   }
 
   .hero-cta-primary svg { width: 20px; height: 20px; flex-shrink: 0; }
@@ -201,6 +240,12 @@
     font-weight: 800;
     font-size: 14px;
     text-transform: uppercase;
+    transition: gap 0.15s ease, color 0.15s ease;
+  }
+
+  .hero-cta-secondary:hover {
+    gap: 14px;
+    color: #2473CE;
   }
 
   .hero-cta-secondary svg { width: 20px; height: 20px; flex-shrink: 0; }
@@ -229,6 +274,88 @@
     color: #4B291D;
     text-transform: uppercase;
     white-space: nowrap;
+  }
+
+  .hero-decorative-badge { display: none; }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================ */
+  @media screen and (max-width: 1000px) {
+    .hero-section {
+      width: 100%;
+      max-width: 100vw;
+      height: auto;
+      min-height: 0;
+      aspect-ratio: 960 / 1811; /* mesma proporção do hero-banner-mobile.webp, mostra a imagem inteira sem cortar */
+    }
+
+    .hero-section__bg { object-position: center; }
+
+    .hero-section__inner {
+      max-width: 100%;
+      padding: 40px 20px 40px;
+      align-items: flex-start;
+    }
+
+    .hero-section__content {
+      max-width: 100%;
+      width: 100%;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+    }
+
+    .hero-badge { padding: 9.5px 13.3px; } /* -5% */
+    .hero-badge span { font-size: 10.45px; } /* -5% */
+
+    .hero-section__title {
+      font-size: 46.2px; /* 42px +10% */
+      line-height: 52.8px; /* 48px +10% */
+      letter-spacing: -1.815px; /* -1.65px +10% */
+      white-space: normal;
+      -webkit-text-stroke: 3px #000000;
+      margin-top: 30px; /* soma com o gap de 10px do container = 40px total do badge até aqui */
+    }
+
+    .hero-section__subtitle {
+      font-size: 15px;
+      line-height: 22px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+    }
+
+    .hero-cta-primary { width: auto; }
+
+    /* Tags de diferenciais (desktop) somem, viram os 2 badges decorativos */
+    .hero-features { display: none; }
+
+    .hero-decorative-badge {
+      display: block;
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-decorative-badge--left {
+      width: 92px;
+      height: auto;
+      left: 50px;
+      bottom: 16%;
+      transform: rotate(-4deg);
+    }
+
+    .hero-decorative-badge--right {
+      width: 115px;
+      height: auto;
+      right: 50px;
+      bottom: 28%;
+    }
   }
 </style>
 

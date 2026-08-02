@@ -288,6 +288,11 @@
         "type": "text",
         "id": "social_linkedin_link",
         "label": "t:settings_schema.social_media.settings.social_linkedin_link.label"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok"
       }
     ]
   },

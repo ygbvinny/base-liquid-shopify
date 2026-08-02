@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "hero": {
+      "type": "influencer-hero"
+    }
+  },
+  "order": ["hero"]
+}

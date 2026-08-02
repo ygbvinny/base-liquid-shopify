@@ -1,0 +1,555 @@
+{%- comment -%}
+  ============================================================
+  KITS — quinta seção da home (desktop)
+  ============================================================
+
+  O QUE FAZ:
+  Cabeçalho + 3 cards de kit (com preço e CTA) + selos de
+  confiança embaixo. Gap lateral de 100px igual ao resto da home.
+
+  OBSERVAÇÕES:
+  Preço exibido em cada card é texto fixo (não vem do produto). O
+  botão "Escolher kit" faz add-to-cart real via /cart/add
+  (carrinho.js intercepta o form) usando o produto selecionado nas
+  configurações da section (kit_1/2/3_product) — configurar no
+  editor de temas. Versão mobile (≤1000px) segue node 48:1805 do
+  Figma: cards empilhados (largura 100%, máx. 360px), radius menor
+  (16px), foto emoldurada com respiro em vez de edge-to-edge, e
+  selos de confiança em grid 2x2.
+
+  DIVISÃO CHOCOLATE (desktop): imagem absoluta no topo desta
+  section, top:-30px pra sobrepor a seção anterior (receitas) e a
+  de kits ao mesmo tempo, full-bleed (100vw), sem distorcer (altura
+  via aspect-ratio real do arquivo). Versão mobile fica pra depois.
+{%- endcomment -%}
+
+<section id="kits" class="kits-section" data-section-id="{{ section.id }}">
+  <picture>
+    <source media="(max-width: 1000px)" srcset="{{ 'divisao-receitas-kits-mobile.webp' | asset_url }}">
+    <img
+      src="{{ 'divisao-receitas-kits.webp' | asset_url }}"
+      alt=""
+      class="kits-section__divider"
+      width="2000"
+      height="286"
+      loading="lazy"
+    >
+  </picture>
+
+  <div class="kits-section__inner">
+
+    <div class="kits-header">
+      <span class="kits-header__eyebrow">✦ Escolha seu kit ✦</span>
+      <h2 class="kits-header__title kits-header__title--desktop">
+        Abasteça sua base com<br>
+        o brigadeiro mais leve<br>
+        do universo.
+      </h2>
+      <h2 class="kits-header__title kits-header__title--mobile">
+        Abasteça sua base<br>
+        com o brigadeiro<br>
+        mais leve do<br>
+        universo.
+      </h2>
+      <p class="kits-header__desc kits-header__desc--desktop">
+        Escolha a combinação perfeita para experimentar, compartilhar<br>
+        ou manter sua base sempre abastecida com BRIGZ.
+      </p>
+      <p class="kits-header__desc kits-header__desc--mobile">
+        Escolha a combinação perfeita para<br>
+        experimentar, compartilhar ou manter<br>
+        sua base sempre abastecida com BRIGZ.
+      </p>
+    </div>
+
+    <div class="kits-grid">
+
+      <article class="kits-card kits-card--featured">
+        <span class="kits-card__badge"><span class="kits-card__badge-star">★</span> Favorito da tripulação</span>
+        <div class="kits-card__media">
+          <img
+            src="{{ 'kit-dupla-em-orbita.webp' | asset_url }}"
+            alt="Potes BRIGZ para o Kit Dupla em Órbita"
+            width="800"
+            height="600"
+            loading="lazy"
+          >
+          <span class="kits-card__ghost-number" aria-hidden="true">02</span>
+        </div>
+        <div class="kits-card__body">
+          <div class="kits-card__top">
+            <h3 class="kits-card__name">Dupla<br>em Órbita</h3>
+            <span class="kits-card__units">2 potes</span>
+          </div>
+          <p class="kits-card__desc">Pra quem já sabe que um só não basta.</p>
+          <strong class="kits-card__price">R$54,90</strong>
+          {%- liquid
+            assign kit_product = section.settings.kit_1_product
+            assign kit_variant = kit_product.selected_or_first_available_variant
+          -%}
+          <form action="/cart/add" method="post" class="kits-card__form">
+            {%- if kit_variant -%}
+              <input type="hidden" name="id" value="{{ kit_variant.id }}">
+            {%- endif -%}
+            <button type="submit" class="kits-card__cta" {% unless kit_variant %}disabled{% endunless %}>
+              {%- if kit_variant %}Escolher kit →{% else %}Em breve{% endif -%}
+            </button>
+          </form>
+        </div>
+      </article>
+
+      <article class="kits-card">
+        <span class="kits-card__badge">👥 Pra compartilhar</span>
+        <div class="kits-card__media">
+          <img
+            src="{{ 'kit-missao-em-grupo.webp' | asset_url }}"
+            alt="Potes BRIGZ para o Kit Missão em Grupo"
+            width="800"
+            height="800"
+            loading="lazy"
+          >
+          <span class="kits-card__ghost-number" aria-hidden="true">03</span>
+        </div>
+        <div class="kits-card__body">
+          <div class="kits-card__top">
+            <h3 class="kits-card__name">Missão<br>em Grupo</h3>
+            <span class="kits-card__units">4 potes</span>
+          </div>
+          <p class="kits-card__desc">Pra dividir com a tripulação.</p>
+          <strong class="kits-card__price">R$99,90</strong>
+          {%- liquid
+            assign kit_product = section.settings.kit_2_product
+            assign kit_variant = kit_product.selected_or_first_available_variant
+          -%}
+          <form action="/cart/add" method="post" class="kits-card__form">
+            {%- if kit_variant -%}
+              <input type="hidden" name="id" value="{{ kit_variant.id }}">
+            {%- endif -%}
+            <button type="submit" class="kits-card__cta" {% unless kit_variant %}disabled{% endunless %}>
+              {%- if kit_variant %}Escolher kit →{% else %}Em breve{% endif -%}
+            </button>
+          </form>
+        </div>
+      </article>
+
+      <article class="kits-card">
+        <span class="kits-card__badge">⚡ Melhor estoque</span>
+        <div class="kits-card__media">
+          <img
+            src="{{ 'kit-base-abastecida.webp' | asset_url }}"
+            alt="Potes BRIGZ para o Kit Base Abastecida"
+            width="800"
+            height="600"
+            loading="lazy"
+          >
+          <span class="kits-card__ghost-number" aria-hidden="true">04</span>
+        </div>
+        <div class="kits-card__body">
+          <div class="kits-card__top">
+            <h3 class="kits-card__name">Base<br>Abastecida</h3>
+            <span class="kits-card__units">6 potes</span>
+          </div>
+          <p class="kits-card__desc">Pra nunca ficar sem BRIGZ na nave.</p>
+          <strong class="kits-card__price">R$139,90</strong>
+          {%- liquid
+            assign kit_product = section.settings.kit_3_product
+            assign kit_variant = kit_product.selected_or_first_available_variant
+          -%}
+          <form action="/cart/add" method="post" class="kits-card__form">
+            {%- if kit_variant -%}
+              <input type="hidden" name="id" value="{{ kit_variant.id }}">
+            {%- endif -%}
+            <button type="submit" class="kits-card__cta" {% unless kit_variant %}disabled{% endunless %}>
+              {%- if kit_variant %}Escolher kit →{% else %}Em breve{% endif -%}
+            </button>
+          </form>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="kits-badges">
+      <img src="{{ 'selo-frete-seguro.webp' | asset_url }}" alt="Frete rápido e seguro" width="500" height="120" loading="lazy">
+      <img src="{{ 'selo-zero-acucar.webp' | asset_url }}" alt="Zero açúcar e muito sabor" width="500" height="124" loading="lazy">
+      <img src="{{ 'selo-ingredientes.webp' | asset_url }}" alt="Ingredientes selecionados" width="500" height="126" loading="lazy">
+      <img src="{{ 'selo-compra-segura.webp' | asset_url }}" alt="Compra segura e protegida" width="500" height="139" loading="lazy">
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .kits-section {
+    position: relative;
+    background-color: #F1E7D8;
+    width: 100%;
+  }
+
+  /* Divisão de chocolate — sobrepõe o fim da seção de receitas e o início dos kits */
+  .kits-section__divider {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .kits-section__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 222px 100px 100px; /* +90px no topo (60+30) pra descer o conteúdo, abrindo espaço pra divisão de chocolate */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  /* Cabeçalho */
+  .kits-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 1016px;
+    text-align: center;
+  }
+
+  .kits-header__eyebrow {
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 1.56px;
+    text-transform: uppercase;
+    color: #FF8A00;
+  }
+
+  .kits-header__title {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 78px;
+    line-height: 76.44px;
+    letter-spacing: -1.95px;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .kits-header__desc {
+    font-family: var(--font-manrope);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 29.7px;
+    color: #24120E;
+    max-width: 864px;
+    margin: 0;
+  }
+
+  .kits-header__title--mobile,
+  .kits-header__desc--mobile { display: none; }
+
+  /* Grid de cards */
+  .kits-grid {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .kits-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: #FFFDFA;
+    border: 2px solid #4B291D;
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .kits-card--featured { box-shadow: 0 12px 0 #FF8A00; }
+
+  .kits-card:hover {
+    box-shadow: 0 12px 0 #FF8A00;
+    transform: translateY(-6px);
+  }
+
+  .kits-card__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 3;
+    background-color: #00E6F6;
+    border: 2px solid #4B291D;
+    border-radius: 999px;
+    padding: 10px 13px;
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 9px;
+    text-transform: uppercase;
+    color: #4B291D;
+    white-space: nowrap;
+  }
+
+  .kits-card__badge-star { color: #F7D68A; }
+
+  .kits-card__media {
+    position: relative;
+    height: 260px;
+    background-color: #FFF6E8;
+    overflow: hidden;
+  }
+
+  .kits-card__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .kits-card__ghost-number {
+    position: absolute;
+    bottom: -76px;
+    right: 9px;
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 100px;
+    line-height: 1;
+    color: rgba(75, 41, 29, 0.12);
+    pointer-events: none;
+  }
+
+  .kits-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+  }
+
+  .kits-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .kits-card__name {
+    font-family: var(--font-coiny);
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 25px;
+    color: #4B291D;
+    margin: 0;
+  }
+
+  .kits-card__units {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #24120E;
+    white-space: nowrap;
+    padding-top: 4px;
+    flex-shrink: 0;
+  }
+
+  .kits-card__desc {
+    font-family: var(--font-manrope);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #24120E;
+    margin: 14px 0 20px;
+  }
+
+  .kits-card__price {
+    font-family: var(--font-outfit);
+    font-weight: 800;
+    font-size: 32px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #4B291D;
+    margin: 0 0 18px;
+  }
+
+  .kits-card__form { display: flex; margin-top: auto; }
+
+  .kits-card__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 54px;
+    background-color: #FF8A00;
+    border: 2px solid #4B291D;
+    border-radius: 999px;
+    font-family: var(--font-outfit);
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.455px;
+    text-transform: uppercase;
+    color: #4B291D;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .kits-card__cta:hover:not(:disabled) {
+    background-color: #FFA733;
+    transform: translateY(-3px);
+  }
+
+  .kits-card__cta:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Selos de confiança */
+  .kits-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 83px 57px;
+  }
+
+  .kits-badges img {
+    display: block;
+    width: 200px;
+    height: auto;
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================ */
+  @media screen and (max-width: 1000px) {
+    .kits-section__divider { top: -24px; } /* -30px -20%, desce um pouco a divisão no mobile */
+
+    .kits-section__inner {
+      padding: 84px 30px 20px;
+      gap: 20px;
+    }
+
+    .kits-header__eyebrow { letter-spacing: 2px; }
+
+    .kits-header__title {
+      font-size: 40px;
+      line-height: 42.6px;
+      letter-spacing: -2px;
+      max-width: 400px;
+    }
+
+    .kits-header__title--desktop { display: none; }
+    .kits-header__title--mobile { display: block; }
+
+    .kits-header__desc {
+      font-size: 16px;
+      line-height: 26px;
+      max-width: 374px;
+    }
+
+    .kits-header__desc--desktop { display: none; }
+    .kits-header__desc--mobile { display: block; }
+
+    .kits-grid {
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 50px; /* gap embaixo do último card */
+    }
+
+    .kits-card {
+      width: 100%;
+      max-width: 360px;
+      border-width: 1px;
+      border-radius: 16px;
+    }
+
+    .kits-card__badge {
+      padding: 7px 12px;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    /* No mobile a foto fica emoldurada com respiro (não mais edge-to-edge) */
+    .kits-card__media {
+      height: auto;
+      aspect-ratio: 341.7 / 256.269;
+      margin: 8px;
+      width: calc(100% - 16px);
+      border-radius: 14px;
+    }
+
+    .kits-card__ghost-number { display: none; }
+
+    .kits-card__name {
+      font-size: 28px;
+      line-height: 32px;
+    }
+
+    .kits-card__units { font-size: 12px; }
+
+    .kits-card__desc {
+      font-size: 14px;
+      margin: 12px 0 16px;
+    }
+
+    .kits-card__price { font-size: 36px; }
+
+    .kits-card__cta {
+      font-size: 14px;
+      letter-spacing: 0.7px;
+    }
+
+    /* Selos de confiança viram grid 2x2 — cluster travado em 304px (não a largura toda) */
+    .kits-badges {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      max-width: 304px;
+      margin: 20px auto;
+      opacity: 0.8;
+    }
+
+    .kits-badges img { width: 100%; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Kits",
+  "class": "section-kits",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Produtos dos kits"
+    },
+    {
+      "type": "paragraph",
+      "content": "Selecione o produto real de cada kit para o botão \"Escolher kit\" adicionar ao carrinho. Sem produto selecionado, o botão fica desativado."
+    },
+    {
+      "type": "product",
+      "id": "kit_1_product",
+      "label": "Produto do Kit 1 — Dupla em Órbita"
+    },
+    {
+      "type": "product",
+      "id": "kit_2_product",
+      "label": "Produto do Kit 2 — Missão em Grupo"
+    },
+    {
+      "type": "product",
+      "id": "kit_3_product",
+      "label": "Produto do Kit 3 — Base Abastecida"
+    }
+  ]
+}
+{% endschema %}

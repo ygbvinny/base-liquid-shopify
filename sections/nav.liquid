@@ -85,13 +85,13 @@
     <nav class="header__nav" role="navigation" aria-label="{{ 'sections.header.menu' | t }}">
       <ul class="header__menu" role="list">
         <li class="header__menu-item">
-          <a href="#" class="header__menu-link">O plot twist</a>
+          <a href="{{ routes.root_url }}#beneficios" class="header__menu-link">O plot twist</a>
         </li>
         <li class="header__menu-item">
-          <a href="#" class="header__menu-link">Escolha seu kit</a>
+          <a href="{{ routes.root_url }}#kits" class="header__menu-link">Escolha seu kit</a>
         </li>
         <li class="header__menu-item">
-          <a href="#" class="header__menu-link">Universo BRIGZ</a>
+          <a href="{{ routes.root_url }}#receitas" class="header__menu-link">Universo BRIGZ</a>
         </li>
       </ul>
     </nav>
@@ -146,13 +146,13 @@
 <div class="header__mobile-nav" id="MobileNav-{{ section.id }}" hidden>
   <ul class="header__mobile-menu" role="list">
     <li>
-      <a href="#" class="header__mobile-link">O plot twist</a>
+      <a href="{{ routes.root_url }}#beneficios" class="header__mobile-link">O plot twist</a>
     </li>
     <li>
-      <a href="#" class="header__mobile-link">Escolha seu kit</a>
+      <a href="{{ routes.root_url }}#kits" class="header__mobile-link">Escolha seu kit</a>
     </li>
     <li>
-      <a href="#" class="header__mobile-link">Universo BRIGZ</a>
+      <a href="{{ routes.root_url }}#receitas" class="header__mobile-link">Universo BRIGZ</a>
     </li>
   </ul>
 </div>
@@ -284,6 +284,13 @@
     display: flex; /* Flex ajuda alinhar ao centro exatamente */
     align-items: center;
     line-height: 1; /* Tira o espaço extra da fonte em cima/embaixo */
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .header__menu-link:hover,
+  .header__submenu-link:hover {
+    color: var(--header-color-orange);
+    transform: translateY(-2px);
   }
   
   .header__actions { 
@@ -312,6 +319,13 @@
     text-decoration: none;
     cursor: pointer;
     box-sizing: border-box;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .header__cart:hover {
+    background-color: var(--header-color-brown);
+    color: #FFF6E8;
+    transform: translateY(-2px);
   }
   
   .header__cart svg { 
@@ -405,7 +419,9 @@
     }
     
     .header__nav { display: none; }
-    
+
+    .header__logo-image { width: 90px; } /* 140px -20% -20% */
+
     /* Logo na esquerda empurrando os outros para direita */
     .header__logo-link { 
       margin: 0;
