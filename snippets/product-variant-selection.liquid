@@ -20,7 +20,9 @@
   OBSERVAÇÕES:
   Depende de marcações no HTML da section: [data-variant-json] com o JSON
   das variantes, .product__option com radios, .product-variant-id,
-  .product__add-to-cart, .product__price e a galeria #ProductMedia-{section_id}.
+  .product__add-to-cart, .product__price, a galeria #ProductMedia-{section_id}
+  (.product__media-item[data-media-id]) e os thumbnails
+  (.product__media-thumb[data-media-id]).
 {%- endcomment -%}
 <script>
   (function () {
@@ -38,6 +40,19 @@
     var addButtonText = addButton ? addButton.querySelector('span') : null;
     var priceContainer = section.querySelector('.product__price');
     var gallery = document.getElementById('ProductMedia-{{ section_id }}');
+    var mediaItems = gallery ? gallery.querySelectorAll('.product__media-item') : [];
+    var thumbButtons = section.querySelectorAll('.product__media-thumb');
+
+    function setActiveMedia(mediaId) {
+      if (!mediaId) return;
+      mediaId = String(mediaId);
+      mediaItems.forEach(function (item) { item.classList.toggle('is-active', item.dataset.mediaId === mediaId); });
+      thumbButtons.forEach(function (btn) { btn.classList.toggle('is-active', btn.dataset.mediaId === mediaId); });
+    }
+
+    thumbButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () { setActiveMedia(btn.dataset.mediaId); });
+    });
 
     var ADD = '{{ 'products.product.add_to_cart' | t }}';
     var SOLD_OUT = '{{ 'products.product.sold_out' | t }}';
@@ -89,10 +104,7 @@
       }
 
       // Swap the featured media to the one tied to this variant.
-      if (gallery && variant.featured_media_id) {
-        var target = gallery.querySelector('[data-media-id="' + variant.featured_media_id + '"]');
-        if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-      }
+      if (variant.featured_media_id) { setActiveMedia(variant.featured_media_id); }
 
       // Keep the URL shareable.
       if (window.history && history.replaceState) {

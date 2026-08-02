@@ -70,18 +70,18 @@
   },
   "products": {
     "product": {
-      "add_to_cart": "Add to cart",
-      "sold_out": "Sold out",
-      "unavailable": "Unavailable",
-      "on_sale": "Sale",
+      "add_to_cart": "Adicionar ao carrinho",
+      "sold_out": "Esgotado",
+      "unavailable": "Indisponível",
+      "on_sale": "Promoção",
       "quantity": {
-        "label": "Quantity",
+        "label": "Quantidade",
         "input_label": "Quantity for {{ product }}",
         "increase": "Increase quantity for {{ product }}",
         "decrease": "Decrease quantity for {{ product }}"
       },
       "price": {
-        "from_price_html": "From {{ price }}",
+        "from_price_html": "A partir de {{ price }}",
         "regular_price": "Regular price",
         "sale_price": "Sale price",
         "unit_price": "Unit price"
@@ -89,7 +89,7 @@
       "vendor": "Vendor",
       "view_full_details": "View full details",
       "description": "Description",
-      "share": "Share",
+      "share": "Compartilhar",
       "include_taxes": "Tax included.",
       "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
       "pickup_availability": {
@@ -115,17 +115,17 @@
       "choose_product_options": "Choose options for {{ product_name }}"
     },
     "facets": {
-      "sort_by_label": "Sort by:",
+      "sort_by_label": "Ordenar por:",
       "filter_by_label": "Filter:",
       "filter_button": "Filter",
       "clear": "Clear",
-      "clear_all": "Remove all",
-      "apply": "Apply",
+      "clear_all": "Limpar filtros",
+      "apply": "Aplicar",
       "reset": "Reset",
-      "from": "From",
-      "to": "To",
-      "product_count": "{{ product_count }} of {{ count }} products",
-      "product_count_simple": "{{ count }} products"
+      "from": "De",
+      "to": "Até",
+      "product_count": "{{ product_count }} de {{ count }} produtos",
+      "product_count_simple": "{{ count }} produtos"
     }
   },
   "templates": {
@@ -163,8 +163,8 @@
   },
   "sections": {
     "main_collection": {
-      "empty": "No products found",
-      "use_fewer_filters": "Use fewer filters or remove all"
+      "empty": "Nenhum produto encontrado",
+      "use_fewer_filters": "Use menos filtros ou remova todos"
     },
     "header": {
       "announcement": "Announcement",

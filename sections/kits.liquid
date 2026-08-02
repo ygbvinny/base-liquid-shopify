@@ -520,6 +520,94 @@
 
     .kits-badges img { width: 100%; }
   }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .kits-section__inner {
+      padding: 60px 20px 16px;
+      gap: 16px;
+    }
+
+    .kits-header { gap: 13px; }
+
+    .kits-header__eyebrow {
+      font-size: 16px;
+      letter-spacing: 1.6px;
+    }
+
+    .kits-header__title {
+      font-size: 32px;
+      line-height: 34px;
+      letter-spacing: -1.6px;
+      max-width: 320px;
+    }
+
+    .kits-header__desc {
+      font-size: 13px;
+      line-height: 21px;
+      max-width: 300px;
+    }
+
+    .kits-grid {
+      gap: 26px;
+      margin-bottom: 40px;
+    }
+
+    .kits-card { max-width: 288px; }
+
+    .kits-card__badge {
+      top: 11px;
+      left: 11px;
+      padding: 5.5px 9.5px;
+      font-size: 8px;
+      letter-spacing: 0.4px;
+    }
+
+    .kits-card__media {
+      margin: 6px;
+      width: calc(100% - 12px);
+      border-radius: 11px;
+    }
+
+    .kits-card__body { padding: 16px; }
+
+    .kits-card__top { gap: 6px; }
+
+    .kits-card__name {
+      font-size: 22px;
+      line-height: 26px;
+    }
+
+    .kits-card__units {
+      font-size: 9.5px;
+      padding-top: 3px;
+    }
+
+    .kits-card__desc {
+      font-size: 11px;
+      line-height: 19px;
+      margin: 9.5px 0 13px;
+    }
+
+    .kits-card__price {
+      font-size: 29px;
+      margin: 0 0 14px;
+    }
+
+    .kits-card__cta {
+      min-height: 43px;
+      font-size: 11px;
+      letter-spacing: 0.56px;
+    }
+
+    .kits-badges {
+      gap: 9.5px;
+      max-width: 243px;
+      margin: 16px auto;
+    }
+  }
 </style>
 
 {% schema %}

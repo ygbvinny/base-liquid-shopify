@@ -1,0 +1,60 @@
+{%- comment -%}
+  ============================================================
+  trust-bar — barra de selos de confiança (ícone + texto)
+  ============================================================
+
+  O QUE FAZ:
+  Renderiza até 4 itens ícone+texto (frete, segurança, pagamento,
+  satisfação etc.), lidos das settings de uma section. Não tem
+  fundo próprio — fica só sobre o fundo da página.
+
+  COMO USAR:
+  {% render 'trust-bar', settings_source: section %}
+
+  PARÂMETROS:
+  - settings_source: a section que tem os settings show_trust_bar
+    (checkbox) e os pares trust_icon_N / trust_text_N (N de 1 a 4).
+
+  OBSERVAÇÕES:
+  Usado por sections/main-product.liquid e sections/main-collection.liquid;
+  os dois schemas declaram os mesmos ids de settings.
+{%- endcomment -%}
+{%- if settings_source.settings.show_trust_bar -%}
+  <div class="trust-bar">
+    {%- for i in (1..4) -%}
+      {%- assign trust_icon = 'trust_icon_' | append: i -%}
+      {%- assign trust_text = 'trust_text_' | append: i -%}
+      {%- assign icon_value = settings_source.settings[trust_icon] -%}
+      {%- assign text_value = settings_source.settings[trust_text] -%}
+      {%- if text_value != blank -%}
+        <div class="trust-bar__item">
+          {% render 'icon', name: icon_value %}
+          <span>{{ text_value }}</span>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+<style>
+  .trust-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 auto var(--spacing-sections);
+    padding: 20px 0;
+  }
+  .trust-bar__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--f1);
+  }
+  .trust-bar__item svg { width: 24px; height: 24px; flex-shrink: 0; color: var(--color-accent); }
+
+  @media screen and (max-width: 1000px) {
+    .trust-bar { flex-direction: column; align-items: flex-start; }
+  }
+</style>

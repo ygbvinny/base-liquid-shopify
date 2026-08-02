@@ -139,10 +139,23 @@
     },
     "main_product": {
       "name": "Product information",
+      "settings": {
+        "show_trust_bar": { "label": "Show trust bar" },
+        "header__trust_bar": { "content": "Trust bar items" },
+        "trust_icon": { "label": "Icon" },
+        "trust_text": { "label": "Text" }
+      },
       "blocks": {
         "vendor": { "name": "Vendor" },
         "title": { "name": "Title" },
         "price": { "name": "Price" },
+        "benefits": {
+          "name": "Benefits",
+          "settings": {
+            "benefit_icon": { "label": "Icon" },
+            "benefit_text": { "label": "Text" }
+          }
+        },
         "variant_picker": { "name": "Variant picker" },
         "quantity": { "name": "Quantity selector" },
         "buy_buttons": {
@@ -178,7 +191,11 @@
         "products_per_page": { "label": "Products per page" },
         "columns_desktop": { "label": "Number of columns on desktop" },
         "enable_sorting": { "label": "Enable sorting" },
-        "enable_filtering": { "label": "Enable filtering" }
+        "enable_filtering": { "label": "Enable filtering" },
+        "show_trust_bar": { "label": "Show trust bar" },
+        "header__trust_bar": { "content": "Trust bar items" },
+        "trust_icon": { "label": "Icon" },
+        "trust_text": { "label": "Text" }
       }
     },
     "collection_banner": {

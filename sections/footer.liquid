@@ -204,6 +204,46 @@
 
     .footer__copyright { text-align: center; }
   }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .footer__inner {
+      padding: 28px 20px 26px;
+      row-gap: 26px;
+    }
+
+    .footer__brand { gap: 23px; }
+
+    .footer__logo { width: 112px; }
+
+    .footer__tagline {
+      font-size: 12.7px;
+      line-height: 19px;
+    }
+
+    .footer__nav-list { gap: 4px; }
+
+    .footer__nav-link {
+      gap: 6px;
+      font-size: 15px;
+    }
+
+    .footer__social { gap: 8px; }
+
+    .footer__social-link {
+      width: 37px;
+      height: 37px;
+      border-radius: 18.5px;
+    }
+
+    .footer__social-link svg { width: 19px; height: 19px; }
+
+    .footer__divider { max-width: 240px; }
+
+    .footer__copyright { font-size: 9px; }
+  }
 </style>
 
 {% schema %}

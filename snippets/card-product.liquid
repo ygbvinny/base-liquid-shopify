@@ -6,7 +6,9 @@
   O QUE FAZ:
   Renderiza o card de um produto: imagem (com troca de imagem no hover se
   ativado nas settings), badge de promoção/esgotado, vendor opcional,
-  título e preço (via snippet 'price').
+  título, descrição curta, preço (via snippet 'price') e um botão
+  circular de compra rápida (form /cart/add, interceptado pelo carrinho
+  AJAX em assets/carrinho.js).
 
   COMO USAR:
   {% render 'card-product', card_product: product %}
@@ -33,6 +35,7 @@
       endif
   endcase
 -%}
+{%- assign card_variant = card_product.selected_or_first_available_variant -%}
 <div class="card-product">
   <a href="{{ card_product.url }}" class="card-product__link">
     <div class="card-product__media" style="padding-bottom: {{ 1 | divided_by: ratio | times: 100 }}%;">
@@ -75,7 +78,26 @@
         <span class="card-product__vendor">{{ card_product.vendor }}</span>
       {%- endif -%}
       <h3 class="card-product__title">{{ card_product.title | escape }}</h3>
-      {% render 'price', product: card_product, use_variant: false, show_compare: true, price_class: 'price--card' %}
+      {%- if card_product.description != blank -%}
+        <p class="card-product__desc">{{ card_product.description | strip_html | truncatewords: 12 }}</p>
+      {%- endif -%}
     </div>
   </a>
+
+  <div class="card-product__footer">
+    {% render 'price', product: card_product, use_variant: false, show_compare: true, price_class: 'price--card' %}
+    {%- if card_variant -%}
+      <form action="{{ routes.cart_add_url }}" method="post" class="card-product__quick-add-form">
+        <input type="hidden" name="id" value="{{ card_variant.id }}">
+        <button
+          type="submit"
+          class="card-product__quick-add"
+          aria-label="{{ 'products.product.add_to_cart' | t }}"
+          {% unless card_variant.available %}disabled{% endunless %}
+        >
+          {% render 'icon', name: 'cart' %}
+        </button>
+      </form>
+    {%- endif -%}
+  </div>
 </div>

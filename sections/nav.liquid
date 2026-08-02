@@ -504,7 +504,74 @@
     .announcement-bar__track,
     .announcement-bar__content { gap: 20px; }
   }
-  
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .announcement-bar { height: 29px; }
+
+    .announcement-bar__track,
+    .announcement-bar__content { gap: 16px; }
+
+    .announcement-bar__item {
+      font-size: 9.5px;
+      letter-spacing: 0.77px;
+      line-height: 29px;
+    }
+
+    .announcement-star {
+      font-size: 9.5px;
+      line-height: 29px;
+    }
+
+    .header__inner {
+      padding: 12px;
+      gap: 12px;
+    }
+
+    .header__logo-image { width: 72px; }
+
+    .header__actions { gap: 12px; }
+
+    .header__cart {
+      width: 38px;
+      height: 38px;
+    }
+
+    .header__cart svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .header__cart-count {
+      top: -5px;
+      right: -5px;
+      min-width: 19px;
+      height: 19px;
+      font-size: 10.5px;
+    }
+
+    .header__menu-toggle {
+      width: 38px;
+      height: 38px;
+    }
+
+    .header__burger,
+    .header__burger::before,
+    .header__burger::after { width: 18px; }
+
+    .header__burger::before { top: -6px; }
+    .header__burger::after { top: 6px; }
+
+    .header__mobile-nav { padding: 12px 16px; }
+
+    .header__mobile-link {
+      padding: 9.5px 0;
+      font-size: 14.5px;
+    }
+  }
+
   @media screen and (min-width: 1001px) {
     .header__mobile-nav { display: none !important; }
   }

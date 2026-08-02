@@ -6,6 +6,7 @@
         "vendor": { "type": "vendor" },
         "title": { "type": "title" },
         "price": { "type": "price" },
+        "benefits": { "type": "benefits" },
         "variant_picker": { "type": "variant_picker" },
         "quantity": { "type": "quantity" },
         "buy_buttons": {
@@ -19,6 +20,7 @@
         "vendor",
         "title",
         "price",
+        "benefits",
         "variant_picker",
         "quantity",
         "buy_buttons",

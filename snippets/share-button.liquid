@@ -22,6 +22,7 @@
 {%- endcomment -%}
 <share-button class="share-button" data-share-url="{{ shop.url }}{{ share_link }}">
   <button type="button" class="share-button__button button button--secondary">
+    {% render 'icon', name: 'share' %}
     {{ 'products.product.share' | t }}
   </button>
   <span class="share-button__message" role="status" aria-live="polite" hidden></span>

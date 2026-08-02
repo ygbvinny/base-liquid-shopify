@@ -559,6 +559,116 @@
 
     .faq-promo__cta { width: 100%; }
   }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .faq-section__inner {
+      padding: 42px 16px 48px;
+      gap: 32px;
+    }
+
+    .faq-top { gap: 26px; }
+
+    .faq-intro__eyebrow { gap: 8px; }
+    .faq-intro__eyebrow svg { width: 16px; height: 16px; }
+
+    .faq-intro__eyebrow span {
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    .faq-intro__title {
+      font-size: 38px;
+      line-height: 37px;
+      letter-spacing: -1.28px;
+      margin-top: 12px;
+    }
+
+    .faq-intro__divider {
+      gap: 8px;
+      margin-top: 19px;
+    }
+
+    .faq-intro__divider-line { width: 90px; }
+
+    .faq-intro__divider svg { width: 29px; height: 29px; }
+
+    .faq-intro__desc {
+      font-size: 13px;
+      line-height: 21px;
+      margin-top: 12px;
+    }
+
+    .faq-accordion { gap: 10px; }
+
+    .faq-item { border-radius: 12px; }
+
+    .faq-item__toggle {
+      min-height: 53px;
+      padding: 9.5px 11px;
+      gap: 10px;
+    }
+
+    .faq-item__number {
+      width: 32px;
+      height: 32px;
+      border-radius: 16px;
+      font-size: 13px;
+    }
+
+    .faq-item__question { font-size: 13.5px; }
+
+    .faq-item__icon {
+      width: 29px;
+      height: 29px;
+      border-radius: 15px;
+    }
+
+    .faq-item__icon svg { width: 16px; height: 16px; }
+
+    .faq-item__answer {
+      font-size: 12px;
+      line-height: 20px;
+      padding: 16px 13px 19px;
+    }
+
+    .faq-promo { border-radius: 27px; }
+
+    .faq-promo__content { padding: 26px 16px 23px; }
+
+    .faq-promo__badge {
+      gap: 7px;
+      padding: 8px 17px;
+      margin-bottom: 19px;
+      font-size: 11px;
+    }
+
+    .faq-promo__badge svg { width: 16px; height: 16px; }
+
+    .faq-promo__title {
+      font-size: 30px;
+      line-height: 27px;
+      letter-spacing: -0.8px;
+    }
+
+    .faq-promo__desc {
+      font-size: 12px;
+      line-height: 20px;
+      margin: 18px auto;
+    }
+
+    .faq-promo__cta {
+      gap: 7px;
+      min-height: 53px;
+      padding: 18px 44px;
+      font-size: 13px;
+      letter-spacing: 0.45px;
+    }
+
+    .faq-promo__cta svg { width: 16px; height: 16px; }
+  }
 </style>
 
 {%- capture icon_plus_svg -%}{% render 'icon', name: 'plus' %}{%- endcapture -%}

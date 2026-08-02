@@ -51,7 +51,10 @@
 
             {%- for filter in collection.filters -%}
               <details class="collection__filter">
-                <summary class="collection__filter-summary">{{ filter.label | escape }}</summary>
+                <summary class="collection__filter-summary">
+                  <span>{{ filter.label | escape }}</span>
+                  {% render 'icon', name: 'chevron' %}
+                </summary>
                 <div class="collection__filter-content">
                   {%- case filter.type -%}
                     {%- when 'list', 'boolean' -%}
@@ -206,6 +209,10 @@
       {% render 'pagination', paginate: paginate %}
     {%- endif -%}
   </div>
+
+  <div class="page-width">
+    {% render 'trust-bar', settings_source: section %}
+  </div>
 {%- endpaginate -%}
 
 <style>
@@ -227,23 +234,41 @@
     position: relative;
   }
   #shopify-section-{{ section.id }} .collection__filter-summary {
-    cursor: pointer;
-    padding: 8px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
     font-size: var(--f2);
+    color: var(--color-text, #000);
     border: 1px solid var(--color-border, #c2c2c2);
-    border-radius: var(--inputs-radius, 4px);
+    border-radius: 10px;
+    background-color: var(--color-background, #fff);
     list-style: none;
     user-select: none;
+  }
+  #shopify-section-{{ section.id }} .collection__filter-summary svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.6;
+  }
+  #shopify-section-{{ section.id }} .collection__filter[open] .collection__filter-summary {
+    border-color: var(--color-text, #000);
   }
   #shopify-section-{{ section.id }} .collection__filter-summary::-webkit-details-marker {
     display: none;
   }
   #shopify-section-{{ section.id }} .collection__filter-content {
-    margin-top: 8px;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 2;
+    min-width: 220px;
     padding: 12px;
     border: 1px solid var(--color-border, #c2c2c2);
-    border-radius: var(--inputs-radius, 4px);
+    border-radius: 10px;
     background-color: var(--color-background, #fff);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   }
   #shopify-section-{{ section.id }} .collection__filter-values {
     list-style: none;
@@ -274,7 +299,10 @@
   #shopify-section-{{ section.id }} .collection__filter-actions {
     display: flex;
     gap: 8px;
-    align-items: flex-end;
+    align-items: center;
+  }
+  #shopify-section-{{ section.id }} .collection__filter-actions .button {
+    border-radius: 10px;
   }
   #shopify-section-{{ section.id }} .collection__toolbar-bar {
     display: flex;
@@ -389,6 +417,93 @@
       "id": "enable_filtering",
       "default": true,
       "label": "t:sections.main_collection.settings.enable_filtering.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_bar",
+      "label": "t:sections.main_collection.settings.show_trust_bar.label",
+      "default": true
+    },
+    { "type": "header", "content": "t:sections.main_collection.settings.header__trust_bar.content" },
+    {
+      "type": "select",
+      "id": "trust_icon_1",
+      "label": "t:sections.main_collection.settings.trust_icon.label",
+      "default": "box",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_1",
+      "label": "t:sections.main_collection.settings.trust_text.label",
+      "default": "Frete rápido e seguro"
+    },
+    {
+      "type": "select",
+      "id": "trust_icon_2",
+      "label": "t:sections.main_collection.settings.trust_icon.label",
+      "default": "shield",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_2",
+      "label": "t:sections.main_collection.settings.trust_text.label",
+      "default": "Compra segura e protegida"
+    },
+    {
+      "type": "select",
+      "id": "trust_icon_3",
+      "label": "t:sections.main_collection.settings.trust_icon.label",
+      "default": "credit-card",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_3",
+      "label": "t:sections.main_collection.settings.trust_text.label",
+      "default": "Pagamento facilitado em até 12x"
+    },
+    {
+      "type": "select",
+      "id": "trust_icon_4",
+      "label": "t:sections.main_collection.settings.trust_icon.label",
+      "default": "star",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_4",
+      "label": "t:sections.main_collection.settings.trust_text.label",
+      "default": "Satisfação garantida"
     }
   ]
 }

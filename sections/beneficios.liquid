@@ -190,6 +190,42 @@
       margin-top: 16px;
     }
   }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .beneficios-section__inner { padding: 42px 24px 32px; }
+
+    .beneficios-cards { gap: 16px; }
+
+    .beneficios-card {
+      gap: 13px;
+      border-radius: 13px;
+      padding: 19px;
+    }
+
+    .beneficios-card__label {
+      font-size: 13px;
+      letter-spacing: 0.63px;
+    }
+
+    .beneficios-card__top svg { width: 24px; height: 24px; }
+
+    .beneficios-card__title {
+      font-size: 42px;
+      line-height: 37px;
+    }
+
+    .beneficios-card__title-small { font-size: 32px; }
+
+    .beneficios-card__desc { font-size: 11px; }
+
+    .beneficios-section__footnote {
+      font-size: 10px;
+      margin-top: 13px;
+    }
+  }
 </style>
 
 {% schema %}

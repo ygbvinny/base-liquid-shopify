@@ -41,12 +41,15 @@
   assign current_variant = product.selected_or_first_available_variant
 -%}
 
+{% render 'breadcrumb', title: product.title %}
+
 <section class="product page-width" data-section-id="{{ section.id }}">
+ <div class="product__body">
   <div class="product__media-wrapper">
     {%- if product.featured_media != blank -%}
-      <div class="product__media-list" id="ProductMedia-{{ section.id }}">
+      <div class="product__media-main" id="ProductMedia-{{ section.id }}">
         {%- for media in product.media -%}
-          <div class="product__media-item" data-media-id="{{ media.id }}">
+          <div class="product__media-item {% if forloop.first %}is-active{% endif %}" data-media-id="{{ media.id }}">
             {%- case media.media_type -%}
               {%- when 'image' -%}
                 {{
@@ -70,6 +73,24 @@
           </div>
         {%- endfor -%}
       </div>
+      {%- if product.media.size > 1 -%}
+        <div class="product__media-thumbs" id="ProductMediaThumbs-{{ section.id }}">
+          {%- for media in product.media -%}
+            <button
+              type="button"
+              class="product__media-thumb {% if forloop.first %}is-active{% endif %}"
+              data-media-id="{{ media.id }}"
+              aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
+            >
+              {{
+                media.preview_image
+                | image_url: width: 200
+                | image_tag: loading: 'lazy', sizes: '90px', widths: '90, 120, 160, 200', alt: media.alt | default: product.title | escape
+              }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     {%- else -%}
       <div class="product__media-item product__media-placeholder">
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -130,6 +151,22 @@
                 </div>
               {%- endif -%}
             </div>
+
+          {%- when 'benefits' -%}
+            <ul class="product__benefits" {{ block.shopify_attributes }}>
+              {%- for i in (1..3) -%}
+                {%- assign benefit_icon = 'benefit_icon_' | append: i -%}
+                {%- assign benefit_text = 'benefit_text_' | append: i -%}
+                {%- assign icon_value = block.settings[benefit_icon] -%}
+                {%- assign text_value = block.settings[benefit_text] -%}
+                {%- if text_value != blank -%}
+                  <li class="product__benefit">
+                    {% render 'icon', name: icon_value %}
+                    <span>{{ text_value }}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
 
           {%- when 'description' -%}
             {%- if product.description != blank -%}
@@ -243,6 +280,9 @@
       {%- endfor -%}
     {%- endform -%}
   </div>
+ </div>
+
+  {% render 'trust-bar', settings_source: section %}
 </section>
 
 {% render 'product-media-gallery', section_id: section.id %}
@@ -258,6 +298,82 @@
     { "type": "vendor", "name": "t:sections.main_product.blocks.vendor.name", "limit": 1 },
     { "type": "title", "name": "t:sections.main_product.blocks.title.name", "limit": 1 },
     { "type": "price", "name": "t:sections.main_product.blocks.price.name", "limit": 1 },
+    {
+      "type": "benefits",
+      "name": "t:sections.main_product.blocks.benefits.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "benefit_icon_1",
+          "label": "t:sections.main_product.blocks.benefits.settings.benefit_icon.label",
+          "default": "box",
+          "options": [
+            { "value": "box", "label": "Caixa" },
+            { "value": "leaf", "label": "Folha" },
+            { "value": "smiley", "label": "Rosto feliz" },
+            { "value": "shield", "label": "Escudo" },
+            { "value": "credit-card", "label": "Cartão" },
+            { "value": "star", "label": "Estrela" },
+            { "value": "sparkle", "label": "Brilho" },
+            { "value": "check-circle", "label": "Check" },
+            { "value": "rocket", "label": "Foguete" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "benefit_text_1",
+          "label": "t:sections.main_product.blocks.benefits.settings.benefit_text.label",
+          "default": "Zero adição de açúcar"
+        },
+        {
+          "type": "select",
+          "id": "benefit_icon_2",
+          "label": "t:sections.main_product.blocks.benefits.settings.benefit_icon.label",
+          "default": "leaf",
+          "options": [
+            { "value": "box", "label": "Caixa" },
+            { "value": "leaf", "label": "Folha" },
+            { "value": "smiley", "label": "Rosto feliz" },
+            { "value": "shield", "label": "Escudo" },
+            { "value": "credit-card", "label": "Cartão" },
+            { "value": "star", "label": "Estrela" },
+            { "value": "sparkle", "label": "Brilho" },
+            { "value": "check-circle", "label": "Check" },
+            { "value": "rocket", "label": "Foguete" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "benefit_text_2",
+          "label": "t:sections.main_product.blocks.benefits.settings.benefit_text.label",
+          "default": "Ingredientes selecionados"
+        },
+        {
+          "type": "select",
+          "id": "benefit_icon_3",
+          "label": "t:sections.main_product.blocks.benefits.settings.benefit_icon.label",
+          "default": "smiley",
+          "options": [
+            { "value": "box", "label": "Caixa" },
+            { "value": "leaf", "label": "Folha" },
+            { "value": "smiley", "label": "Rosto feliz" },
+            { "value": "shield", "label": "Escudo" },
+            { "value": "credit-card", "label": "Cartão" },
+            { "value": "star", "label": "Estrela" },
+            { "value": "sparkle", "label": "Brilho" },
+            { "value": "check-circle", "label": "Check" },
+            { "value": "rocket", "label": "Foguete" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "benefit_text_3",
+          "label": "t:sections.main_product.blocks.benefits.settings.benefit_text.label",
+          "default": "Pronto para devorar"
+        }
+      ]
+    },
     { "type": "variant_picker", "name": "t:sections.main_product.blocks.variant_picker.name", "limit": 1 },
     { "type": "quantity", "name": "t:sections.main_product.blocks.quantity.name", "limit": 1 },
     {
@@ -288,7 +404,95 @@
       ]
     }
   ],
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_trust_bar",
+      "label": "t:sections.main_product.settings.show_trust_bar.label",
+      "default": true
+    },
+    { "type": "header", "content": "t:sections.main_product.settings.header__trust_bar.content" },
+    {
+      "type": "select",
+      "id": "trust_icon_1",
+      "label": "t:sections.main_product.settings.trust_icon.label",
+      "default": "box",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_1",
+      "label": "t:sections.main_product.settings.trust_text.label",
+      "default": "Frete rápido e seguro"
+    },
+    {
+      "type": "select",
+      "id": "trust_icon_2",
+      "label": "t:sections.main_product.settings.trust_icon.label",
+      "default": "shield",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_2",
+      "label": "t:sections.main_product.settings.trust_text.label",
+      "default": "Compra segura e protegida"
+    },
+    {
+      "type": "select",
+      "id": "trust_icon_3",
+      "label": "t:sections.main_product.settings.trust_icon.label",
+      "default": "credit-card",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_3",
+      "label": "t:sections.main_product.settings.trust_text.label",
+      "default": "Pagamento facilitado em até 12x"
+    },
+    {
+      "type": "select",
+      "id": "trust_icon_4",
+      "label": "t:sections.main_product.settings.trust_icon.label",
+      "default": "star",
+      "options": [
+        { "value": "box", "label": "Caixa" },
+        { "value": "shield", "label": "Escudo" },
+        { "value": "credit-card", "label": "Cartão" },
+        { "value": "star", "label": "Estrela" },
+        { "value": "leaf", "label": "Folha" },
+        { "value": "smiley", "label": "Rosto feliz" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "trust_text_4",
+      "label": "t:sections.main_product.settings.trust_text.label",
+      "default": "Satisfação garantida"
+    }
+  ],
   "presets": [
     {
       "name": "t:sections.main_product.name",
@@ -296,6 +500,7 @@
         { "type": "vendor" },
         { "type": "title" },
         { "type": "price" },
+        { "type": "benefits" },
         { "type": "variant_picker" },
         { "type": "quantity" },
         { "type": "buy_buttons" },
