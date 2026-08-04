@@ -37,7 +37,7 @@
       </div>
 
       <h1 class="hero-section__title">
-        Sua deita<br>
+        Sua dieta<br>
         não precisa<br>
         ser <span class="hero-section__title-highlight">sem graça.</span>
       </h1>
@@ -355,6 +355,140 @@
       height: auto;
       right: 50px;
       bottom: 28%;
+    }
+  }
+
+  /* ============================================================
+     FAIXA TABLET (441px – 1000px)
+     ============================================================
+     A arte mobile (hero-banner-mobile.webp) é retrato 960x1811, ou seja,
+     1,886x mais alta que larga. Com `aspect-ratio: 960/1811` a section
+     full-bleed crescia junto com a largura: 1449px de altura em 768px e
+     1885px em 999px — um banner de quase duas telas antes do conteúdo.
+
+     Aqui a altura deixa de ser proporcional e vira "espaço do pote (que
+     acompanha a largura da arte) + altura fixa do conteúdo":
+
+       altura = 72,5vw + 510px
+
+     O excesso vira corte no TOPO da arte (`object-position: center bottom`),
+     que é justamente o céu vazio onde o texto já fica por cima — o pote,
+     o splash e o planeta continuam inteiros. Resultado: 1067px em 768px e
+     1234px em 999px, sempre com ~38px de respiro entre o último CTA e a
+     tampa do pote.
+
+     O ponto de partida (441px) é exatamente onde essa fórmula cruza a
+     altura natural da arte (830px vs 832px), então não há salto ao
+     redimensionar vindo do mobile. Abaixo disso o `aspect-ratio` original
+     segue valendo, intacto.
+     ============================================================ */
+  @media screen and (min-width: 441px) and (max-width: 1000px) {
+    .hero-section {
+      aspect-ratio: auto;
+      height: calc(72.5vw + 510px);
+    }
+
+    /* Ancora a arte embaixo: o corte come só o céu vazio do topo */
+    .hero-section__bg { object-position: center bottom; }
+
+    /* Badges decorativos: em px/% fixos eles descolavam do pote conforme a
+       arte crescia. Em vw ficam travados no mesmo ponto da arte em qualquer
+       largura da faixa (os valores batem com os 92/115/50px e 16%/28% do
+       bloco mobile no cruzamento de 441px, então a transição é contínua). */
+    .hero-decorative-badge--left {
+      width: 20.9vw;   /* 92px @441 → 209px @999 (asset tem 220px, não amplia) */
+      left: 11.3vw;    /* 50px @441 */
+      bottom: 30.2vw;  /* = 16% da altura da arte, agora travado nela */
+    }
+
+    .hero-decorative-badge--right {
+      width: 26.1vw;   /* 115px @441 → 261px @999 (asset tem 360px, não amplia) */
+      right: 11.3vw;   /* 50px @441 */
+      bottom: 52.8vw;  /* = 28% da altura da arte, agora travado nela */
+    }
+  }
+
+  /* ============================================================
+     iPAD AIR 5 — RETRATO (820px de largura)
+     ============================================================
+     Faixa estreita de ±10px em torno de 820px para pegar só o iPad Air 5
+     em retrato (o iPad Pro 11" tem 834px e fica de fora). Sem trava de
+     `height`: a barra de endereço do Safari some/aparece e muda a altura
+     real do viewport, então a regra falharia de forma intermitente.
+
+     Todo o conteúdo cresce 40% sobre os valores herdados do bloco mobile
+     (≤1000px). A ARTE DE FUNDO NÃO MUDA — `.hero-section__bg`, o <picture>
+     e o `object-position: center bottom` seguem intactos.
+
+     ALTURA: o bloco de texto passa de ~433px para ~586px (+152,6px). Como o
+     conteúdo é ancorado no topo e a arte no rodapé, somamos 153px à fórmula
+     da faixa tablet para devolver exatamente o mesmo respiro entre o último
+     CTA e a tampa do pote (o excesso vira só mais céu vazio no topo, nada
+     do pote/splash/planeta é cortado).
+     ============================================================ */
+  @media screen and (min-width: 810px) and (max-width: 830px) {
+    /* 1104px → 1257px @820: +153px = crescimento do bloco de texto */
+    .hero-section { height: calc(72.5vw + 510px + 153px); }
+
+    .hero-section__content { gap: 14px; } /* 10px × 1.4 */
+
+    .hero-badge {
+      gap: 11.2px;              /* 8px × 1.4 */
+      padding: 13.3px 18.62px;  /* 9.5px 13.3px × 1.4 */
+    }
+
+    .hero-badge span {
+      font-size: 14.63px;       /* 10.45px × 1.4 */
+      letter-spacing: 1.176px;  /* 0.84px × 1.4 */
+    }
+
+    .hero-badge svg { width: 28px; height: 28px; } /* 20px × 1.4 */
+
+    .hero-section__title {
+      font-size: 64.68px;          /* 46.2px × 1.4 */
+      line-height: 73.92px;        /* 52.8px × 1.4 */
+      letter-spacing: -2.541px;    /* -1.815px × 1.4 */
+      -webkit-text-stroke: 2.8px #000000; /* 2px × 1.4, mantém o peso do traçado */
+    }
+
+    .hero-section__subtitle {
+      font-size: 21px;          /* 15px × 1.4 */
+      line-height: 30.8px;      /* 22px × 1.4 */
+    }
+
+    .hero-actions { gap: 14px; } /* 10px × 1.4 */
+
+    .hero-cta-primary {
+      gap: 12.6px;               /* 9px × 1.4 */
+      padding: 26.6px 39.2px;    /* 19px 28px × 1.4 */
+      font-size: 18.2px;         /* 13px × 1.4 */
+      letter-spacing: 0.637px;   /* 0.455px × 1.4 */
+    }
+
+    .hero-cta-primary svg { width: 28px; height: 28px; } /* 20px × 1.4 */
+
+    .hero-cta-secondary {
+      gap: 11.2px;              /* 8px × 1.4 */
+      padding: 14px 0 16.8px;   /* 10px 0 12px × 1.4 */
+      font-size: 19.6px;        /* 14px × 1.4 */
+    }
+
+    .hero-cta-secondary svg { width: 28px; height: 28px; } /* 20px × 1.4 */
+
+    /* Badges decorativos: base 40% maior (acima), reduzida em mais 20%
+       a pedido do cliente = net 1.4 × 0.8 = 1.12× o tamanho original.
+       Offset recuado em metade do encolhimento (largura e altura) pra
+       manter o CENTRO de cada badge no mesmo ponto do pote. */
+    .hero-decorative-badge--left {
+      width: 23.41vw;  /* 29.26vw × 0.8 = 192px @820 */
+      left: 10vw;      /* 58px + 24px (metade do −width) = 82px @820 */
+      bottom: 29.54vw; /* 229px + 13.2px (metade do −height) = 242.2px @820 */
+    }
+
+    .hero-decorative-badge--right {
+      width: 29.27vw;  /* 36.54vw × 0.8 = 240px @820 */
+      right: 9.76vw;   /* 50px + 30px (metade do −width) = 80px @820 */
+      bottom: 51.93vw; /* 409px + 16.8px (metade do −height) = 425.8px @820 */
     }
   }
 

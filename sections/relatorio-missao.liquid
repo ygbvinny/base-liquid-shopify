@@ -165,6 +165,23 @@
   }
 
   /* ============================================================
+     FAIXA TABLET (601–1000px)
+     ============================================================
+     Empilhados, o parágrafo travado em 380px e o card de imagem em
+     100% (que em 900px vira ~860px de largura) ficam com proporções
+     descasadas na mesma coluna. Aqui o parágrafo passa a acompanhar a
+     largura da imagem: 72% dela, com teto de 560px pra não estourar a
+     medida de leitura confortável (~70 caracteres por linha em 16px).
+     Como a linha fica mais longa, a entrelinha sobe de 20px pra 26px
+     (1.6), que é o mínimo saudável pra texto corrido. */
+  @media screen and (min-width: 601px) and (max-width: 1000px) {
+    .relatorio-missao__paragraph {
+      max-width: min(72%, 560px);
+      line-height: 26px;
+    }
+  }
+
+  /* ============================================================
      VERSÃO MOBILE PEQUENA (iPhone SE e similares)
      ============================================================ */
   @media screen and (max-width: 400px) {

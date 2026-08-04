@@ -192,6 +192,28 @@
   }
 
   /* ============================================================
+     FAIXA TABLET (601–1000px)
+     ============================================================
+     Os cards empilhados nasceram pra ~375px de tela. Sem limite, em
+     900px+ eles esticam pra ~840px de largura e o título de 52px fica
+     perdido num card muito mais largo do que alto (o desktop usa card
+     de 404px com título de 78px — proporção bem mais vertical).
+
+     Em vez de limitar só o card, limitamos a coluna de conteúdo inteira
+     (.beneficios-section__inner já tem margin: 0 auto, então ela apenas
+     centraliza). Assim os cards E a nota de rodapé continuam alinhados
+     entre si, e a partir de 720px o layout congela — nada mais estica
+     ao redimensionar até 1000px. Card resultante: ~660px, com título
+     de 52px numa proporção próxima da do desktop. */
+  @media screen and (min-width: 601px) and (max-width: 1000px) {
+    .beneficios-section__inner { max-width: 720px; }
+
+    .beneficios-card { padding: 28px; }
+
+    .beneficios-card__desc { font-size: 15px; }
+  }
+
+  /* ============================================================
      VERSÃO MOBILE PEQUENA (iPhone SE e similares)
      ============================================================ */
   @media screen and (max-width: 400px) {

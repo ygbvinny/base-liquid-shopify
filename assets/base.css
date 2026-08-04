@@ -152,10 +152,32 @@ textarea.field__input {
   padding: 0;
 }
 
+/* Mobile e tablet retrato: 2 colunas (base do comportamento <= 1000px) */
 @media screen and (max-width: 1000px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+}
+
+/* Tablet retrato (601px - 840px): mantem 2 colunas, mas com respiro
+   maior entre os cards, aproximando do ritmo do desktop (24px). */
+@media screen and (min-width: 601px) and (max-width: 840px) {
+  .product-grid {
+    gap: 16px;
+  }
+}
+
+/* Tablet largo / paisagem (841px - 1000px): 3 colunas.
+   Nesta faixa o card fica com ~253px+ de largura, espaco suficiente
+   para o preco grande (.price--card) e o botao de compra rapida
+   (44px) conviverem na mesma linha do rodape do card sem espremer.
+   Abaixo de 841px, 3 colunas deixariam o card < 250px e quebrariam
+   esse rodape, por isso a faixa comeca aqui. */
+@media screen and (min-width: 841px) and (max-width: 1000px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
   }
 }
 
@@ -183,7 +205,7 @@ textarea.field__input {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .card-product__image--secondary { opacity: 0; transition: opacity 0.25s ease; }
 .card-product:hover .card-product__image--secondary { opacity: 1; }
@@ -201,7 +223,7 @@ textarea.field__input {
 .card-product__badge--sold-out { background-color: var(--color-border, #c2c2c2); color: var(--color-text, #000); }
 .card-product__info { padding: 12px 0 0; }
 .card-product__vendor { display: block; font-size: var(--f0); opacity: 0.6; margin-bottom: 4px; }
-.card-product__title { font-size: var(--f2); font-weight: 700; margin-bottom: 6px; }
+.card-product__title { font-size: clamp(1.15rem, 1.3vw, 1.35rem); font-weight: 700; line-height: 1.25; margin-bottom: 8px; }
 .card-product__desc {
   font-size: var(--f0);
   color: var(--color-text, #000);
@@ -220,26 +242,52 @@ textarea.field__input {
   gap: 12px;
   margin-top: 14px;
 }
-.price--card { font-size: var(--f3); font-weight: 800; }
+.price--card { font-size: clamp(1.8rem, 1.6vw, 2.1rem); font-weight: 800; line-height: 1.15; }
 .card-product__quick-add-form { display: contents; }
 .card-product__quick-add {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   width: 44px;
   height: 44px;
   flex-shrink: 0;
   padding: 0;
   color: var(--color-text, #000);
   background-color: var(--color-background-contrast, #f2f3f8);
-  border: none;
+  border: 2px solid #4b291d;
   border-radius: 50%;
+  box-shadow: 0 3px 0 #4b291d;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
-.card-product__quick-add:hover { opacity: 0.8; }
-.card-product__quick-add[disabled] { opacity: 0.4; cursor: not-allowed; }
+.card-product__quick-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 #4b291d;
+  background-color: var(--color-accent, #f2f3f8);
+  color: var(--color-accent-text, #fff);
+}
+.card-product__quick-add:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #4b291d;
+}
+.card-product__quick-add:focus-visible {
+  outline: 2px solid #4b291d;
+  outline-offset: 3px;
+}
+.card-product__quick-add[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  background-color: var(--color-background-contrast, #f2f3f8);
+  color: var(--color-text, #000);
+}
 .card-product__quick-add svg { width: 20px; height: 20px; }
+@media (prefers-reduced-motion: reduce) {
+  .card-product__quick-add { transition: background-color 0.15s ease, color 0.15s ease; }
+  .card-product__quick-add:hover, .card-product__quick-add:active { transform: none; }
+}
 
 /* Rich text content (RTE) shared styles */
 .rte a { color: var(--color-accent); }

@@ -367,6 +367,31 @@
   }
 
   /* ============================================================
+     FAIXA TABLET (601–1000px)
+     ============================================================
+     O card fixo em 304px foi desenhado pra ~375–400px de tela. Acima
+     de 600px ele deixa um "peek" (pedaço do próximo card) aleatório,
+     que muda a cada largura. Aqui a largura vira fluida e derivada do
+     próprio container do carrossel (100% = largura útil do .receitas-carousel,
+     já com os 30px de padding do inner descontados), então o número de
+     cards visíveis + o peek fica sempre intencional:
+
+       601–860px  → 2 cards inteiros + ~45% do terceiro (2 gaps de 20px)
+       861–1000px → 3 cards inteiros + ~45% do quarto (3 gaps de 20px)
+
+     A troca de 2 pra 3 cards em 860px é proposital: como a mídia é 9:16,
+     manter 2 cards acima disso deixaria cada card com mais de 550px de
+     altura. O intervalo de largura resultante (≈205–310px) mantém o card
+     próximo do tamanho de referência do desktop (298.5px). */
+  @media screen and (min-width: 601px) and (max-width: 860px) {
+    .receitas-card { width: calc((100% - 40px) / 2.45); }
+  }
+
+  @media screen and (min-width: 861px) and (max-width: 1000px) {
+    .receitas-card { width: calc((100% - 60px) / 3.45); }
+  }
+
+  /* ============================================================
      VERSÃO MOBILE PEQUENA (iPhone SE e similares)
      ============================================================ */
   @media screen and (max-width: 400px) {
