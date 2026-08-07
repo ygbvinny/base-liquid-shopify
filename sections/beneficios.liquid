@@ -155,12 +155,12 @@
 
     .beneficios-card {
       width: 100%;
-      min-height: 0;
+      min-height: 200px; /* teste — Figma real é 281px (node 74:36) */
       justify-content: flex-start;
       gap: 16px;
       border-width: 1px;
       border-radius: 16px;
-      padding: 24px;
+      padding: 25px; /* Figma: p-24.645px, praticamente igual ao original — a altura vem do min-height, não do padding */
     }
 
     .beneficios-card__label {
@@ -178,6 +178,8 @@
     .beneficios-card__title--tight { width: 100%; }
 
     .beneficios-card__title-small { font-size: 40px; }
+
+    .beneficios-card__body { gap: 10px; } /* 5% do min-height (200px) — título e desc grudados sem isso (margin:0) */
 
     .beneficios-card__desc {
       font-size: 14px;
@@ -208,7 +210,7 @@
   @media screen and (min-width: 601px) and (max-width: 1000px) {
     .beneficios-section__inner { max-width: 720px; }
 
-    .beneficios-card { padding: 28px; }
+    .beneficios-card { min-height: 0; padding: 28px; }
 
     .beneficios-card__desc { font-size: 15px; }
   }

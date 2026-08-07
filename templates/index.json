@@ -15,9 +15,9 @@
     "kits": {
       "type": "kits",
       "settings": {
-        "kit_1_product": "kit-dupla-em-orbita",
-        "kit_2_product": "kit-missao-em-grupo",
-        "kit_3_product": "kit-base-abastecida"
+        "kit_1_product": "dupla-em-orbita",
+        "kit_2_product": "missao-em-grupo",
+        "kit_3_product": "base-abastecida"
       }
     },
     "faq": {

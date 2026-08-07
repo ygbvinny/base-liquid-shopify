@@ -54,7 +54,7 @@
             src="{{ 'receita-pudim-em-orbita.webp' | asset_url }}"
             alt="Pudim em órbita"
             width="700"
-            height="875"
+            height="1254"
             loading="lazy"
           >
         </div>
@@ -73,7 +73,7 @@
             src="{{ 'receita-mini-banoffee-cosmica.webp' | asset_url }}"
             alt="Mini banoffee cósmica"
             width="700"
-            height="560"
+            height="1254"
             loading="lazy"
           >
         </div>
@@ -92,7 +92,7 @@
             src="{{ 'receita-pastel-de-outro-mundo.webp' | asset_url }}"
             alt="Pastel de outro mundo"
             width="700"
-            height="560"
+            height="1254"
             loading="lazy"
           >
         </div>
@@ -111,7 +111,7 @@
             src="{{ 'receita-morangos-gravidade-zero.webp' | asset_url }}"
             alt="Morangos em gravidade zero"
             width="700"
-            height="564"
+            height="1254"
             loading="lazy"
           >
         </div>
@@ -352,8 +352,11 @@
     .receitas-card {
       width: 304px;
       border-width: 1px;
-      border-radius: 4px;
-      box-shadow: 0 2px 0 #4B291D;
+      /* Arredondamento e sombra proporcionais ao desktop (24px/8px @298.5px de
+         card = ~8% e ~2.7% da largura do card). Em 304px isso já bate quase
+         igual ao desktop, então usamos os mesmos valores. */
+      border-radius: 24px;
+      box-shadow: 0 8px 0 #4B291D;
     }
 
     .receitas-card__footer { padding: 12px 15px; }
@@ -384,11 +387,22 @@
      altura. O intervalo de largura resultante (≈205–310px) mantém o card
      próximo do tamanho de referência do desktop (298.5px). */
   @media screen and (min-width: 601px) and (max-width: 860px) {
-    .receitas-card { width: calc((100% - 40px) / 2.45); }
+    /* Card ~204-310px nessa faixa (~257px médio): radius/sombra escalados
+       na mesma proporção do desktop (~8%/~2.7% da largura do card). */
+    .receitas-card {
+      width: calc((100% - 40px) / 2.45);
+      border-radius: 21px;
+      box-shadow: 0 7px 0 #4B291D;
+    }
   }
 
   @media screen and (min-width: 861px) and (max-width: 1000px) {
-    .receitas-card { width: calc((100% - 60px) / 3.45); }
+    /* Card ~215-255px nessa faixa (~235px médio), mesma proporção do desktop. */
+    .receitas-card {
+      width: calc((100% - 60px) / 3.45);
+      border-radius: 19px;
+      box-shadow: 0 6px 0 #4B291D;
+    }
   }
 
   /* ============================================================
@@ -430,7 +444,11 @@
 
     .receitas-carousel { gap: 16px; }
 
-    .receitas-card { width: 244px; }
+    .receitas-card {
+      width: 244px;
+      border-radius: 20px; /* mesma proporção do desktop (~8% da largura do card) */
+      box-shadow: 0 7px 0 #4B291D;
+    }
 
     .receitas-card__footer {
       gap: 10px;
