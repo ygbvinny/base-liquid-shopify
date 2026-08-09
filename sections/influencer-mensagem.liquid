@@ -12,7 +12,9 @@
 
   OBSERVAÇÕES:
   Segue a mesma paleta/fontes do resto do site (Coiny, Outfit).
-  Apenas versão desktop implementada por ora.
+  Versão mobile (≤1000px) reaproveita a mesma coluna centralizada
+  do desktop: só encolhe o respiro lateral e deixa a tipografia
+  fluida (clamp) para a headline caber sem quebrar torto.
 {%- endcomment -%}
 
 <section class="influencer-message" data-section-id="{{ section.id }}">
@@ -128,6 +130,113 @@
   .influencer-message__tag--cyan {
     background-color: #00E6F6;
     color: #4B291D;
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================
+     A section já é uma coluna centralizada no desktop, então aqui
+     não há o que empilhar: o trabalho é encolher o respiro lateral
+     (170px matava a largura útil no celular) e fazer a tipografia
+     grande de Coiny caber sem estourar a tela.
+
+     Título e subtítulo usam clamp() em vez de degraus fixos porque
+     a faixa 375–1000px é larga demais para um valor só: a headline
+     tem um <br> fixo, e se a fonte não acompanhar a largura da tela
+     a linha "Mais do que alcance," quebra em duas e vira 3 linhas
+     tortas. Os tetos (52px / 26px) ficam abaixo do desktop para a
+     transição em 1000px não dar salto. */
+  @media screen and (max-width: 1000px) {
+    .influencer-message__inner {
+      padding: 56px 30px; /* mesmo gap lateral do resto do mobile */
+      gap: 14px;
+    }
+
+    .influencer-message__eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.99px;
+    }
+
+    .influencer-message__title {
+      font-size: clamp(28px, 7.4vw, 52px);
+      line-height: 0.92; /* unitless: acompanha o clamp sem colar as linhas */
+      letter-spacing: -0.02em; /* mesma proporção do -1.44px do desktop */
+      max-width: 100%; /* trava qualquer chance de scroll horizontal */
+    }
+
+    .influencer-message__subtitle {
+      font-size: clamp(17px, 3.4vw, 26px);
+      line-height: 1.2;
+      letter-spacing: -0.02em; /* mesma proporção do -0.72px do desktop */
+      max-width: 100%;
+    }
+
+    .influencer-message__tags {
+      gap: 10px;
+      padding-top: 18px;
+    }
+
+    .influencer-message__tag {
+      padding: 11px 16px;
+      font-size: 11px;
+    }
+  }
+
+  /* ============================================================
+     CELULAR — node 83:296 do Figma (Mensagem principal - sessao 2)
+     ============================================================
+     Medidas do node na tela de 390px. O clamp da faixa acima serve
+     o tablet, onde o texto precisa acompanhar a largura; abaixo de
+     600px valem os valores fixos do design.
+
+     A mudança de fato é nas pills: no desktop elas são uma fileira
+     que quebra sozinha, e aqui viram uma coluna de 206px fixos.
+     ============================================================ */
+  @media screen and (max-width: 600px) {
+    .influencer-message__inner {
+      padding: 43px 30px 13px;
+      gap: 0; /* o respiro vem das margens do bloco de texto */
+    }
+
+    .influencer-message__eyebrow {
+      font-size: 13px;
+      letter-spacing: 1.17px;
+    }
+
+    /* min() em vez do 26px cravado: abaixo de 390px a headline
+       ganharia uma quarta linha e empurraria as pills pra fora da
+       primeira dobra. */
+    .influencer-message__title {
+      font-size: min(7.4vw, 26px);
+      line-height: 1.19; /* 31px sobre os 26px do design */
+      letter-spacing: normal;
+      max-width: 330px;
+      margin: 6px 0 15px;
+    }
+
+    .influencer-message__subtitle {
+      font-size: min(4.6vw, 16px);
+      line-height: 1.25; /* 20px sobre os 16px do design */
+      letter-spacing: normal;
+      max-width: 330px;
+    }
+
+    .influencer-message__tags {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 10px;
+      padding: 20px 30px;
+    }
+
+    .influencer-message__tag {
+      /* 206px é a largura do design; o min() evita estouro em telas
+         mais estreitas que 266px de área útil. */
+      width: min(206px, 100%);
+      justify-content: center;
+      padding: 12px 14px;
+      font-size: 10px;
+      box-shadow: 0 3px 0 #4B291D;
+    }
   }
 </style>
 

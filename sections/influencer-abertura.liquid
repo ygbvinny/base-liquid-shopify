@@ -12,7 +12,10 @@
 
   OBSERVAÇÕES:
   Segue a mesma paleta/fontes do resto do site (Coiny, Outfit,
-  Manrope). Apenas versão desktop implementada por ora.
+  Manrope).
+  Versão mobile (≤1000px): o bento de 12 colunas vira um grid fluido
+  de colunas automáticas (3 no tablet → 1 no celular), sem os spans
+  nem o degrau vertical do desktop, com tipografia e cards reduzidos.
 {%- endcomment -%}
 
 <section class="influencer-abertura" data-section-id="{{ section.id }}">
@@ -202,6 +205,184 @@
   .influencer-abertura__cta:hover {
     transform: translateY(-3px);
     box-shadow: 0 9px 0 #4B291D;
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================ */
+  @media screen and (max-width: 1000px) {
+    .influencer-abertura__inner { padding: 60px 30px; } /* mesmo gap lateral do resto do mobile */
+
+    .influencer-abertura__eyebrow {
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .influencer-abertura__title {
+      /* o <br> do markup trava o título em duas linhas, então a fonte precisa
+         acompanhar a largura da tela em vez de um px fixo: cresce até o teto de
+         62px no tablet e nunca passa de 32px no limite inferior da faixa,
+         garantindo que "Parceria boa é via" caiba sem estourar a lateral */
+      font-size: clamp(32px, 7.6vw, 62px);
+      line-height: 0.93;
+      letter-spacing: -1.2px;
+      margin-top: 10px;
+    }
+
+    .influencer-abertura__subtitle {
+      font-size: 15px;
+      margin-top: 12px;
+    }
+
+    .influencer-abertura__grid {
+      /* o bento de 12 colunas vira fluido: cada card pede no mínimo 260px e o
+         próprio grid decide quantas colunas cabem (3 no tablet, 2 no tablet
+         pequeno, 1 no celular). O min() impede que o mínimo de 260px fique
+         maior que o container e gere scroll horizontal em telas estreitas */
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    /* os spans e o degrau vertical só fazem sentido nas 12 colunas do desktop */
+    .ia-card--01,
+    .ia-card--02,
+    .ia-card--03,
+    .ia-card--04,
+    .ia-card--05 {
+      grid-column: auto;
+      margin-top: 0;
+    }
+
+    .ia-card {
+      padding: 22px;
+      gap: 8px;
+      min-height: 180px;
+      border-radius: 16px;
+      box-shadow: 0 6px 0 #4B291D; /* menor que o gap de 16px pra sombra não encostar no card de baixo */
+    }
+
+    .ia-card svg { width: 38px; height: 38px; }
+
+    .ia-card__badge {
+      top: 18px;
+      right: 18px;
+      font-size: 14px;
+    }
+
+    .ia-card__title { font-size: 26px; }
+
+    .ia-card__desc { font-size: 13px; }
+
+    .influencer-abertura__cta {
+      margin-top: 40px;
+      padding: 15px 32px;
+      font-size: 13px;
+    }
+  }
+
+  /* ============================================================
+     CELULAR — node 83:297 do Figma (Sessão 3 - abertura)
+     ============================================================
+     Medidas do node na tela de 390px. A faixa acima cobre o tablet,
+     onde os cards ainda cabem em 2 ou 3 colunas; aqui embaixo é
+     sempre uma coluna e valem os valores fixos do design.
+     ============================================================ */
+  @media screen and (max-width: 600px) {
+    .influencer-abertura__inner { padding: 30px 30px 50px; }
+
+    .influencer-abertura__eyebrow {
+      font-size: 13px;
+      letter-spacing: 1.17px;
+    }
+
+    /* O node usa 40px, mas lá o texto quebra sozinho — aqui o <br>
+       do markup corta depois de "via", e a 40px a primeira linha já
+       estoura antes disso, sobrando um "via" órfão no meio. 8,8vw é
+       o tamanho em que "Parceria boa é via" cabe inteira na linha. */
+    .influencer-abertura__title {
+      font-size: min(8.8vw, 40px);
+      line-height: 0.925; /* 37px sobre os 40px do design */
+      letter-spacing: normal;
+      margin-top: 20px;
+    }
+
+    .influencer-abertura__subtitle {
+      font-size: 16px;
+      margin-top: 16px;
+    }
+
+    .influencer-abertura__grid {
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .ia-card {
+      padding: 24px;
+      gap: 9px;
+      min-height: 190px;
+      border-radius: 12px;
+      box-shadow: 0 6px 0 #4B291D;
+    }
+
+    .ia-card svg { width: 36px; height: 36px; }
+
+    .ia-card__badge {
+      top: 22px;
+      right: 21px;
+      font-size: 13px;
+    }
+
+    .ia-card__title {
+      font-size: 29px;
+      line-height: 0.98; /* 28,42px sobre os 29px do design */
+    }
+
+    .ia-card__desc {
+      font-size: 12px;
+      line-height: 1.57; /* 18,85px sobre os 12px do design */
+    }
+
+    .influencer-abertura__cta {
+      margin-top: 30px;
+      padding: 17px 18px;
+      font-size: 12px;
+      box-shadow: 0 6px 0 #4B291D;
+    }
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================
+     O título já escala pelo min(10,3vw); aqui só apertamos os
+     respiros pra sobrar largura útil dentro dos cards.
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .influencer-abertura__inner { padding: 26px 20px 44px; }
+
+    .influencer-abertura__grid { margin-top: 26px; }
+
+    .ia-card {
+      padding: 20px;
+      min-height: 176px;
+    }
+
+    .ia-card svg { width: 32px; height: 32px; }
+
+    .ia-card__badge {
+      top: 18px;
+      right: 17px;
+      font-size: 12px;
+    }
+
+    .ia-card__title { font-size: 25px; }
+
+    .influencer-abertura__cta {
+      padding: 15px 16px;
+      box-shadow: 0 5px 0 #4B291D;
+    }
+
+    .influencer-abertura__cta:hover { box-shadow: 0 7px 0 #4B291D; }
   }
 </style>
 

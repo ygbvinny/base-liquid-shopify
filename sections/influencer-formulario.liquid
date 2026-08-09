@@ -17,7 +17,9 @@
   Notificações > "Formulário de contato". Campos extras (fora de
   contact[email]/contact[phone]/contact[body]) entram
   automaticamente no corpo do e-mail, sem precisar de app externo.
-  Apenas versão desktop implementada por ora.
+  Versão mobile (≤1000px): card com padding reduzido, grid de campos
+  em coluna única e botão de largura total. Os inputs sobem pra 16px
+  no mobile porque abaixo disso o iOS Safari dá zoom ao focar o campo.
 {%- endcomment -%}
 
 <section class="influencer-formulario" id="form" data-section-id="{{ section.id }}">
@@ -483,6 +485,178 @@
     font-weight: 500;
     font-size: 13px;
     color: #C0392B;
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================ */
+  @media screen and (max-width: 1000px) {
+    /* 220px de padding lateral não cabe no celular: cai pro mesmo
+       gap de 30px usado nas outras seções mobile. */
+    .influencer-formulario { padding: 50px 30px; }
+
+    /* Anel decorativo encolhe e sobe pro canto: em 480px ele cobria
+       quase toda a largura da tela atrás do card. */
+    .influencer-formulario__ring {
+      top: 40px;
+      right: -120px;
+      width: 260px;
+      height: 260px;
+      border-width: 2px;
+    }
+
+    /* Trava a largura do card na faixa tablet: com uma coluna só, um
+       formulário de 940px de largura ficaria com campos gigantes. */
+    .influencer-formulario__inner { max-width: 560px; }
+
+    .if-form {
+      padding: 30px 22px;
+      border-width: 2px;
+      border-radius: 18px;
+      box-shadow: 0 8px 0 #4B291D;
+      gap: 26px;
+    }
+
+    .if-form__intro { gap: 12px; }
+
+    .if-form__eyebrow {
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .if-form__title {
+      font-size: 40px;
+      line-height: 42.6px;
+    }
+
+    .if-form__subtitle {
+      font-size: 18px;
+      line-height: 22px;
+    }
+
+    .if-form__hint { font-size: 12px; }
+
+    .if-form__fieldset { gap: 22px; }
+
+    .if-form__fieldset legend { font-size: 22px; }
+
+    /* Uma coluna só: dois campos lado a lado ficariam com ~140px. */
+    .if-form__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    /* Com uma coluna, "span 2" criaria uma segunda coluna implícita e
+       estouraria a largura — 1 / -1 mantém o campo coerente. */
+    .if-form__field--full { grid-column: 1 / -1; }
+
+    /* 16px é o mínimo pro iOS Safari não dar zoom automático ao focar
+       o campo (no desktop são 15px). */
+    .if-form__field input,
+    .if-form__field select,
+    .if-form__field textarea {
+      font-size: 16px;
+      padding: 14px 15px;
+    }
+
+    .if-form__field textarea { min-height: 110px; }
+
+    /* Botão ocupa a largura toda do card no lugar dos 280px fixos. */
+    .if-form__submit {
+      width: 100%;
+      min-width: 0;
+      padding: 17px 24px;
+    }
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .influencer-formulario { padding: 36px 20px; }
+
+    .influencer-formulario__ring {
+      top: 28px;
+      right: -100px;
+      width: 200px;
+      height: 200px;
+    }
+
+    .if-form {
+      padding: 22px 16px;
+      border-radius: 16px;
+      box-shadow: 0 6px 0 #4B291D;
+      gap: 20px;
+    }
+
+    .if-form__intro { gap: 10px; }
+
+    .if-form__eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.9px;
+    }
+
+    .if-form__title {
+      font-size: 32px;
+      line-height: 34px;
+    }
+
+    .if-form__subtitle {
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    .if-form__hint { font-size: 11px; }
+
+    .if-form__fieldset {
+      gap: 18px;
+      padding-top: 12px;
+    }
+
+    .if-form__fieldset legend {
+      font-size: 20px;
+      padding: 6px 12px 6px 2px;
+    }
+
+    .if-form__grid { gap: 15px; }
+
+    /* font-size continua em 16px de propósito (zoom do iOS); só a
+       caixa do campo encolhe. */
+    .if-form__field input,
+    .if-form__field select,
+    .if-form__field textarea {
+      min-height: 46px;
+      padding: 12px 13px;
+    }
+
+    .if-form__field textarea { min-height: 100px; }
+
+    .if-form__consent { gap: 10px; }
+
+    .if-form__consent input[type='checkbox'] {
+      width: 20px;
+      height: 20px;
+      background-size: 13px 13px;
+    }
+
+    .if-form__consent span {
+      font-size: 11.5px;
+      /* acompanha a nova altura do checkbox pra primeira linha do
+         texto seguir centralizada com a caixa */
+      line-height: 20px;
+    }
+
+    .if-form__submit {
+      min-height: 52px;
+      padding: 15px 20px;
+      font-size: 14px;
+      box-shadow: 0 5px 0 #4B291D;
+    }
+
+    .if-form__submit svg { width: 20px; height: 20px; }
+
+    .if-form__success,
+    .if-form__errors { padding: 12px 14px; }
   }
 </style>
 

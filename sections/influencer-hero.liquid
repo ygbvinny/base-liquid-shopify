@@ -13,8 +13,10 @@
 
   OBSERVAÇÕES:
   Segue a mesma fonte/espaçamento/paleta do resto do site (Coiny,
-  Outfit, Manrope, gap lateral 100px). Apenas versão desktop
-  implementada por ora.
+  Outfit, Manrope, gap lateral 100px). No mobile (node 83:18 do
+  Figma) o painel continua sobreposto à arte, ancorado embaixo em
+  vez de à direita, e a arte recebe zoom pra manter a capivara
+  enquadrada (só CSS, o HTML é o mesmo do desktop).
 {%- endcomment -%}
 
 <section class="influencer-hero" data-section-id="{{ section.id }}">
@@ -172,6 +174,155 @@
   }
 
   .influencer-hero__cta svg { width: 24px; height: 24px; flex-shrink: 0; }
+
+  /* ============================================================
+     VERSÃO MOBILE — node 83:18 do Figma (HERO SECCTION MOBILE)
+     ============================================================
+     O painel continua SOBREPOSTO à arte, como no desktop, só que
+     ancorado embaixo em vez de à direita. Medidas do Figma na tela
+     de 390px: card 365x527, arte ocupando os 77% de cima com zoom de
+     181,63% (mostra o pote + a capivara e corta o vazio da direita),
+     painel de 268px com 14px de recuo lateral e 33px do fundo.
+     Como as proporções são em %, a mesma regra vale em qualquer
+     largura sem precisar de faixa intermediária.
+     ============================================================ */
+  @media screen and (max-width: 1000px) {
+    .influencer-hero__inner { padding: 18px 12px 30px; }
+
+    .influencer-hero__card {
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: stretch;
+      min-height: 0;
+      /* Como flex item, o card herda min-width:auto; zerar evita que
+         uma palavra longa o empurre além da largura da tela. */
+      min-width: 0;
+      /* 62% da largura = os 226px de arte que sobram acima do painel
+         na tela de 390px. Teto de 300px pra arte não virar uma parede
+         de altura na faixa de tablet. */
+      padding: min(62%, 300px) 14px 33px;
+      border-radius: 12px;
+      box-shadow: 0 7px 0 #4B291D;
+      /* Abaixo da arte o card é laranja: no Figma o degradê aparece
+         atrás do painel, que é levemente translúcido (0.94). */
+      background-image: linear-gradient(90deg, #EC5F03 1.1%, #FD7F04 99.37%);
+    }
+
+    /* Zoom de 181,63% ancorado à esquerda: é o que mantém a capivara
+       e o pote enquadrados e joga o vazio da direita pra fora do card.
+       Altura automática (e não os 77% do Figma) porque lá a arte está
+       esticada na vertical; aqui ela mantém a proporção original. */
+    .influencer-hero__bg {
+      inset: 0 auto auto -1%; /* 1% à esquerda pra centralizar melhor a capivara */
+      /* 181,63% é a medida do Figma em 390px; o teto de 700px impede
+         que no tablet o zoom vire um close na cabeça da capivara, e o
+         piso de 100% garante que a arte nunca deixe faixa vazia. */
+      width: max(100%, min(181.63%, 700px));
+      height: auto;
+      object-position: left top;
+      /* A arte tem uma vinheta escura de ~5px na base. Sem cortar,
+         ela vira uma linha marrom separando o laranja da foto do
+         laranja do card — que são praticamente a mesma cor. */
+      clip-path: inset(0 0 1% 0);
+    }
+
+    .influencer-hero__panel {
+      width: auto;
+      max-width: 520px; /* centraliza o painel na faixa de tablet */
+      margin: 0 auto;
+      padding: 20px 17px;
+      border-width: 2px;
+      align-items: center;
+      text-align: center;
+      gap: 7px;
+      box-shadow: 0 6px 0 #4B291D;
+    }
+
+    .influencer-hero__eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.9px;
+    }
+
+    /* 41px é o valor do Figma em 390px de tela (10,5vw). O min()
+       acompanha telas menores sem estourar as duas linhas fixas. */
+    .influencer-hero__title {
+      font-size: min(10.5vw, 41px);
+      line-height: 0.9;
+    }
+
+    .influencer-hero__desc {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 7px 0;
+    }
+
+    .influencer-hero__desc p {
+      font-weight: 800;
+      font-size: 12px;
+      line-height: 17.4px;
+      margin: 0;
+    }
+
+    .influencer-hero__cta {
+      min-height: 48px;
+      padding: 15px 19px;
+      gap: 10px;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .influencer-hero__cta svg { width: 24px; height: 24px; }
+  }
+
+  /* ============================================================
+     FAIXA DE TABLET
+     ============================================================
+     Aqui o painel não ocupa a largura toda do card, então o ponto
+     onde a arte acaba e o degradê começa ficaria à mostra. Nessa
+     faixa a arte volta a cobrir o card inteiro, como no desktop.
+     ============================================================ */
+  @media screen and (min-width: 601px) and (max-width: 1000px) {
+    .influencer-hero__bg {
+      width: 100%;
+      height: 100%;
+      left: 0; /* sem zoom aqui, o deslocamento deixaria fresta na direita */
+      /* aqui a arte cobre o card inteiro: a base dela encosta na
+         borda marrom, então não há emenda pra esconder */
+      clip-path: none;
+    }
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================
+     O título já escala sozinho pelo min(10.5vw, ...); aqui só
+     apertamos os respiros pro painel não encostar nas bordas.
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .influencer-hero__inner { padding: 16px 10px 26px; }
+
+    .influencer-hero__card {
+      padding: min(62%, 360px) 11px 26px;
+      box-shadow: 0 6px 0 #4B291D;
+    }
+
+    .influencer-hero__panel {
+      padding: 17px 14px;
+      gap: 6px;
+      box-shadow: 0 5px 0 #4B291D;
+    }
+
+    .influencer-hero__desc { padding: 5px 0; }
+
+    .influencer-hero__desc p { line-height: 16.5px; }
+
+    .influencer-hero__cta {
+      padding: 14px 14px;
+      gap: 8px;
+      box-shadow: 0 4px 0 #4B291D;
+    }
+  }
 </style>
 
 {% schema %}

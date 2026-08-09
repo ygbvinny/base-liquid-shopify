@@ -12,7 +12,9 @@
 
   OBSERVAÇÕES:
   Segue a mesma paleta/fontes do resto do site (Coiny, Outfit,
-  Manrope). Apenas versão desktop implementada por ora.
+  Manrope). Versão mobile (≤1000px) empilha a foto acima do texto,
+  com foto e conteúdo limitados a 600px de largura pra manter a
+  borda esquerda alinhada.
 {%- endcomment -%}
 
 <section class="influencer-a-brigz" data-section-id="{{ section.id }}">
@@ -117,6 +119,137 @@
   }
 
   .influencer-a-brigz__desc p:last-child { margin-bottom: 0; }
+
+  /* ============================================================
+     VERSÃO MOBILE
+     ============================================================
+     Desktop é foto (540px) + texto (600px) lado a lado, o que já
+     estoura sozinho abaixo de ~1290px. Aqui a dupla empilha (foto
+     em cima, texto embaixo) e as larguras fixas viram fluidas com
+     teto de 600px, então os dois blocos ficam com a mesma medida
+     e a borda esquerda alinhada em qualquer tela da faixa. */
+  @media screen and (max-width: 1000px) {
+    .influencer-a-brigz { overflow-x: hidden; } /* trava de segurança: nada vaza pro lado */
+
+    .influencer-a-brigz__inner {
+      flex-direction: column;
+      padding: 40px 30px;
+      gap: 28px;
+    }
+
+    .influencer-a-brigz__media {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      aspect-ratio: 9 / 8; /* mesma proporção do 540x480 do desktop */
+    }
+
+    .influencer-a-brigz__content {
+      width: 100%;
+      max-width: 600px;
+      gap: 14px;
+    }
+
+    .influencer-a-brigz__eyebrow { font-size: 12px; }
+
+    /* A headline tem <br> fixos ("Feito para a vida" é a linha mais
+       longa), então nenhuma quebra automática socorre em tela estreita:
+       o corpo precisa acompanhar a largura da viewport. O clamp escala
+       de 28px (celular pequeno) até 48px, e o line-height vira unitless
+       pra manter o mesmo respiro apertado do desktop (60.16/64 ≈ 0.94). */
+    .influencer-a-brigz__title {
+      font-size: clamp(28px, 8vw, 48px);
+      line-height: 0.94;
+    }
+
+    .influencer-a-brigz__desc {
+      max-width: 100%;
+    }
+
+    .influencer-a-brigz__desc p {
+      font-size: 15px;
+      line-height: 24px;
+      margin-bottom: 12px;
+    }
+  }
+
+  /* ============================================================
+     CELULAR — node 83:298 do Figma (Sessão 4 - a brigz)
+     ============================================================
+     Duas diferenças de estrutura em relação à faixa de tablet: a
+     arte perde o cartão e vira full-bleed (encosta nas bordas da
+     tela, 300px de altura, sem raio) e o texto passa a centralizado.
+     Por isso o respiro lateral sai do inner e vai pro conteúdo —
+     é o que deixa a foto sangrar até a borda.
+     ============================================================ */
+  @media screen and (max-width: 600px) {
+    .influencer-a-brigz__inner {
+      /* respiro no topo pra arte não nascer colada na seção anterior */
+      padding: 30px 0 52px;
+      gap: 17px;
+    }
+
+    /* Altura livre em vez dos 300px do node: com altura fixa o
+       object-fit: cover do desktop precisa cortar a arte em cima e
+       embaixo. Deixando a caixa acompanhar a proporção do asset
+       (1080x960), a imagem aparece inteira e sem faixa vazia. */
+    .influencer-a-brigz__media {
+      width: 100%;
+      max-width: none;
+      height: auto;
+      aspect-ratio: auto;
+      border-radius: 0;
+    }
+
+    .influencer-a-brigz__media img { height: auto; }
+
+    .influencer-a-brigz__content {
+      max-width: none;
+      padding: 0 18px;
+      align-items: center;
+      text-align: center;
+      gap: 17px;
+    }
+
+    .influencer-a-brigz__eyebrow {
+      font-size: 13px;
+      letter-spacing: 1.17px;
+    }
+
+    /* 36px é o valor do node; o min() segura a linha mais longa
+       ("Feito para a vida") nas telas abaixo de 390px. */
+    .influencer-a-brigz__title {
+      font-size: min(9.2vw, 36px);
+      line-height: 1.04; /* 37,44px sobre os 36px do design */
+    }
+
+    .influencer-a-brigz__desc p {
+      font-size: 14px;
+      line-height: 26.4px;
+      margin-bottom: 17px;
+    }
+  }
+
+  /* ============================================================
+     VERSÃO MOBILE PEQUENA (iPhone SE e similares)
+     ============================================================
+     O título já escala pelo min(9,2vw); aqui só a arte encolhe um
+     pouco pra não tomar a dobra inteira numa tela curta.
+     ============================================================ */
+  @media screen and (max-width: 400px) {
+    .influencer-a-brigz__inner { padding: 24px 0 44px; }
+
+
+    .influencer-a-brigz__content {
+      padding: 0 16px;
+      gap: 14px;
+    }
+
+    .influencer-a-brigz__desc p {
+      line-height: 24px;
+      margin-bottom: 14px;
+    }
+  }
 </style>
 
 {% schema %}
