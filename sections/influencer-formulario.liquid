@@ -86,7 +86,18 @@
           </label>
           <label class="if-form__field">
             <span>Data de nascimento<em>*</em></span>
-            <input type="date" name="contact[Data de nascimento]" required>
+            <input
+              type="text"
+              name="contact[Data de nascimento]"
+              placeholder="DD/MM/AAAA"
+              inputmode="numeric"
+              maxlength="10"
+              pattern="\d{2}/\d{2}/\d{4}"
+              title="Use o formato DD/MM/AAAA"
+              autocomplete="bday"
+              data-mascara="data"
+              required
+            >
           </label>
           <label class="if-form__field">
             <span>Telefone<em>*</em></span>
@@ -94,12 +105,7 @@
           </label>
           <label class="if-form__field">
             <span>Como prefere ser chamado?</span>
-            <select name="contact[Como prefere ser chamado]">
-              <option value="" selected disabled>Selecione</option>
-              <option value="Nome">Nome</option>
-              <option value="Apelido">Apelido</option>
-              <option value="Usuário das redes">Usuário das redes</option>
-            </select>
+            <input type="text" name="contact[Como prefere ser chamado]" placeholder="Ex.: Lu, Luna ou @lunacria">
           </label>
         </div>
       </fieldset>
@@ -182,7 +188,11 @@
       </fieldset>
 
       <label class="if-form__consent">
-        <input type="checkbox" name="contact[Consentimento]" value="Autorizado" required>
+        {%- comment -%}
+          Sem prefixo contact[] de propósito: valida no navegador mas
+          não entra no corpo do e-mail do Shopify.
+        {%- endcomment -%}
+        <input type="checkbox" name="consentimento" value="Autorizado" required>
         <span>Autorizo o uso dos dados para análise desta candidatura e declaro ter lido o aviso de privacidade.</span>
       </label>
 
@@ -365,19 +375,42 @@
     width: 100%;
   }
 
-  .if-form__consent input {
-    width: 20px;
-    height: 20px;
+  /* normalizar.css força appearance:none em todo input, então o
+     checkbox é desenhado manualmente aqui (caixa + check em SVG). */
+  .if-form__consent input[type='checkbox'] {
+    width: 22px;
+    height: 22px;
     flex-shrink: 0;
-    margin-top: 3px;
-    accent-color: #2473CE;
+    margin: 0;
+    background-color: #FFFFFF;
+    border: 2px solid #4B291D;
+    border-radius: 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .if-form__consent input[type='checkbox']:checked {
+    background-color: #2473CE;
+    border-color: #4B291D;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23FFFFFF' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8.5l3.6 3.6L13.5 4.5'/%3E%3C/svg%3E");
+  }
+
+  .if-form__consent input[type='checkbox']:focus-visible {
+    outline: 3px solid #F46700;
+    outline-offset: 2px;
   }
 
   .if-form__consent span {
     font-family: var(--font-manrope);
     font-weight: 500;
     font-size: 12px;
-    line-height: 18px;
+    /* line-height igual à altura do checkbox: a primeira linha do
+       texto centraliza exatamente com a caixa. */
+    line-height: 22px;
     color: #4E413B;
   }
 
@@ -452,6 +485,54 @@
     color: #C0392B;
   }
 </style>
+
+<script>
+  (function () {
+    var secao = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!secao) return;
+
+    var campoData = secao.querySelector('[data-mascara="data"]');
+    if (!campoData) return;
+
+    // Aceita só dígitos (8 no total) e insere as barras: DD/MM/AAAA.
+    function aplicarMascara(valor) {
+      var digitos = valor.replace(/\D/g, '').slice(0, 8);
+      if (digitos.length > 4) return digitos.slice(0, 2) + '/' + digitos.slice(2, 4) + '/' + digitos.slice(4);
+      if (digitos.length > 2) return digitos.slice(0, 2) + '/' + digitos.slice(2);
+      return digitos;
+    }
+
+    // Só valida data real quando os 8 dígitos estiverem preenchidos.
+    function validarData() {
+      var partes = campoData.value.split('/');
+      if (partes.length !== 3 || partes[2].length !== 4) {
+        campoData.setCustomValidity(campoData.value ? 'Informe a data no formato DD/MM/AAAA.' : '');
+        return;
+      }
+
+      var dia = Number(partes[0]);
+      var mes = Number(partes[1]);
+      var ano = Number(partes[2]);
+      var data = new Date(ano, mes - 1, dia);
+      var existe = data.getDate() === dia && data.getMonth() === mes - 1 && data.getFullYear() === ano;
+
+      if (!existe) {
+        campoData.setCustomValidity('Essa data não existe.');
+      } else if (data > new Date()) {
+        campoData.setCustomValidity('A data de nascimento não pode estar no futuro.');
+      } else {
+        campoData.setCustomValidity('');
+      }
+    }
+
+    campoData.addEventListener('input', function () {
+      campoData.value = aplicarMascara(campoData.value);
+      validarData();
+    });
+
+    campoData.addEventListener('blur', validarData);
+  })();
+</script>
 
 {% schema %}
 {

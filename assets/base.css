@@ -293,3 +293,13 @@ textarea.field__input {
 .rte a { color: var(--color-accent); }
 .rte img { max-width: 100%; height: auto; border-radius: var(--media-radius); }
 .rte ul, .rte ol { padding-left: 1.5em; }
+
+/* Badge flutuante do reCAPTCHA/hCaptcha injetado pelo Shopify nos
+   formulários nativos. Escondido por não caber no layout. */
+.grecaptcha-badge,
+iframe[src*="recaptcha"][style*="fixed"],
+iframe[title="reCAPTCHA"] {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
