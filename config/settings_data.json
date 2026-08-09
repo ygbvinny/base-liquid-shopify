@@ -23,9 +23,10 @@
     "card_show_second_image": true,
     "cart_type": "drawer",
     "cart_show_note": true,
-    "social_instagram_link": "",
+    "social_instagram_link": "https://www.instagram.com/brigzbrasil/",
     "social_facebook_link": "",
-    "social_linkedin_link": ""
+    "social_linkedin_link": "",
+    "social_tiktok_link": "https://www.tiktok.com/brigzbrasil/"
   },
   "presets": {
     "Base Liquid": {
