@@ -39,7 +39,7 @@
       <ul class="footer__nav-list" role="list">
         <li><a href="/pages/seja-influenciador" class="footer__nav-link"><span class="footer__nav-star" aria-hidden="true">✦</span> Seja Influenciador</a></li>
         <li><a href="{{ routes.all_products_collection_url }}" class="footer__nav-link"><span class="footer__nav-star" aria-hidden="true">✦</span> Comprar</a></li>
-        <li><a href="{{ pages.privacy-policy.url | default: '#' }}" class="footer__nav-link"><span class="footer__nav-star" aria-hidden="true">✦</span> Privacidade</a></li>
+        <li><a href="{{ pages['privacidade'].url | default: '/pages/privacidade' }}" class="footer__nav-link"><span class="footer__nav-star" aria-hidden="true">✦</span> Privacidade</a></li>
       </ul>
     </nav>
 
