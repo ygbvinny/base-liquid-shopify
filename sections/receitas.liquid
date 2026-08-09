@@ -9,10 +9,13 @@
   Gap lateral de 100px igual ao resto da home.
 
   OBSERVAÇÕES:
-  Cada card usa <img> como placeholder do vídeo por enquanto —
-  ainda não foi decidido se os vídeos serão upload manual (MP4)
-  ou embed do Instagram (iframe). Trocar o conteúdo de
-  .receitas-card__media quando essa decisão for tomada.
+  Cada card usa um <video> MP4 (asset video-teste.mp4) em autoplay
+  mutado e em loop — autoplay só é permitido pelos navegadores sem som.
+  Clicar na área da mídia liga o áudio daquele vídeo e muta todos os
+  outros: só um card toca com som por vez.
+  O link para o Instagram fica isolado no ícone de seta do footer, fora
+  de .receitas-card__media, para não disputar o clique com esse toggle
+  de áudio.
   Versão mobile (≤1000px) segue node 48:1664 do Figma: sem a
   imagem de fundo (fica só a cor sólida laranja), header 100%
   empilhado (setas de navegação abaixo do texto), cards com
@@ -49,78 +52,138 @@
 
     <div class="receitas-carousel" data-receitas-track>
       <article class="receitas-card">
-        <div class="receitas-card__media">
-          <img
-            src="{{ 'receita-pudim-em-orbita.webp' | asset_url }}"
-            alt="Pudim em órbita"
+        <div class="receitas-card__media" data-receitas-media>
+          <video
+            src="{{ 'video-teste.mp4' | asset_url }}"
             width="700"
             height="1254"
-            loading="lazy"
-          >
+            autoplay
+            muted
+            loop
+            playsinline
+            data-receitas-video
+          ></video>
+          <button type="button" class="receitas-card__sound" data-receitas-sound aria-label="Ativar som do vídeo">
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--muted">{% render 'icon', name: 'volume-mute' %}</span>
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--on">{% render 'icon', name: 'volume-on' %}</span>
+          </button>
         </div>
         <div class="receitas-card__footer">
           <div class="receitas-card__footer-text">
             <span class="receitas-card__label">Missão 01</span>
             <span class="receitas-card__title">Pudim em órbita</span>
           </div>
-          {% render 'icon', name: 'arrow-right' %}
+          <a
+            class="receitas-card__link"
+            href="https://www.instagram.com/brigzbrasil/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ver receita no Instagram"
+          >
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
         </div>
       </article>
 
       <article class="receitas-card">
-        <div class="receitas-card__media">
-          <img
-            src="{{ 'receita-mini-banoffee-cosmica.webp' | asset_url }}"
-            alt="Mini banoffee cósmica"
+        <div class="receitas-card__media" data-receitas-media>
+          <video
+            src="{{ 'video-teste.mp4' | asset_url }}"
             width="700"
             height="1254"
-            loading="lazy"
-          >
+            autoplay
+            muted
+            loop
+            playsinline
+            data-receitas-video
+          ></video>
+          <button type="button" class="receitas-card__sound" data-receitas-sound aria-label="Ativar som do vídeo">
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--muted">{% render 'icon', name: 'volume-mute' %}</span>
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--on">{% render 'icon', name: 'volume-on' %}</span>
+          </button>
         </div>
         <div class="receitas-card__footer">
           <div class="receitas-card__footer-text">
             <span class="receitas-card__label">Missão 02</span>
             <span class="receitas-card__title">Mini banoffee cósmica</span>
           </div>
-          {% render 'icon', name: 'arrow-right' %}
+          <a
+            class="receitas-card__link"
+            href="https://www.instagram.com/brigzbrasil/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ver receita no Instagram"
+          >
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
         </div>
       </article>
 
       <article class="receitas-card">
-        <div class="receitas-card__media">
-          <img
-            src="{{ 'receita-pastel-de-outro-mundo.webp' | asset_url }}"
-            alt="Pastel de outro mundo"
+        <div class="receitas-card__media" data-receitas-media>
+          <video
+            src="{{ 'video-teste.mp4' | asset_url }}"
             width="700"
             height="1254"
-            loading="lazy"
-          >
+            autoplay
+            muted
+            loop
+            playsinline
+            data-receitas-video
+          ></video>
+          <button type="button" class="receitas-card__sound" data-receitas-sound aria-label="Ativar som do vídeo">
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--muted">{% render 'icon', name: 'volume-mute' %}</span>
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--on">{% render 'icon', name: 'volume-on' %}</span>
+          </button>
         </div>
         <div class="receitas-card__footer">
           <div class="receitas-card__footer-text">
             <span class="receitas-card__label">Missão 03</span>
             <span class="receitas-card__title">Pastel de outro mundo</span>
           </div>
-          {% render 'icon', name: 'arrow-right' %}
+          <a
+            class="receitas-card__link"
+            href="https://www.instagram.com/brigzbrasil/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ver receita no Instagram"
+          >
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
         </div>
       </article>
 
       <article class="receitas-card">
-        <div class="receitas-card__media">
-          <img
-            src="{{ 'receita-morangos-gravidade-zero.webp' | asset_url }}"
-            alt="Morangos em gravidade zero"
+        <div class="receitas-card__media" data-receitas-media>
+          <video
+            src="{{ 'video-teste.mp4' | asset_url }}"
             width="700"
             height="1254"
-            loading="lazy"
-          >
+            autoplay
+            muted
+            loop
+            playsinline
+            data-receitas-video
+          ></video>
+          <button type="button" class="receitas-card__sound" data-receitas-sound aria-label="Ativar som do vídeo">
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--muted">{% render 'icon', name: 'volume-mute' %}</span>
+            <span class="receitas-card__sound-icon receitas-card__sound-icon--on">{% render 'icon', name: 'volume-on' %}</span>
+          </button>
         </div>
         <div class="receitas-card__footer">
           <div class="receitas-card__footer-text">
             <span class="receitas-card__label">Missão 04</span>
             <span class="receitas-card__title">Morangos em gravidade zero</span>
           </div>
-          {% render 'icon', name: 'arrow-right' %}
+          <a
+            class="receitas-card__link"
+            href="https://www.instagram.com/brigzbrasil/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ver receita no Instagram"
+          >
+            {% render 'icon', name: 'arrow-right' %}
+          </a>
         </div>
       </article>
     </div>
@@ -260,17 +323,68 @@
   }
 
   .receitas-card__media {
+    position: relative;
     width: 100%;
     aspect-ratio: 9 / 16; /* vídeos verticais dos reels */
     overflow: hidden;
+    cursor: pointer;
   }
 
-  .receitas-card__media img {
+  .receitas-card__media img,
+  .receitas-card__media video {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
+  .receitas-card__media video {
+    transition: transform 0.25s ease;
+  }
+
+  @media (hover: hover) {
+    .receitas-card__media:hover video { transform: scale(1.04); }
+  }
+
+  .receitas-card__sound {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background-color: #FFF6E8;
+    border: 2px solid #4B291D;
+    border-radius: 50%;
+    color: #4B291D;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .receitas-card__sound:hover {
+    background-color: #4B291D;
+    color: #FFF6E8;
+    transform: translateY(-2px);
+  }
+
+  .receitas-card__sound svg { width: 18px; height: 18px; }
+
+  .receitas-card__sound-icon { display: flex; }
+
+  .receitas-card__sound-icon--on { display: none; }
+
+  .receitas-card__media.is-unmuted .receitas-card__sound {
+    background-color: #4B291D;
+    color: #FFF6E8;
+  }
+
+  .receitas-card__media.is-unmuted .receitas-card__sound-icon--muted { display: none; }
+
+  .receitas-card__media.is-unmuted .receitas-card__sound-icon--on { display: flex; }
 
   .receitas-card__footer {
     display: flex;
@@ -305,6 +419,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .receitas-card__link {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: #24120E;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+  }
+
+  .receitas-card__link:hover { transform: translateX(3px); }
 
   .receitas-card__footer svg { width: 20px; height: 20px; flex-shrink: 0; color: #24120E; }
 
@@ -465,6 +590,15 @@
     .receitas-card__title { font-size: 12px; }
 
     .receitas-card__footer svg { width: 16px; height: 16px; }
+
+    .receitas-card__sound {
+      right: 9px;
+      bottom: 9px;
+      width: 27px;
+      height: 27px;
+    }
+
+    .receitas-card__sound svg { width: 15px; height: 15px; }
   }
 </style>
 
@@ -472,6 +606,37 @@
   (function () {
     var section = document.querySelector('.receitas-section[data-section-id="{{ section.id }}"]');
     if (!section) return;
+    var medias = Array.prototype.slice.call(section.querySelectorAll('[data-receitas-media]'));
+
+    var applySound = function (activeMedia) {
+      medias.forEach(function (media) {
+        var video = media.querySelector('[data-receitas-video]');
+        if (!video) return;
+
+        var isActive = media === activeMedia;
+        var soundButton = media.querySelector('[data-receitas-sound]');
+
+        video.muted = !isActive;
+        media.classList.toggle('is-unmuted', isActive);
+
+        if (soundButton) {
+          soundButton.setAttribute('aria-label', isActive ? 'Desativar som do vídeo' : 'Ativar som do vídeo');
+        }
+
+        if (isActive) {
+          var played = video.play();
+          if (played && played.catch) played.catch(function () {});
+        }
+      });
+    };
+
+    medias.forEach(function (media) {
+      media.addEventListener('click', function () {
+        var video = media.querySelector('[data-receitas-video]');
+        applySound(video && video.muted ? media : null);
+      });
+    });
+
     var track = section.querySelector('[data-receitas-track]');
     var prev = section.querySelector('[data-receitas-prev]');
     var next = section.querySelector('[data-receitas-next]');
