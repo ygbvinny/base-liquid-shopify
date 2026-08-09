@@ -13,31 +13,28 @@
 <header class="header" data-section-id="{{ section.id }}">
   
   <!-- FAIXA ANIMADA (MARQUEE) -->
+  {%- assign announcement_items = "Zero açúcar,31 kcal por colher,Cacau 100% puro,Brigadeiro de outro mundo" | split: "," -%}
+  {%- capture announcement_group -%}
+    {%- for repeat in (1..6) -%}
+      {%- for item in announcement_items -%}
+        <span class="announcement-star" aria-hidden="true">&#10022;</span>
+        <span class="announcement-bar__item">{{ item }}</span>
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endcapture -%}
   <div class="announcement-bar">
     <div class="announcement-bar__track">
 
       <!-- Bloco 1 -->
       <div class="announcement-bar__content">
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">Zero açúcar</span>
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">31 kcal por colher</span>
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">Cacau 100% puro</span>
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">Brigadeiro de outro mundo</span>
+        {{ announcement_group }}
       </div>
 
-      <!-- Bloco 2 (Cópia exata para o loop infinito sem quebras) -->
+      <!-- Bloco 2 (Cópia exata para o loop infinito sem quebras. O grupo é repetido
+           6x em cada bloco pra garantir que o conteúdo sempre preenche telas largas
+           (ultrawide/4K) — sem isso, sobra um vão em branco no meio do ciclo do loop.) -->
       <div class="announcement-bar__content" aria-hidden="true">
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">Zero açúcar</span>
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">31 kcal por colher</span>
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">Cacau 100% puro</span>
-        <span class="announcement-star" aria-hidden="true">&#10022;</span>
-        <span class="announcement-bar__item">Brigadeiro de outro mundo</span>
+        {{ announcement_group }}
       </div>
 
     </div>
@@ -194,7 +191,7 @@
     align-items: center;
     gap: 38px;
     width: max-content;
-    animation: marquee-scroll 25s linear infinite;
+    animation: marquee-scroll 150s linear infinite;
   }
 
   .announcement-bar__content {
