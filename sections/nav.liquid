@@ -4,10 +4,20 @@
   ============================================================
 
   O QUE FAZ:
-  Monta o cabeçalho da loja. 
-  Inclui uma faixa de anúncio animada no topo, logo e menu 
-  com links fixos ("O plot twist", "Escolha seu kit", 
+  Monta o cabeçalho da loja.
+  Inclui uma faixa de anúncio animada no topo, logo e menu
+  com links fixos ("O plot twist", "Escolha seu kit",
   "Universo BRIGZ") para replicar fielmente o design.
+
+  HEADER FIXO:
+  O cabeçalho acompanha o scroll. Quem recebe o `position: sticky` é o
+  wrapper do header-group — o filho direto do <body> —, marcado com a
+  classe `.header-sticky-root` pelo script no fim desta section. O `top`
+  é negativo e igual à altura da faixa de anúncio: a faixa rola embora
+  e só a barra branca (logo/menu/carrinho) trava no topo. As medidas
+  ficam em `--announcement-h` / `--header-h`, redefinidas em cada
+  breakpoint; `--header-h` também alimenta o `scroll-padding-top` do
+  html, que compensa os links de âncora.
 {%- endcomment -%}
 
 <header class="header" data-section-id="{{ section.id }}">
@@ -172,7 +182,40 @@
     --header-color-cyan: #00E6F6;
     --topbar-bg: #24120E;
     --topbar-text: #FFF6E8;
+
+    /* Medidas usadas pelo header fixo — precisam acompanhar
+       .announcement-bar e .header__inner em cada breakpoint */
+    --announcement-h: 36px;
+    --header-h: 82px;
   }
+
+  /* --- INÍCIO: HEADER FIXO ---
+     O sticky NÃO pode ir no .header: dentro da própria section o pai
+     tem a mesma altura dele, e sticky só gruda enquanto o pai está
+     visível — resultado, o header sairia de cena quase de imediato.
+     Ele precisa ir no elemento que é filho direto do <body> (o wrapper
+     que o Shopify gera em volta do header-group), que aí sim é alto o
+     bastante para o header grudar pela página inteira.
+
+     Como o id desse wrapper é gerado pelo Shopify, quem marca o
+     elemento é o script no fim desta section (classe .header-sticky-root)
+     em vez de um seletor chutado à mão.
+
+     top negativo = altura da faixa de anúncio: o bloco rola junto até
+     a faixa sair de cena e só então a barra branca trava no topo.
+
+     z-index 100: acima de todo o conteúdo, abaixo do drawer do
+     carrinho (9990/9991) e do alerta (10001). */
+  .header-sticky-root {
+    position: sticky;
+    top: calc(var(--announcement-h) * -1);
+    z-index: 100;
+  }
+
+  /* Compensa o header fixo nos links de âncora (#beneficios, #kits,
+     #receitas) — sem isso o topo da seção para atrás da barra. */
+  html { scroll-padding-top: calc(var(--header-h) + 8px); }
+  /* --- FIM: HEADER FIXO --- */
 
   /* --- INÍCIO: FAIXA ANIMADA (MARQUEE) --- */
   .announcement-bar {
@@ -470,6 +513,8 @@
      em retrato (iPad 768/810/820/834) continuam com o menu completo.
      ============================================================ */
   @media screen and (min-width: 740px) and (max-width: 1000px) {
+    :root { --header-h: 72px; }
+
     .header {
       border-bottom-width: 1px;
     }
@@ -510,6 +555,8 @@
      VERSÃO MOBILE (até 739px)
      ============================================================ */
   @media screen and (max-width: 739px) {
+    :root { --header-h: 80px; } /* 16px + 48px (carrinho) + 16px */
+
     .header {
       border-bottom-width: 1px; /* 1px no mobile */
     }
@@ -553,6 +600,11 @@
      VERSÃO MOBILE PEQUENA (iPhone SE e similares)
      ============================================================ */
   @media screen and (max-width: 400px) {
+    :root {
+      --announcement-h: 29px;
+      --header-h: 62px; /* 12px + 38px (carrinho) + 12px */
+    }
+
     .announcement-bar { height: 29px; }
 
     .announcement-bar__track,
@@ -628,6 +680,17 @@
   (function () {
     var section = document.querySelector('.header[data-section-id="{{ section.id }}"]');
     if (!section) return;
+
+    // Header fixo: sobe do .header até o filho direto do <body> e marca
+    // esse elemento — é ele que recebe o position: sticky (ver CSS acima).
+    var root = section;
+    while (root.parentElement && root.parentElement !== document.body) {
+      root = root.parentElement;
+    }
+    if (root.parentElement === document.body) {
+      root.classList.add('header-sticky-root');
+    }
+
     var toggle = section.querySelector('.header__menu-toggle');
     var nav = document.getElementById('MobileNav-{{ section.id }}');
     if (toggle && nav) {
