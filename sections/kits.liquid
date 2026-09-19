@@ -4,14 +4,14 @@
   ============================================================
 
   O QUE FAZ:
-  Cabeçalho + 3 cards de kit (com preço e CTA) + selos de
+  Cabeçalho + 2 cards de kit (com preço e CTA) + selos de
   confiança embaixo. Gap lateral de 100px igual ao resto da home.
 
   OBSERVAÇÕES:
   Preço exibido em cada card é texto fixo (não vem do produto). O
   botão "Escolher kit" faz add-to-cart real via /cart/add
   (carrinho.js intercepta o form) usando o produto selecionado nas
-  configurações da section (kit_1/2/3_product) — configurar no
+  configurações da section (kit_1/2_product) — configurar no
   editor de temas. Versão mobile (≤1000px) segue node 48:1805 do
   Figma: cards empilhados (largura 100%, máx. 360px), radius menor
   (16px), foto emoldurada com respiro em vez de edge-to-edge, e
@@ -108,7 +108,7 @@
             height="800"
             loading="lazy"
           >
-          <span class="kits-card__ghost-number" aria-hidden="true">03</span>
+          <span class="kits-card__ghost-number" aria-hidden="true">04</span>
         </div>
         <div class="kits-card__body">
           <div class="kits-card__top">
@@ -119,40 +119,6 @@
           <strong class="kits-card__price">R$99,90</strong>
           {%- liquid
             assign kit_product = section.settings.kit_2_product
-            assign kit_variant = kit_product.selected_or_first_available_variant
-          -%}
-          <form action="/cart/add" method="post" class="kits-card__form">
-            {%- if kit_variant -%}
-              <input type="hidden" name="id" value="{{ kit_variant.id }}">
-            {%- endif -%}
-            <button type="submit" class="kits-card__cta" {% unless kit_variant %}disabled{% endunless %}>
-              {%- if kit_variant %}Escolher kit →{% else %}Em breve{% endif -%}
-            </button>
-          </form>
-        </div>
-      </article>
-
-      <article class="kits-card">
-        <span class="kits-card__badge">⚡ Melhor estoque</span>
-        <div class="kits-card__media">
-          <img
-            src="{{ 'kit-base-abastecida.webp' | asset_url }}"
-            alt="Potes BRIGZ para o Kit Base Abastecida"
-            width="800"
-            height="600"
-            loading="lazy"
-          >
-          <span class="kits-card__ghost-number" aria-hidden="true">04</span>
-        </div>
-        <div class="kits-card__body">
-          <div class="kits-card__top">
-            <h3 class="kits-card__name">Base<br>Abastecida</h3>
-            <span class="kits-card__units">6 potes</span>
-          </div>
-          <p class="kits-card__desc">Pra nunca ficar sem BRIGZ na nave.</p>
-          <strong class="kits-card__price">R$139,90</strong>
-          {%- liquid
-            assign kit_product = section.settings.kit_3_product
             assign kit_variant = kit_product.selected_or_first_available_variant
           -%}
           <form action="/cart/add" method="post" class="kits-card__form">
@@ -601,27 +567,10 @@
 
   /* ============================================================
      TABLET GRANDE (881–1000px)
-     Já cabem os 3 kits lado a lado (~257–297px cada, contra 300px
-     do desktop), permitindo comparar os kits numa linha só.
+     Com 2 kits a regra de largura do bloco 601–1000px já resolve o
+     grid (2 por linha), então aqui sobra só o ajuste dos selos.
      ============================================================ */
   @media screen and (min-width: 881px) and (max-width: 1000px) {
-    .kits-grid {
-      flex-wrap: nowrap;
-      gap: 24px;
-    }
-
-    .kits-card {
-      width: calc((100% - 48px) / 3);
-      max-width: 300px;
-    }
-
-    .kits-card__body { padding: 16px; }
-
-    .kits-card__desc {
-      font-size: 14px;
-      line-height: 22px;
-    }
-
     /* Selos voltam pra linha única, próximos do tamanho do desktop */
     .kits-badges {
       grid-template-columns: repeat(4, 1fr);
@@ -741,11 +690,6 @@
       "type": "product",
       "id": "kit_2_product",
       "label": "Produto do Kit 2 — Missão em Grupo"
-    },
-    {
-      "type": "product",
-      "id": "kit_3_product",
-      "label": "Produto do Kit 3 — Base Abastecida"
     }
   ]
 }
