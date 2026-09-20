@@ -46,51 +46,124 @@
 <section class="product page-width" data-section-id="{{ section.id }}">
  <div class="product__body">
   <div class="product__media-wrapper">
-    {%- if product.featured_media != blank -%}
-      <div class="product__media-main" id="ProductMedia-{{ section.id }}">
-        {%- for media in product.media -%}
-          <div class="product__media-item {% if forloop.first %}is-active{% endif %}" data-media-id="{{ media.id }}">
-            {%- case media.media_type -%}
-              {%- when 'image' -%}
-                {{
-                  media
-                  | image_url: width: 1920
-                  | image_tag:
-                    loading: 'lazy',
-                    sizes: '(min-width: 1000px) 55vw, 100vw',
-                    widths: '360, 540, 720, 900, 1080, 1440, 1920',
-                    alt: media.alt | default: product.title | escape
-                }}
-              {%- when 'external_video' -%}
-                {{ media | external_video_tag }}
-              {%- when 'video' -%}
-                {{ media | video_tag: controls: true, image_size: '1920x' }}
-              {%- when 'model' -%}
-                {{ media | model_viewer_tag }}
-              {%- else -%}
-                {{ media | media_tag }}
-            {%- endcase -%}
-          </div>
+    {%- liquid
+      assign gallery_media = product.media | where: 'media_type', 'image'
+    -%}
+
+    {%- comment -%}
+      ⚠️ TEMPORÁRIO — SÓ PARA PREVIEW DO LAYOUT ⚠️
+      Os kits têm 1 imagem só no admin, então o grid de 4 não aparecia.
+      preview_repeat repete a mesma lista de mídia N vezes para encher os
+      slots e dar o que clicar. PARA DESLIGAR: troque o valor para 1.
+      Remover este assign + o loop `for pass` lá embaixo devolve o
+      comportamento real (thumbs = mídias de verdade do produto).
+    {%- endcomment -%}
+    {%- assign preview_repeat = 4 -%}
+    {%- if gallery_media.size > 0 -%}
+      <div class="product-gallery" data-product-gallery>
+        {%- for media in gallery_media -%}
+          {%- if forloop.first -%}
+            {%- liquid
+              assign media_alt = media.alt | default: product.title | escape
+              capture full_srcset
+                echo media | image_url: width: 400
+                echo ' 400w, '
+                echo media | image_url: width: 600
+                echo ' 600w, '
+                echo media | image_url: width: 800
+                echo ' 800w, '
+                echo media | image_url: width: 1100
+                echo ' 1100w, '
+                echo media | image_url: width: 1400
+                echo ' 1400w'
+              endcapture
+              capture thumb_srcset
+                echo media.preview_image | image_url: width: 160
+                echo ' 160w, '
+                echo media.preview_image | image_url: width: 250
+                echo ' 250w, '
+                echo media.preview_image | image_url: width: 360
+                echo ' 360w, '
+                echo media.preview_image | image_url: width: 500
+                echo ' 500w'
+              endcapture
+            -%}
+            <figure class="product-gallery__featured">
+              <img
+                class="product-gallery__featured-img"
+                data-gallery-featured
+                src="{{ media | image_url: width: 1400 }}"
+                srcset="{{ full_srcset }}"
+                sizes="(min-width: 1000px) 50vw, 100vw"
+                width="{{ media.preview_image.width }}"
+                height="{{ media.preview_image.height }}"
+                alt="{{ media_alt }}"
+                loading="eager"
+                fetchpriority="high"
+                data-thumb-src="{{ media.preview_image | image_url: width: 500 }}"
+                data-thumb-srcset="{{ thumb_srcset }}"
+              >
+            </figure>
+          {%- endif -%}
         {%- endfor -%}
+
+        {%- if gallery_media.size > 1 or preview_repeat > 1 -%}
+          <ul class="product-gallery__thumbs" role="list">
+            {%- for pass in (1..preview_repeat) -%}
+            {%- for media in gallery_media -%}
+              {%- unless pass == 1 and forloop.first -%}
+                {%- liquid
+                  assign media_alt = media.alt | default: product.title | escape
+                  capture full_srcset
+                    echo media | image_url: width: 400
+                    echo ' 400w, '
+                    echo media | image_url: width: 600
+                    echo ' 600w, '
+                    echo media | image_url: width: 800
+                    echo ' 800w, '
+                    echo media | image_url: width: 1100
+                    echo ' 1100w, '
+                    echo media | image_url: width: 1400
+                    echo ' 1400w'
+                  endcapture
+                  capture thumb_srcset
+                    echo media.preview_image | image_url: width: 160
+                    echo ' 160w, '
+                    echo media.preview_image | image_url: width: 250
+                    echo ' 250w, '
+                    echo media.preview_image | image_url: width: 360
+                    echo ' 360w, '
+                    echo media.preview_image | image_url: width: 500
+                    echo ' 500w'
+                  endcapture
+                -%}
+                <li class="product-gallery__thumb-item">
+                  <button
+                    type="button"
+                    class="product-gallery__thumb"
+                    data-gallery-thumb
+                    aria-label="Ver esta imagem em destaque"
+                  >
+                    <img
+                      class="product-gallery__thumb-img"
+                      src="{{ media.preview_image | image_url: width: 500 }}"
+                      srcset="{{ thumb_srcset }}"
+                      sizes="(min-width: 1000px) 16vw, 30vw"
+                      width="{{ media.preview_image.width }}"
+                      height="{{ media.preview_image.height }}"
+                      alt="{{ media_alt }}"
+                      loading="lazy"
+                      data-full-src="{{ media | image_url: width: 1400 }}"
+                      data-full-srcset="{{ full_srcset }}"
+                    >
+                  </button>
+                </li>
+              {%- endunless -%}
+            {%- endfor -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
       </div>
-      {%- if product.media.size > 1 -%}
-        <div class="product__media-thumbs" id="ProductMediaThumbs-{{ section.id }}">
-          {%- for media in product.media -%}
-            <button
-              type="button"
-              class="product__media-thumb {% if forloop.first %}is-active{% endif %}"
-              data-media-id="{{ media.id }}"
-              aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
-            >
-              {{
-                media.preview_image
-                | image_url: width: 200
-                | image_tag: loading: 'lazy', sizes: '90px', widths: '90, 120, 160, 200', alt: media.alt | default: product.title | escape
-              }}
-            </button>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
     {%- else -%}
       <div class="product__media-item product__media-placeholder">
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -249,13 +322,37 @@
             </div>
 
           {%- when 'buy_buttons' -%}
+            {%- comment -%}
+              Ordem invertida a pedido do cliente: o checkout expresso
+              ("Compre já") vem primeiro e é o CTA principal; o adicionar ao
+              carrinho desce pra ação secundária. O CSS de destaque acompanha
+              essa ordem em product-media-gallery.liquid.
+            {%- endcomment -%}
             <div class="product__buy-buttons" {{ block.shopify_attributes }}>
+              {%- comment -%}
+                CTA principal, 100% do tema (por isso aceita a cor da marca):
+                adiciona ao carrinho via Cart AJAX API e manda pro /checkout.
+                É type="button" de propósito — assim o listener de submit do
+                assets/carrinho.js não intercepta e abre o drawer.
+              {%- endcomment -%}
+              <button
+                type="button"
+                class="button product__buy-now"
+                data-buy-now
+                {% if current_variant.available == false %}disabled{% endif %}
+              >
+                <span>Compre já</span>
+              </button>
+
               <button
                 type="submit"
                 name="add"
                 class="button product__add-to-cart"
                 {% if current_variant.available == false %}disabled{% endif %}
               >
+                {%- if current_variant.available -%}
+                  {% render 'icon', name: 'cart' %}
+                {%- endif -%}
                 <span>
                   {%- if current_variant.available -%}
                     {{ 'products.product.add_to_cart' | t }}
@@ -264,6 +361,16 @@
                   {%- endif -%}
                 </span>
               </button>
+
+              {%- comment -%}
+                Carteiras digitais (Shop Pay / Apple Pay / Google Pay).
+                DESLIGADAS a pedido do cliente: elas fecham a compra em um
+                toque, sem passar pelo checkout, e o fluxo desejado é o
+                checkout normal (endereço + forma de pagamento) via o
+                "Compre já" acima. Pra reativar, marque a opção no editor de
+                temas — o CSS que dimensiona esses botões continua no
+                product-media-gallery.liquid.
+              {%- endcomment -%}
               {%- if block.settings.show_dynamic_checkout -%}
                 {{ form | payment_button }}
               {%- endif -%}
@@ -287,6 +394,103 @@
 
 {% render 'product-media-gallery', section_id: section.id %}
 {% render 'product-variant-selection', section_id: section.id, product_form_id: product_form_id %}
+
+<script>
+  (function () {
+    var section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) return;
+
+    var gallery = section.querySelector('[data-product-gallery]');
+    if (!gallery) return;
+
+    var featured = gallery.querySelector('[data-gallery-featured]');
+    if (!featured) return;
+
+    gallery.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-gallery-thumb]');
+      if (!button || !gallery.contains(button)) return;
+
+      var thumbImg = button.querySelector('.product-gallery__thumb-img');
+      if (!thumbImg) return;
+
+      var featuredState = {
+        src: featured.getAttribute('src'),
+        srcset: featured.getAttribute('srcset'),
+        alt: featured.getAttribute('alt'),
+        thumbSrc: featured.dataset.thumbSrc,
+        thumbSrcset: featured.dataset.thumbSrcset
+      };
+
+      var thumbState = {
+        src: thumbImg.getAttribute('src'),
+        srcset: thumbImg.getAttribute('srcset'),
+        alt: thumbImg.getAttribute('alt'),
+        fullSrc: thumbImg.dataset.fullSrc,
+        fullSrcset: thumbImg.dataset.fullSrcset
+      };
+
+      featured.setAttribute('src', thumbState.fullSrc);
+      featured.setAttribute('srcset', thumbState.fullSrcset);
+      featured.setAttribute('alt', thumbState.alt);
+      featured.dataset.thumbSrc = thumbState.src;
+      featured.dataset.thumbSrcset = thumbState.srcset;
+
+      thumbImg.setAttribute('src', featuredState.thumbSrc);
+      thumbImg.setAttribute('srcset', featuredState.thumbSrcset);
+      thumbImg.setAttribute('alt', featuredState.alt);
+      thumbImg.dataset.fullSrc = featuredState.src;
+      thumbImg.dataset.fullSrcset = featuredState.srcset;
+    });
+  })();
+</script>
+
+<script>
+  /* "Compre já": adiciona a variante selecionada e vai direto pro checkout.
+     Usa a mesma Cart AJAX API do assets/carrinho.js, mas sem abrir o drawer. */
+  (function () {
+    var section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) return;
+
+    var button = section.querySelector('[data-buy-now]');
+    var form = document.getElementById('{{ product_form_id }}');
+    if (!button || !form) return;
+
+    var rootUrl = '{{ routes.root_url }}';
+    if (rootUrl.slice(-1) !== '/') rootUrl += '/';
+
+    button.addEventListener('click', function () {
+      if (button.hasAttribute('disabled')) return;
+
+      var idInput = form.querySelector('.product-variant-id');
+      var qtyInput = form.querySelector('.quantity__input');
+      if (!idInput || !idInput.value) return;
+
+      var label = button.querySelector('span');
+      var originalLabel = label ? label.textContent : '';
+      button.setAttribute('disabled', 'disabled');
+      if (label) label.textContent = 'Indo pro checkout…';
+
+      fetch(rootUrl + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          id: idInput.value,
+          quantity: parseInt(qtyInput && qtyInput.value ? qtyInput.value : '1', 10)
+        })
+      })
+        .then(function (response) {
+          if (!response.ok) throw new Error('add falhou');
+          window.location.href = rootUrl + 'checkout';
+        })
+        .catch(function () {
+          /* Devolve o botão ao estado normal — sem isso o cliente fica preso
+             num botão morto se a variante esgotar entre o load e o clique. */
+          button.removeAttribute('disabled');
+          if (label) label.textContent = originalLabel;
+        });
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -384,7 +588,7 @@
         {
           "type": "checkbox",
           "id": "show_dynamic_checkout",
-          "default": true,
+          "default": false,
           "label": "t:sections.main_product.blocks.buy_buttons.settings.show_dynamic_checkout.label",
           "info": "t:sections.main_product.blocks.buy_buttons.settings.show_dynamic_checkout.info"
         }
@@ -430,7 +634,7 @@
       "type": "text",
       "id": "trust_text_1",
       "label": "t:sections.main_product.settings.trust_text.label",
-      "default": "Frete rápido e seguro"
+      "default": "Entrega em velocidade orbital"
     },
     {
       "type": "select",
@@ -450,7 +654,7 @@
       "type": "text",
       "id": "trust_text_2",
       "label": "t:sections.main_product.settings.trust_text.label",
-      "default": "Compra segura e protegida"
+      "default": "Compra protegida pela missão"
     },
     {
       "type": "select",
@@ -470,7 +674,7 @@
       "type": "text",
       "id": "trust_text_3",
       "label": "t:sections.main_product.settings.trust_text.label",
-      "default": "Pagamento facilitado em até 12x"
+      "default": "Decole em até 12x"
     },
     {
       "type": "select",
@@ -490,7 +694,7 @@
       "type": "text",
       "id": "trust_text_4",
       "label": "t:sections.main_product.settings.trust_text.label",
-      "default": "Satisfação garantida"
+      "default": "Satisfação de outro mundo"
     }
   ],
   "presets": [

@@ -61,11 +61,11 @@
       <div class="hero-features">
         <div class="hero-feature">
           {% render 'icon', name: 'check-circle' %}
-          <span>Zero açúcar</span>
+          <span>Zero adição de açúcar</span>
         </div>
         <div class="hero-feature">
           {% render 'icon', name: 'check-circle' %}
-          <span>31 kcal</span>
+          <span>29 kcal</span>
         </div>
         <div class="hero-feature">
           {% render 'icon', name: 'check-circle' %}
@@ -75,23 +75,33 @@
     </div>
   </div>
 
-  <!-- Badges decorativos — só aparecem na versão mobile, substituem .hero-features -->
-  <img
-    src="{{ 'hero-badge-pode-confiar.webp' | asset_url }}"
-    alt="É brigadeiro. Pode confiar."
-    class="hero-decorative-badge hero-decorative-badge--left"
-    width="220"
-    height="121"
-    loading="lazy"
-  >
-  <img
-    src="{{ 'hero-badge-31kcal.webp' | asset_url }}"
-    alt="31 kcal por colher"
-    class="hero-decorative-badge hero-decorative-badge--right"
-    width="360"
-    height="202"
-    loading="lazy"
-  >
+  <!--
+    Badges decorativos — aparecem em todas as larguras.
+
+    No desktop precisam grudar no pote, que vive dentro do hero-banner.webp
+    renderizado com object-fit: cover. O .hero-badge-anchor reproduz a caixa
+    exata da imagem depois do cover (mesma proporção, mesmo centro), então as
+    posições em % abaixo acompanham o pote em qualquer viewport.
+    No mobile o anchor vira inset:0 e as posições voltam a ser em px/% da seção.
+  -->
+  <div class="hero-badge-anchor" aria-hidden="true">
+    <img
+      src="{{ 'hero-badge-sabor-outro-planeta.webp' | asset_url }}"
+      alt="Sabor de outro planeta."
+      class="hero-decorative-badge hero-decorative-badge--left"
+      width="560"
+      height="297"
+      loading="lazy"
+    >
+    <img
+      src="{{ 'hero-badge-29kcal.webp' | asset_url }}"
+      alt="29 kcal por colher"
+      class="hero-decorative-badge hero-decorative-badge--right"
+      width="720"
+      height="405"
+      loading="lazy"
+    >
+  </div>
 </section>
 
 <style>
@@ -276,7 +286,50 @@
     white-space: nowrap;
   }
 
-  .hero-decorative-badge { display: none; }
+  /* ------------------------------------------------------------
+     Badges decorativos (desktop)
+
+     .hero-badge-anchor = caixa da imagem depois do object-fit: cover.
+     Cover em .hero-section (altura fixa 800px) dá:
+       largura = max(100% da seção, 800px × 2880/1502) = max(100%, 1534px)
+     Com a mesma proporção do arquivo e centralizado, qualquer coordenada em %
+     aqui cai no mesmo ponto da arte — o badge não desgruda do pote.
+
+     Referência do pote dentro de hero-banner.webp (2880×1502):
+       tampa   x 1390–2590 (48,3%–89,9%)   y 315–535 (21,0%–35,6%)
+       rótulo  x 1540–2350 (53,5%–81,6%)   y 1090–1280 (72,6%–85,2%)
+     ------------------------------------------------------------ */
+  .hero-badge-anchor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max(100%, 1534px);
+    aspect-ratio: 2880 / 1502;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .hero-decorative-badge {
+    display: block;
+    position: absolute;
+    height: auto;
+    pointer-events: none;
+  }
+
+  /* "Sabor de outro planeta" — canto inferior esquerdo, encostando no pote */
+  .hero-decorative-badge--left {
+    width: 14.4%;
+    left: 43.06%; /* 44,5% − 10% da largura do badge */
+    top: 75%;
+  }
+
+  /* "29 kcal por colher" — sobre a borda direita da tampa */
+  .hero-decorative-badge--right {
+    width: 13.92%; /* 11,6% + 20% */
+    left: 80.32%;  /* 83,1% − 20% da largura do badge */
+    top: 26.25%;   /* 23,25% (centro preservado no +20%) + 20% da altura do badge */
+  }
 
   /* ============================================================
      VERSÃO MOBILE
@@ -335,6 +388,16 @@
     /* Tags de diferenciais (desktop) somem, viram os 2 badges decorativos */
     .hero-features { display: none; }
 
+    /* O anchor do desktop vira a própria seção: as posições abaixo voltam a
+       ser relativas ao hero inteiro, como eram antes. */
+    .hero-badge-anchor {
+      inset: 0;
+      transform: none;
+      width: auto;
+      height: auto;
+      aspect-ratio: auto;
+    }
+
     .hero-decorative-badge {
       display: block;
       position: absolute;
@@ -342,19 +405,25 @@
       pointer-events: none;
     }
 
+    /* +15% sobre o tamanho original (92/115px). Os offsets recuam metade do
+       crescimento em largura e altura pra manter o CENTRO de cada badge no
+       mesmo ponto do pote. */
     .hero-decorative-badge--left {
-      width: 92px;
+      width: 105.8px; /* 92px × 1.15 */
       height: auto;
-      left: 50px;
-      bottom: 16%;
+      top: auto;
+      left: 43.1px;                /* 50px − 6.9px (metade do +width) */
+      bottom: calc(16% - 3.65px);  /* − metade do +height */
       transform: rotate(-4deg);
     }
 
     .hero-decorative-badge--right {
-      width: 115px;
+      width: 132.25px; /* 115px × 1.15 */
       height: auto;
-      right: 50px;
-      bottom: 28%;
+      top: auto;
+      left: auto;
+      right: 41.38px;              /* 50px − 8.62px (metade do +width) */
+      bottom: calc(28% - 4.85px);  /* − metade do +height */
     }
   }
 
@@ -396,15 +465,15 @@
        largura da faixa (os valores batem com os 92/115/50px e 16%/28% do
        bloco mobile no cruzamento de 441px, então a transição é contínua). */
     .hero-decorative-badge--left {
-      width: 20.9vw;   /* 92px @441 → 209px @999 (asset tem 220px, não amplia) */
-      left: 11.3vw;    /* 50px @441 */
-      bottom: 30.2vw;  /* = 16% da altura da arte, agora travado nela */
+      width: 24.04vw;  /* 20.9vw × 1.15 = 106px @441 → 240px @999 */
+      left: 9.73vw;    /* 11.3vw − metade do +width */
+      bottom: 29.37vw; /* 30.2vw − metade do +height */
     }
 
     .hero-decorative-badge--right {
-      width: 26.1vw;   /* 115px @441 → 261px @999 (asset tem 360px, não amplia) */
-      right: 11.3vw;   /* 50px @441 */
-      bottom: 52.8vw;  /* = 28% da altura da arte, agora travado nela */
+      width: 30.02vw;  /* 26.1vw × 1.15 = 132px @441 → 300px @999 */
+      right: 9.34vw;   /* 11.3vw − metade do +width */
+      bottom: 51.70vw; /* 52.8vw − metade do +height */
     }
   }
 
@@ -480,15 +549,15 @@
        Offset recuado em metade do encolhimento (largura e altura) pra
        manter o CENTRO de cada badge no mesmo ponto do pote. */
     .hero-decorative-badge--left {
-      width: 23.41vw;  /* 29.26vw × 0.8 = 192px @820 */
-      left: 10vw;      /* 58px + 24px (metade do −width) = 82px @820 */
-      bottom: 29.54vw; /* 229px + 13.2px (metade do −height) = 242.2px @820 */
+      width: 26.92vw;  /* 23.41vw × 1.15 = 221px @820 */
+      left: 8.25vw;    /* 10vw − metade do +width */
+      bottom: 28.61vw; /* 29.54vw − metade do +height */
     }
 
     .hero-decorative-badge--right {
-      width: 29.27vw;  /* 36.54vw × 0.8 = 240px @820 */
-      right: 9.76vw;   /* 50px + 30px (metade do −width) = 80px @820 */
-      bottom: 51.93vw; /* 409px + 16.8px (metade do −height) = 425.8px @820 */
+      width: 33.66vw;  /* 29.27vw × 1.15 = 276px @820 */
+      right: 7.57vw;   /* 9.76vw − metade do +width */
+      bottom: 50.70vw; /* 51.93vw − metade do +height */
     }
   }
 
@@ -538,13 +607,13 @@
     .hero-cta-secondary svg { width: 16px; height: 16px; }
 
     .hero-decorative-badge--left {
-      width: 74px;
-      left: 40px;
+      width: 85.1px; /* 74px × 1.15 */
+      left: 34.45px; /* 40px − metade do +width */
     }
 
     .hero-decorative-badge--right {
-      width: 92px;
-      right: 40px;
+      width: 105.8px; /* 92px × 1.15 */
+      right: 33.1px;  /* 40px − metade do +width */
     }
   }
 </style>

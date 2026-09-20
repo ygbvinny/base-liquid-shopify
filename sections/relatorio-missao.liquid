@@ -21,10 +21,10 @@
       <span class="relatorio-missao__label">Relatório da missão BRIGZ</span>
       <h2 class="relatorio-missao__title">O brigadeiro que parecia impossível.</h2>
       <p class="relatorio-missao__paragraph relatorio-missao__paragraph--desktop">
-        Depois de anos explorando a galáxia dos doces fit, encontramos a fórmula perfeita: um brigadeiro incrivelmente cremoso, com zero açúcar e um sabor que desafia qualquer expectativa.
+        Depois de anos explorando a galáxia dos doces fit, encontramos a fórmula perfeita: um brigadeiro incrivelmente cremoso, com zero adição de açúcar e um sabor que desafia qualquer expectativa.
       </p>
       <p class="relatorio-missao__paragraph relatorio-missao__paragraph--mobile">
-        Depois de anos explorando a galáxia dos doces fit, encontramos o impossível: um brigadeiro leve, cremoso e zero açúcar.
+        Depois de anos explorando a galáxia dos doces fit, encontramos o impossível: um brigadeiro leve, cremoso e zero adição de açúcar.
       </p>
     </div>
 
@@ -38,6 +38,21 @@
         loading="lazy"
       >
     </div>
+
+    {%- comment -%}
+      Foguete decorativo: vive nesta seção (a hero tem overflow: hidden e não
+      deixaria nada vazar), mas fica a cavalo na divisa entre as duas — 67,5%
+      da altura dele sobe por cima da hero, o resto sobra no creme.
+    {%- endcomment -%}
+    <img
+      src="{{ 'foguete-decolagem.webp' | asset_url }}"
+      alt=""
+      class="relatorio-missao__rocket"
+      width="460"
+      height="677"
+      loading="lazy"
+      aria-hidden="true"
+    >
   </div>
 </section>
 
@@ -45,6 +60,8 @@
   .relatorio-missao {
     background-color: #FFF6E8;
     width: 100%;
+    position: relative;
+    z-index: 1; /* sobe acima da hero pro foguete poder invadi-la */
   }
 
   .relatorio-missao__inner {
@@ -56,6 +73,29 @@
     margin: 0 auto;
     padding: 56px 100px 60px;
     box-sizing: border-box;
+    position: relative; /* âncora do foguete */
+  }
+
+  /* Foguete a cavalo na divisa hero / relatório.
+     Largura em % do inner (que é o mesmo container de 1440px do texto), então
+     ele acompanha a coluna de texto em qualquer viewport. O translateY é em %
+     da própria altura do foguete, o que mantém a proporção acima/abaixo da
+     divisa constante mesmo quando ele escala. */
+  .relatorio-missao__rocket {
+    position: absolute;
+    top: 0;
+    left: 26.4%; /* 25,2% + 10% da largura do foguete */
+    width: max(12%, 115px); /* 10% + 20%; piso pra não virar um ponto em telas estreitas */
+    height: auto;
+    transform: translateY(-57.5%); /* 57,5% dele acima da divisa (era 67,5%) */
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Só desktop (1001px+). Mobile e tablet usam a arte vertical da hero, onde
+     o foguete ficava espremido entre o pote e o texto. */
+  @media screen and (max-width: 1000px) {
+    .relatorio-missao__rocket { display: none; }
   }
 
   .relatorio-missao__text {
