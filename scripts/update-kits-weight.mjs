@@ -20,7 +20,6 @@ const apiVersion = "2024-10";
 const variants = [
   { title: "Kit Dupla em Órbita (2un)", id: 51772238856487, weight: 0.65 },
   { title: "Kit Missão em Grupo (4un)", id: 51772238954791, weight: 1.20 },
-  { title: "Kit Base Abastecida (6un)", id: 51772239053095, weight: 1.75 },
 ];
 
 for (const v of variants) {

@@ -37,13 +37,6 @@ const kits = [
     units: "4 potes",
     image: "kit-missao-em-grupo.webp",
   },
-  {
-    title: "Kit Base Abastecida",
-    body_html: "<p>Pra nunca ficar sem BRIGZ na nave. 6 potes de BRIGZ.</p>",
-    price: "139.90",
-    units: "6 potes",
-    image: "kit-base-abastecida.webp",
-  },
 ];
 
 for (const kit of kits) {
