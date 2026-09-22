@@ -365,7 +365,14 @@
     text-decoration: none;
     cursor: pointer;
     transition: transform 0.15s ease, background-color 0.15s ease;
+    /* Mesma batida de atenção do hero e do "Compre já" (keyframe em
+       base.css). Variante -flat: este botão não tem sombra dura, então
+       anima só o transform em vez de criar uma sombra que não existe. */
+    animation: brigz-cta-atencao-flat 3.2s ease-in-out 1.2s 3;
   }
+
+  /* Botão travado não chama atenção pra uma ação que não dá pra fazer. */
+  .kits-card__cta:disabled { animation: none; }
 
   .kits-card__cta:hover:not(:disabled) {
     background-color: #FFA733;

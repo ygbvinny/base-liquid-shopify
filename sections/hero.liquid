@@ -229,6 +229,12 @@
     letter-spacing: 0.455px;
     text-transform: uppercase;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
+    /* Mesma batida de atenção do "Compre já" da página de produto
+       (keyframe em base.css). A sombra deste botão é 7px, não 10px,
+       então as vars reapontam o pulo pra altura certa. */
+    --cta-sombra-base: 7px;
+    --cta-sombra-alta: 11px;
+    animation: brigz-cta-atencao 3.2s ease-in-out 1.2s 3;
   }
 
   .hero-cta-primary:hover {

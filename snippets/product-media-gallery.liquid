@@ -592,13 +592,11 @@
     flex-shrink: 0;
   }
 
-  /* Três batidas discretas logo depois do carregamento, pra puxar o olho pro
-     CTA sem virar um banner piscando. Desligado em prefers-reduced-motion
-     mais abaixo. */
-  @keyframes brigz-cta-atencao {
-    0%, 100% { transform: translateY(0); box-shadow: 0 10px 0 #4B291D; }
-    50%      { transform: translateY(-4px); box-shadow: 0 14px 0 #4B291D; }
-  }
+  /* O keyframe brigz-cta-atencao mora em assets/base.css: o mesmo efeito
+     roda no hero e nos cards de kit da home, que não carregam este
+     snippet. Aqui só se aplica; os 10px/14px deste botão são o fallback
+     do keyframe, por isso não precisa declarar as vars de sombra.
+     Desligado em prefers-reduced-motion mais abaixo. */
 
   .product__buy-buttons .product__add-to-cart:hover:not([disabled]) {
     transform: translateY(-2px);

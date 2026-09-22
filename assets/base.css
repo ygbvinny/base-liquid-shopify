@@ -289,6 +289,37 @@ textarea.field__input {
   .card-product__quick-add:hover, .card-product__quick-add:active { transform: none; }
 }
 
+/* ============================================================
+   CTA — batida de atenção (padrão BRIGZ)
+   ============================================================
+   Três batidas discretas logo depois do carregamento, pra puxar o olho
+   pro CTA principal sem virar banner piscando. Vive aqui, e não na
+   section que usou primeiro, porque o mesmo efeito roda no hero, nos
+   cards de kit da home e no "Compre já" da página de produto.
+
+   A altura da sombra vem de custom properties: cada botão tem a sua
+   (o hero assenta em 7px, o "Compre já" em 10px), então um keyframe
+   fixo faria o botão pular pra uma sombra que não é a dele. Quem não
+   define nada cai no 10px/14px original.
+
+   Use a variante -flat em botões sem sombra dura (ex.: o CTA dos cards
+   de kit): ela anima só o transform, sem inventar uma sombra que o
+   design do botão não tem. */
+@keyframes brigz-cta-atencao {
+  0%, 100% { transform: translateY(0); box-shadow: 0 var(--cta-sombra-base, 10px) 0 #4B291D; }
+  50%      { transform: translateY(-4px); box-shadow: 0 var(--cta-sombra-alta, 14px) 0 #4B291D; }
+}
+
+@keyframes brigz-cta-atencao-flat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta-primary,
+  .kits-card__cta { animation: none; }
+}
+
 /* Rich text content (RTE) shared styles */
 .rte a { color: var(--color-accent); }
 .rte img { max-width: 100%; height: auto; border-radius: var(--media-radius); }
