@@ -21,7 +21,14 @@
   O aspect ratio da imagem vem de settings.card_image_ratio
   ('portrait', 'square' ou 'adapt'). A segunda imagem no hover depende de
   settings.card_show_second_image; o vendor depende de settings.card_show_vendor.
+
+  Produtos com a tag "componente" (o pote de 250g que monta os kits) não
+  renderizam card nenhum: eles precisam ficar publicados para o Shopify
+  conseguir montar os bundles, mas a venda é só por kit. Sem isso o pote
+  vazaria para /collections/all, busca e produtos relacionados — com
+  botão de compra rápida junto.
 {%- endcomment -%}
+{%- unless card_product.tags contains 'componente' -%}
 {%- liquid
   assign ratio = 1
   case settings.card_image_ratio
@@ -101,3 +108,4 @@
     {%- endif -%}
   </div>
 </div>
+{%- endunless -%}

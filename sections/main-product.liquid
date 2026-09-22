@@ -39,7 +39,23 @@
 {%- liquid
   assign product_form_id = 'product-form-' | append: section.id
   assign current_variant = product.selected_or_first_available_variant
+
+  comment
+    Produtos marcados com a tag "componente" existem só para montar os
+    kits (bundles): o pote de 250g precisa estar publicado no Online
+    Store, senão o Shopify não consegue montar nenhum kit e devolve
+    "sold out". Mas a venda é só por kit, então a página dele não expõe
+    compra — mostra um aviso e joga pra seção de kits.
+  endcomment
+  assign eh_componente = false
+  if product.tags contains 'componente'
+    assign eh_componente = true
+  endif
 -%}
+
+{%- if eh_componente -%}
+  <meta name="robots" content="noindex, follow">
+{%- endif -%}
 
 {% render 'breadcrumb', title: product.title %}
 
@@ -302,6 +318,7 @@
             {%- endunless -%}
 
           {%- when 'quantity' -%}
+            {%- if eh_componente -%}{%- continue -%}{%- endif -%}
             <div class="product__quantity" {{ block.shopify_attributes }}>
               <label class="field__label" for="Quantity-{{ section.id }}">
                 {{ 'products.product.quantity.label' | t }}
@@ -329,6 +346,14 @@
               essa ordem em product-media-gallery.liquid.
             {%- endcomment -%}
             <div class="product__buy-buttons" {{ block.shopify_attributes }}>
+              {%- if eh_componente -%}
+                <p class="product__componente-aviso">
+                  Este pote é vendido apenas dentro dos kits.
+                </p>
+                <a href="/#kits" class="button product__buy-now">
+                  <span>Ver os kits</span>
+                </a>
+              {%- else -%}
               {%- comment -%}
                 CTA principal, 100% do tema (por isso aceita a cor da marca):
                 adiciona ao carrinho via Cart AJAX API e manda pro /checkout.
@@ -373,6 +398,7 @@
               {%- endcomment -%}
               {%- if block.settings.show_dynamic_checkout -%}
                 {{ form | payment_button }}
+              {%- endif -%}
               {%- endif -%}
             </div>
 
