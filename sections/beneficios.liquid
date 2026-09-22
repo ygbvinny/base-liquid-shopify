@@ -53,8 +53,6 @@
       </article>
 
     </div>
-
-    <p class="beneficios-section__footnote">*sujeitos à validação regulatória;</p>
   </div>
 </section>
 
@@ -82,7 +80,7 @@
     flex-direction: column;
     justify-content: space-between;
     width: 404px;
-    min-height: 368px;
+    min-height: 331px; /* -10% (era 368px) — o título encolheu 20% e sobrava vazio no card */
     flex-shrink: 0;
     border: 2px solid #FFF6E8;
     border-radius: 24px;
@@ -114,17 +112,27 @@
     flex-direction: column;
   }
 
+  /* Escala do título no desktop: 2/3 do original (era 78px/60px).
+     O card tem 342px úteis (404 - padding 29x2 - borda 2x2); acima de
+     ~55px "Zero adição de açúcar" estoura em 3 linhas ("Zero" /
+     "adição de" / "açúcar"). Em 52px ele quebra em 2 linhas limpas —
+     "Zero adição" / "de açúcar" — com folga dos dois lados da faixa
+     que produz essa quebra (46–54px), e "Baixa caloria" segue em 2
+     linhas como antes. O span menor mantém a mesma proporção. */
   .beneficios-card__title {
     font-family: var(--font-coiny);
     font-weight: 400;
-    font-size: 78px;
-    line-height: 60px;
+    font-size: 52px;
+    line-height: 40px;
     margin: 0;
   }
 
-  .beneficios-card__title--tight { width: 340px; }
+  /* Trava a quebra "Brigadeiro" / "real" no card 3: fica acima da
+     largura de "Brigadeiro" (226px em 42px) e abaixo da linha inteira
+     (344px), então só a segunda palavra desce. */
+  .beneficios-card__title--tight { width: 240px; }
 
-  .beneficios-card__title-small { font-size: 63px; }
+  .beneficios-card__title-small { font-size: 42px; }
 
   .beneficios-card__desc {
     font-family: var(--font-outfit);
@@ -132,14 +140,6 @@
     font-size: 17px;
     text-transform: uppercase;
     margin: 22px 0 0;
-  }
-
-  .beneficios-section__footnote {
-    font-family: var(--font-manrope);
-    font-weight: 400;
-    font-size: 11px;
-    color: rgba(255, 246, 232, 0.7);
-    margin: 8px 0 0;
   }
 
   /* ============================================================
@@ -184,12 +184,6 @@
     .beneficios-card__desc {
       font-size: 14px;
       margin: 0;
-    }
-
-    .beneficios-section__footnote {
-      font-size: 12px;
-      color: rgba(255, 246, 232, 0.5);
-      margin-top: 16px;
     }
   }
 
@@ -244,11 +238,6 @@
     .beneficios-card__title-small { font-size: 32px; }
 
     .beneficios-card__desc { font-size: 11px; }
-
-    .beneficios-section__footnote {
-      font-size: 10px;
-      margin-top: 13px;
-    }
   }
 </style>
 
