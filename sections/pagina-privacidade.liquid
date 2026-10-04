@@ -11,10 +11,13 @@
   templates/page.privacidade.json
 
   OBSERVAÇÕES:
-  Os dados da empresa (razão social, CNPJ, endereço, e-mail de
-  privacidade) vêm das settings da section — preencha no editor de
-  temas. Enquanto estiverem em branco, o texto mostra um aviso no
-  lugar em vez de inventar a informação.
+  Os dados da empresa (razão social, CNPJ, inscrição estadual,
+  endereço, telefone) vêm das settings globais do tema, grupo
+  "Dados da empresa" — as mesmas usadas pelo rodapé e pelo JSON-LD.
+  As settings desta section só servem para sobrescrever caso a
+  política precise de um dado diferente do resto do site.
+  Enquanto algo estiver em branco, o texto omite a informação em vez
+  de inventar.
 
   O conteúdo descreve o que ESTE tema realmente coleta: checkout
   Shopify, formulário de creators (snippets/../influencer-formulario),
@@ -23,8 +26,54 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign empresa = section.settings.razao_social | default: shop.name
-  assign email_privacidade = section.settings.email_privacidade | default: shop.email
+  assign razao_social = section.settings.razao_social | default: settings.razao_social
+  assign cnpj = section.settings.cnpj | default: settings.cnpj
+  assign inscricao_estadual = settings.inscricao_estadual
+
+  comment
+    Endereço corrido montado das partes das settings globais (o JSON-LD
+    usa as mesmas partes em PostalAddress). A section pode sobrescrever
+    com um texto pronto.
+  endcomment
+  assign endereco_partes = settings.endereco_logradouro
+
+  if settings.endereco_bairro != blank
+    if endereco_partes != blank
+      assign endereco_partes = endereco_partes | append: ', '
+    endif
+    assign endereco_partes = endereco_partes | append: settings.endereco_bairro
+  endif
+
+  if settings.endereco_cidade != blank
+    if endereco_partes != blank
+      assign endereco_partes = endereco_partes | append: ', '
+    endif
+    assign endereco_partes = endereco_partes | append: settings.endereco_cidade
+    if settings.endereco_uf != blank
+      assign endereco_partes = endereco_partes | append: '/' | append: settings.endereco_uf
+    endif
+  endif
+
+  if settings.endereco_cep != blank
+    if endereco_partes != blank
+      assign endereco_partes = endereco_partes | append: ', '
+    endif
+    assign endereco_partes = endereco_partes | append: 'CEP ' | append: settings.endereco_cep
+  endif
+
+  assign endereco = section.settings.endereco | default: endereco_partes
+  assign telefone = settings.telefone
+  assign telefone_digitos = telefone | remove: '(' | remove: ')' | remove: ' ' | remove: '-' | remove: '.'
+
+  assign empresa = settings.nome_fantasia | default: razao_social | default: shop.name
+  assign email_privacidade = section.settings.email_privacidade | default: settings.email_contato | default: shop.email
+
+  comment
+    Encarregado (DPO): a própria pessoa jurídica responde pelo
+    tratamento, não uma pessoa física nomeada. Em branco, cai na razão
+    social; a section pode sobrescrever se um dia houver DPO nomeado.
+  endcomment
+  assign encarregado = section.settings.encarregado | default: razao_social
 -%}
 
 <section class="privacidade" data-section-id="{{ section.id }}">
@@ -66,9 +115,10 @@
         <h2>1. Quem é o controlador dos dados</h2>
         <p>
           O controlador dos dados pessoais tratados neste site é
-          {%- if section.settings.razao_social != blank %} <strong>{{ section.settings.razao_social }}</strong>{% else %} <strong>{{ shop.name }}</strong>{% endif -%}
-          {%- if section.settings.cnpj != blank %}, inscrita no CNPJ sob o nº {{ section.settings.cnpj }}{% endif -%}
-          {%- if section.settings.endereco != blank %}, com sede em {{ section.settings.endereco }}{% endif -%}.
+          {%- if razao_social != blank %} <strong>{{ razao_social }}</strong>{% else %} <strong>{{ shop.name }}</strong>{% endif -%}
+          {%- if cnpj != blank %}, inscrita no CNPJ sob o nº {{ cnpj }}{% endif -%}
+          {%- if inscricao_estadual != blank %} e na inscrição estadual nº {{ inscricao_estadual }}{% endif -%}
+          {%- if endereco != blank %}, com sede em {{ endereco }}{% endif -%}.
         </p>
         <p>
           Controlador é quem decide como e por que seus dados são tratados —
@@ -278,10 +328,14 @@
         <h2>13. Como falar com a gente</h2>
         <p>
           Dúvidas sobre esta política ou sobre o tratamento dos seus dados
-          {%- if email_privacidade != blank %}: <a href="mailto:{{ email_privacidade }}">{{ email_privacidade }}</a>{% else %} podem ser enviadas pelo formulário de contato da loja{% endif -%}.
+          {%- if email_privacidade != blank %}: <a href="mailto:{{ email_privacidade }}">{{ email_privacidade }}</a>{% else %} podem ser enviadas pelo formulário de contato da loja{% endif -%}
+          {%- if telefone != blank %}. Telefone: <a href="tel:+55{{ telefone_digitos }}">{{ telefone }}</a>{% endif -%}.
         </p>
-        {%- if section.settings.encarregado != blank -%}
-          <p>Encarregado pelo tratamento de dados (DPO): {{ section.settings.encarregado }}.</p>
+        {%- if encarregado != blank -%}
+          <p>
+            Encarregado pelo tratamento de dados (DPO): <strong>{{ encarregado }}</strong>
+            {%- if email_privacidade != blank %}, pelo e-mail <a href="mailto:{{ email_privacidade }}">{{ email_privacidade }}</a>{% endif -%}.
+          </p>
         {%- endif -%}
         <p>
           Você também pode registrar uma reclamação junto à Autoridade Nacional
@@ -526,10 +580,17 @@
       "default": "9 de agosto de 2026"
     },
     {
+      "type": "header",
+      "content": "Sobrescrever dados da empresa"
+    },
+    {
+      "type": "paragraph",
+      "content": "Em branco = usa as settings globais do tema (Dados da empresa). Preencha só se a política precisar de um dado diferente."
+    },
+    {
       "type": "text",
       "id": "razao_social",
-      "label": "Razão social",
-      "info": "Se ficar em branco, usa o nome da loja."
+      "label": "Razão social"
     },
     {
       "type": "text",
@@ -545,13 +606,13 @@
       "type": "text",
       "id": "email_privacidade",
       "label": "E-mail para assuntos de privacidade",
-      "info": "Se ficar em branco, usa o e-mail da loja."
+      "info": "Em branco, cai no e-mail global e depois no e-mail da loja."
     },
     {
       "type": "text",
       "id": "encarregado",
       "label": "Encarregado de dados (DPO)",
-      "info": "Opcional. Nome ou e-mail de quem responde pelo tratamento de dados."
+      "info": "Em branco, usa a razão social — a pessoa jurídica responde pelo tratamento. Preencha só se houver um DPO nomeado."
     }
   ],
   "presets": [

@@ -15,7 +15,15 @@
   settings.social_tiktok_link); ícone só aparece se o link estiver
   preenchido. Versão mobile (≤1000px) segue node 49:1925 do Figma:
   tudo centralizado (logo, tagline, links, ícones sociais).
+
+  Razão social, CNPJ e telefone vêm das settings globais do tema
+  (grupo "Dados da empresa"), as mesmas usadas pela política de
+  privacidade e pelo JSON-LD de Organization.
 {%- endcomment -%}
+
+{%- liquid
+  assign telefone_digitos = settings.telefone | remove: '(' | remove: ')' | remove: ' ' | remove: '-' | remove: '.'
+-%}
 
 <footer class="footer" data-section-id="{{ section.id }}">
   <div class="footer__inner">
@@ -56,8 +64,23 @@
 
     <div class="footer__bottom">
       <div class="footer__bottom-center">
-        <p class="footer__cnpj">CNPJ 68.439.036/0001-00</p>
-        <p class="footer__copyright">&copy; {{ 'now' | date: '%Y' }} BRIGZ • Todos os direitos reservados.</p>
+        {%- if settings.razao_social != blank or settings.cnpj != blank -%}
+          <p class="footer__legal">
+            {%- if settings.razao_social != blank -%}
+              {{ settings.razao_social }}
+              {%- if settings.cnpj != blank %} • {% endif -%}
+            {%- endif -%}
+            {%- if settings.cnpj != blank %}CNPJ {{ settings.cnpj }}{% endif -%}
+          </p>
+        {%- endif -%}
+
+        {%- if settings.telefone != blank -%}
+          <p class="footer__contact">
+            <a href="tel:+55{{ telefone_digitos }}" class="footer__contact-link">{{ settings.telefone }}</a>
+          </p>
+        {%- endif -%}
+
+        <p class="footer__copyright">&copy; {{ 'now' | date: '%Y' }} {{ settings.nome_fantasia | default: shop.name }} • Todos os direitos reservados.</p>
       </div>
 
       <a
@@ -185,7 +208,7 @@
     border-top: 1px solid rgba(75, 41, 29, 0.3);
   }
 
-  /* Faixa final: CNPJ + copyright centralizados na página, crédito à direita.
+  /* Faixa final: dados legais + copyright centralizados na página, crédito à direita.
      As 3 colunas (1fr auto 1fr) garantem que o bloco central fique no centro
      real do rodapé, independente da largura do crédito. */
   .footer__bottom {
@@ -201,7 +224,8 @@
     text-align: center;
   }
 
-  .footer__cnpj,
+  .footer__legal,
+  .footer__contact,
   .footer__copyright {
     margin: 0;
     font-family: var(--font-manrope);
@@ -210,10 +234,20 @@
     color: #4B291D;
   }
 
-  .footer__cnpj {
+  .footer__legal {
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
+
+  .footer__contact { margin-bottom: 4px; }
+
+  .footer__contact-link {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .footer__contact-link:hover { opacity: 0.7; }
 
   .footer__credit {
     grid-column: 3;
@@ -326,7 +360,8 @@
 
     .footer__divider { max-width: 240px; }
 
-    .footer__cnpj,
+    .footer__legal,
+    .footer__contact,
     .footer__copyright,
     .footer__credit-label { font-size: 9px; }
 

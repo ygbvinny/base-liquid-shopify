@@ -267,6 +267,87 @@
     ]
   },
   {
+    "name": "Dados da empresa",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Usados no rodapé, na política de privacidade e no JSON-LD de Organization. Um lugar só para não desencontrar."
+      },
+      {
+        "type": "text",
+        "id": "razao_social",
+        "label": "Razão social"
+      },
+      {
+        "type": "text",
+        "id": "nome_fantasia",
+        "label": "Nome fantasia",
+        "info": "Se ficar em branco, usa o nome da loja."
+      },
+      {
+        "type": "text",
+        "id": "cnpj",
+        "label": "CNPJ",
+        "info": "Formatado, ex.: 00.000.000/0001-00"
+      },
+      {
+        "type": "text",
+        "id": "inscricao_estadual",
+        "label": "Inscrição estadual"
+      },
+      {
+        "type": "header",
+        "content": "Endereço fiscal"
+      },
+      {
+        "type": "paragraph",
+        "content": "Separado em partes porque o JSON-LD precisa de PostalAddress. O texto corrido da política é montado a partir daqui."
+      },
+      {
+        "type": "text",
+        "id": "endereco_logradouro",
+        "label": "Logradouro, número e complemento"
+      },
+      {
+        "type": "text",
+        "id": "endereco_bairro",
+        "label": "Bairro"
+      },
+      {
+        "type": "text",
+        "id": "endereco_cidade",
+        "label": "Cidade"
+      },
+      {
+        "type": "text",
+        "id": "endereco_uf",
+        "label": "UF",
+        "info": "Duas letras, ex.: SP"
+      },
+      {
+        "type": "text",
+        "id": "endereco_cep",
+        "label": "CEP"
+      },
+      {
+        "type": "header",
+        "content": "Contato"
+      },
+      {
+        "type": "text",
+        "id": "telefone",
+        "label": "Telefone de contato",
+        "info": "Formatado, ex.: (11) 0000-0000. O link tel: é montado automático."
+      },
+      {
+        "type": "text",
+        "id": "email_contato",
+        "label": "E-mail de contato",
+        "info": "Se ficar em branco, usa o e-mail da loja."
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.social_media.name",
     "settings": [
       {

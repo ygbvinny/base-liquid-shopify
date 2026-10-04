@@ -6,14 +6,15 @@
   O QUE FAZ:
   Gera dois blocos JSON-LD (schema.org) para a home: WebSite (com
   SearchAction para a caixa de busca do Google) e Organization (nome,
-  url e logo da loja).
+  url, logo, dados legais, endereço, telefone e redes sociais).
 
   COMO USAR:
   {% render 'structured-data-website' %}
   Normalmente chamado por meta-tags apenas na home (page_type 'index').
 
   PARÂMETROS:
-  Nenhum — usa shop, routes e settings.logo.
+  Nenhum — usa shop, routes e as settings globais (logo, grupo
+  "Dados da empresa" e links de redes sociais).
 
   OBSERVAÇÕES:
   O placeholder {search_term_string} é montado por partes (append) de
@@ -23,6 +24,33 @@
 {%- liquid
   assign search_placeholder = '?q=' | append: '{' | append: 'search_term_string' | append: '}'
   assign search_target = shop.url | append: routes.search_url | append: search_placeholder
+
+  assign org_nome = settings.nome_fantasia | default: shop.name
+  assign telefone_digitos = settings.telefone | remove: '(' | remove: ')' | remove: ' ' | remove: '-' | remove: '.'
+
+  comment
+    PostalAddress não tem campo de bairro — vai junto do streetAddress.
+    addressLocality é a cidade e addressRegion é a UF.
+  endcomment
+  assign logradouro_completo = settings.endereco_logradouro
+  if settings.endereco_bairro != blank
+    assign logradouro_completo = logradouro_completo | append: ', ' | append: settings.endereco_bairro
+  endif
+
+  assign redes = ''
+  if settings.social_instagram_link != blank
+    assign redes = redes | append: settings.social_instagram_link | append: '|'
+  endif
+  if settings.social_tiktok_link != blank
+    assign redes = redes | append: settings.social_tiktok_link | append: '|'
+  endif
+  if settings.social_facebook_link != blank
+    assign redes = redes | append: settings.social_facebook_link | append: '|'
+  endif
+  if settings.social_linkedin_link != blank
+    assign redes = redes | append: settings.social_linkedin_link | append: '|'
+  endif
+  assign redes = redes | split: '|'
 -%}
 <script type="application/ld+json">
   {
@@ -41,8 +69,41 @@
   {
     "@context": "http://schema.org",
     "@type": "Organization",
-    "name": {{ shop.name | json }},
+    "name": {{ org_nome | json }},
     "url": {{ shop.url | append: routes.root_url | json }}
+    {%- if settings.razao_social != blank %},
+      "legalName": {{ settings.razao_social | json }}
+    {%- endif -%}
+    {%- if settings.cnpj != blank %},
+      "taxID": {{ settings.cnpj | json }},
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "CNPJ",
+        "value": {{ settings.cnpj | json }}
+      }
+    {%- endif -%}
+    {%- if settings.telefone != blank %},
+      "telephone": {{ telefone_digitos | prepend: '+55' | json }}
+    {%- endif -%}
+    {%- if settings.endereco_logradouro != blank %},
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": {{ logradouro_completo | json }},
+        {%- if settings.endereco_cidade != blank %}
+          "addressLocality": {{ settings.endereco_cidade | json }},
+        {%- endif %}
+        {%- if settings.endereco_uf != blank %}
+          "addressRegion": {{ settings.endereco_uf | json }},
+        {%- endif %}
+        {%- if settings.endereco_cep != blank %}
+          "postalCode": {{ settings.endereco_cep | json }},
+        {%- endif %}
+        "addressCountry": "BR"
+      }
+    {%- endif -%}
+    {%- if redes.size > 0 %},
+      "sameAs": {{ redes | json }}
+    {%- endif -%}
     {%- if settings.logo %},
       "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }}
     {%- endif -%}
